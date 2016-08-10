@@ -1,0 +1,25 @@
+1. iostat
+作用:
+iostat，用于报告中央处理器（CPU）统计信息和整个系统、适配器、tty 设备、磁盘和 CD-ROM 的输入/输出统计信息
+yum install sysstat
+
+sysstat的安装包是：sysstat-5.0.5-1.i386.rpm，装完了sysstat-5.0.5-1.i386.rpm
+后 就会有iostat、mpstat、sar、sa的功能，sysstat-5.0.5-1.i386.rpm
+
+启动sysstat
+/etc/init.d/sysstat start
+
+设置sysstat自启动
+#checkfig sysstat on
+
+使用:
+iostat -x 2
+
+2. 带宽监控
+yum install dstat
+dstat -N eht1 30
+
+3. 查看内存
+top -b -n1 | grep nginx
+dstat -cdlmnpsy  5
+vmstat 2
