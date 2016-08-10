@@ -48,3 +48,19 @@ ls -lF |grep /    或 ls -l |grep '^d'  只看当前目录下的文件夹，不�
 
 4. 批量替换文件内容
 grep oldString -rl /path | xargs sed -i "s/oldString/newString/g"
+
+5. linux快速获取文件时间戳
+date +%s -d "`stat 0.ts|grep Modify|cut -c 9-27`"
+
+6. linux显示文件(按时间升序或者降序)
+升序: ls -lt
+降序: ls -lt|tac
+
+7. 批量kill进程
+ps -ef|grep -E "limit|ffmpeg"|grep -v grep|cut -c 9-15|xargs kill -9 
+
+8. 提取文件按列的数据
+awk '$1 > 1 && $2 > 100' hihao.txt 
+
+9. 查看进程的线程
+ps -T -p 5065 (5065为进程pid)
