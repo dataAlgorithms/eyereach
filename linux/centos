@@ -1,0 +1,77 @@
+1. 查看软件版本
+rpm -qa sms
+
+2. 查询进程状态
+netstat -anlp|grep nginx|grep ES
+
+3. 安装lua
+yum -y install gcc make ncurses-devel readline-devel
+wget http://www.lua.org/ftp/lua-5.1.4.tar.gz
+tar zxvf lua-5.1.4.tar.gz
+cd lua-5.1.4
+make linux
+make install
+
+cd ..
+wget http://luaforge.net/frs/download.php/2664/luasocket-2.0.2.tar.gz
+tar zxvf  luasocket-2.0.2.tar.gz
+cd luasocket-2.0.2
+make
+make install
+
+4. centos telnet/ssh中文支持
+#vi /etc/sysconfig/i18n
+将原内容 LANG="en_US.UTF-8"
+SYSFONT="latarcyrheb-sun16"
+修改为
+LANG="zh_CN.GB18030"
+LANGUAGE="zh_CN.GB18030:zh_CN.GB2312:zh_CN"
+SUPPORTED="zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en"
+SYSFONT="lat0-sun16"
+
+用 yum 安装中文字体
+#yum install fonts-chinese.noarch
+断开 ssh ，重新连
+在终端输入 date 命令测试
+#date
+
+5. 防火墙
+service iptables stop
+service iptables start
+
+6. centos安装pip和easy_install
+wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
+python get-pip.py
+
+yum -y install python-setuptools
+easy_install simplejson
+
+7. centos安装python27
+wget http://python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2
+tar jxvf Python-2.7.5.tar.bz2
+cd Python-2.7.5
+./configure
+make
+make install
+
+8. centos的包
+https://wiki.centos.org/AdditionalResources/Repositories/RPMForge
+
+9. centos install rz/sz
+yum install lrzsz
+
+10. centos错误日志
+a. rpmdb: Thread/process 26242/140406574991264 failed: Thread died in Berkeley DB library
+solutions:
+rm -fr /var/lib/rpm/__db.*
+yum install rpm
+b. error: rpmdb: damaged header #1079 retrieved -- skipping.
+sudo rpm -f /var/lib/rpm/_db*
+sudo --rebuilddb
+c. [root@newissupper soft]# rpm -e sms
+error: %preun(sms-2.2.17-0.x86_64) scriptlet failed, exit status 1
+solution:
+ rpm -e sms --noscripts
+d. error: db3 error(12) from dbcursor->c_put: 无法分配内存 
+rm -f /var/lib/rpm/__db* 
+     rpm --rebuilddb
