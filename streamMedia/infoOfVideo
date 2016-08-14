@@ -1,0 +1,25 @@
+1. 推流
+//纯音频 (aac)
+ffmpeg -re -i likeyou.mp4 -acodec copy -vn -f flv rtmp://192.168.32.221:1936/httpflv?vhost=smsupper/stream
+//纯音频 (mp3)
+ffmpeg -re -i likeyou.mp4 -acodec mp3 -ab 48k -vn -b 2500k -r 40 -f flv rtmp://192.168.32.221:1936/httpflv?vhost=smsupper/stream
+//纯视频 (h264)
+ffmpeg -re -i likeyou.mp4 -vcodec copy -an -f flv rtmp://192.168.32.221:1936/httpflv?vhost=smsupper/stream
+//音视频 (h264+aac)
+ffmpeg -re -i likeyou.mp4 -codec copy -b:a 128k -b:v 1500k  -f flv  rtmp://192.168.32.221:1936/httpflv?vhost=smsupper/stream
+//音视频 (h264+mp3)
+ffmpeg -re -i likeyou.mp4 -vcodec copy -acodec mp3 -f flv rtmp://192.168.32.221:1936/httpflv?vhost=smsupper/stream
+
+//自定义码率帧率分辨率
+ffmpeg -re -i lpr.mp4 -g 150 -c:v libx264  -r 40 -s 1024x768 -b 1500k -f flv "rtmp://61.179.110.239/live?vhost=cchls.xxshow.com/stream"
+
+2. linux下播放视频
+curl -svo /dev/null http://192.168.32.222:8081/httpflv/stream.flv?cchost_tag=ghredge  
+rtmpdump -o /dev/null -r rtmp://192.168.32.222:1936/httpflv?vhost=ghredge/stream 
+附: rtmpdump需要下载
+
+3. ffmpeg保存图片
+ffmpeg -i rtmp://180.97.183.195/live?vhost=live-lx-hls.huomaotv.cn/stream   -t 0.001 -r 1 -f image2 stream.jpg
+
+4. 压测
+https://github.com/winlinvip/srs-bench
