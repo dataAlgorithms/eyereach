@@ -1,0 +1,9 @@
+1. 匹配不是特定字符串的字符串
+eg. 匹配不包括cutv.com的字符串
+正则:
+^.*?(?<!cutv.com)$
+
+测试:
+http://www.cutv.com
+www.cutv.com
+sina.com.cn   <==只有这个被匹配上
