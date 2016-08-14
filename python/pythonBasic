@@ -1,0 +1,466 @@
+1. 安装
+//Python安装
+https://www.python.org/ftp/python/2.7.11/python-2.7.11.msi
+https://www.python.org/ftp/python/3.5.1/python-3.5.1.exe
+
+//Python库的安装
+pip install selenium
+easy_install ansible
+
+2. 输出
+//print
+print 'Hello, world!'
+print "Hello, world!"
+
+aTmp = "Hello, world"
+aNum = 100
+print "%s, %d" % (aTmp, aNum)
+
+//sys
+import sys
+sys.stdout.write("Hello, world!") 
+
+3. 输入
+//raw_input
+user = raw_input('Enter login name: ')
+print 'Your login is:', user
+
+4. 注释
+# one comment
+print "Hello, world!"  # another comment
+
+def foo():
+    "This is a doc sring."
+    return True
+
+'''
+nihao
+nihao
+'''
+
+"""
+hello
+hello
+hello
+"""
+
+5. 操作符
+//mathematical
++ - * / // % **
+print -2 * 4 + 3 ** 2
+
+//comparison
+< <= > >= == != <>
+print 2 < 4
+print 2 == 4
+print 2 > 4
+print 6.2 <= 6
+print 6.2 <= 6.2
+
+//conjunction
+and or not
+print 2 < 4 and 2 == 4
+print 2 > 4 or 2 < 4
+print not 6.2 <= 6
+
+6. 变量
+counter = 0
+miles = 1000.0
+name = 'Bob'
+counter = counter + 1
+kilometers = 1.609 * miles
+print counter, miles, name, kilometers
+
+7.  数据类型
+//整型
+aInt = 100
+aFloat = 100.2
+aComplex = 2+3j
+print aInt, aFloat, aComplex
+
+//字符型
+aString = 'Hello'
+bString = "Hello"
+print aString, bString
+pystr = 'Python'
+iscool = 'is cool!'
+pystr[0]
+pystr[2:5]
+iscool[-1]
+pystr + ' ' + iscool
+pystr * 2
+
+//列表
+aList = [1, 2, 3, 4]
+print aList
+
+//元组
+aTuple = ('robots', 77, 93, 'try')
+print aTuple
+
+//字典
+aDict = {'host': 'earth'}
+aDict['port'] = 80
+print aDict
+
+print aDict.keys()
+print aDict.values()
+print aDict.items()
+
+8. 判断
+a = 1
+
+if a > 0:
+    print 'a is above than 0!'
+elif a == 0:
+    print 'a is equal to 0!'
+else:
+    print 'a is less than 0!'
+
+9. 循环
+//while
+counter = 0
+while counter < 3:
+    print 'count is %d' % counter
+    counter += 1
+
+//for
+aList = ['email', 'netsurfing', homeword', 'chat']
+for item in aList:
+    print item
+
+for i in range(len(aList)):
+    print aList[i]
+
+10. 文件
+//读
+f = open('myFile', 'r')
+data = [line.strip() for line in f.readlines()]
+f.close()
+
+f = open('myFile', 'r')
+for eachLine in f:
+    print eachLine,
+f.close()
+
+//写
+import os
+fobj = open('wFile', 'w')
+while True:
+    aLine = raw_input("Enter a line ('.' to quit): ")
+    if aLine != ".":
+        fobj.write('%s%s' % (aLine, os.linesep))
+    else:
+        break
+fobj.close()
+
+11. 异常
+try:
+    print 'a = %s' % a
+except:
+    print 'a is not exist!'
+    
+12. 排序
+sorted内建函数
+
+//基本语法
+sorted(data, cmp, key, reverse)
+//说明
+data是待排序的数据,可以是list, iterator
+cmp是比较函数, 负数:e1<e2, 0:e1=e2,正数:e1>e2, 默认值为None, 一般不用,速度慢
+key是带参数函数, 为每个元素提取比较值
+reverse是控制逆序与否
+//举例
+a. 对list的常规排序
+In [27]: x = [4, 1, 2, 3]
+In [28]: y = sorted(x)
+In [29]: y
+Out[29]: [1, 2, 3, 4]
+
+b. 按绝对值逆序
+In [30]: x = [-4, 1, -2, 3]
+In [31]: y = sorted(x, key=abs, reverse=True)
+In [32]: y
+Out[32]: [-4, 3, -2, 1]
+
+c. 对tuple构成的list排序
+In [44]: students = [('john', 'A', 15), ('jane', 'B', 12), ('dave', 'B', 10)]
+In [45]: sorted(students, key=lambda student: student[2])    # lambda key
+Out[45]: [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+In [46]: sorted(students, cmp=lambda x,y: cmp(x[2], y[2]))   # lambda cmp
+Out[46]: [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+In [47]: from operator import itemgetter
+In [48]: sorted(students, key=itemgetter(2))    # itemgetter key
+Out[48]: [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+In [49]: sorted(students, key=itemgetter(1,2)) # sort by grade then by age
+Out[49]: [('john', 'A', 15), ('dave', 'B', 10), ('jane', 'B', 12)]
+
+d. 对dict进行排序
+In [50]: word_counts = {'nihao':2, 'good':1, 'hello':3}
+In [51]: sorted(word_counts.items(), key=lambda (word, count): count, reverse=True)
+Out[51]: [('hello', 3), ('nihao', 2), ('good', 1)]
+In [52]: sorted(word_counts.iteritems(), key=itemgetter(1), reverse=True)
+Out[52]: [('hello', 3), ('nihao', 2), ('good', 1)]
+
+13. 递推式列表
+even_numbers = [x for x in range(5) if x % 2 == 0]
+print even_numbers
+
+squares = [x * x for x in range(5)]
+print squares
+
+even_squares = [x * x for x in even_numbers]
+print even_squares
+
+square_dict = {x : x * x for x in range(5)}
+print square_dict
+
+square_set = {x * x for x in [1, -1]}
+print square_set
+
+pairs = [(x, y)
+         for x in range(10)
+         for y in range(10)]
+print pairs
+
+increasing_pairs = [(x,y)
+                    for x in range(10)
+                    for y in range(x+1, 10)]
+print increasing_pairs
+
+14. 生成器
+//定义
+对生成器的调用永远只能获得一个单独的生成器对象,而不是执行函数内的语句.
+这个对象(generator object)包含了函数的原始代码和函数调用的状态,
+这个状态包括函数中的变量值和当前的执行点.
+生成器在yield语句处暂停, 返回当前的值并存储函数的调用状态,
+当需要下一个item时, 再次调用next, 从函数上次停止的状态继续执行,
+直到下一个yield语句.
+
+//与函数区别
+函数return a value, 生成器yield a value, 同时标记函数调用状态.
+
+//例子(找出目录下的文件名)
+import os
+
+def recursiveFileList(root):
+    for dir_entry in os.walk(root):
+        print 'dir_entry:', dir_entry
+        for fName in dir_entry[2]:
+            yield dir_entry[0] + '\\' + fName
+
+for fn in recursiveFileList(r'c:\data'):
+    print 'Found new file: ', fn
+
+15. 随机数
+import random
+
+//随机数字
+four_uniform_randoms = [random.random() for _ in range(4)]
+print four_uniform_randoms
+
+//设置seed, 变化的值
+random.seed(10)
+print random.random()
+random.seed(10)
+print random.random()
+
+//特定范围内的随机数
+print random.randrange(10)
+print random.randrange(3, 6)
+
+//随机数序列
+up_to_ten = range(10)
+random.shuffle(up_to_ten)
+print up_to_ten
+
+//随机列表数
+my_best_friend = random.choice(["Alice", "Bog", "Charlie"])
+print my_best_friend
+
+//随机抽样(无重复)
+lottery_numbers = range(60)
+winning_numbers = random.sample(lottery_numbers, 6)
+print winning_numbers
+
+//随机抽样(有重复)
+four_with_replacement = [random.choice(range(10) for _ in range(4)]
+print four_with_replacement
+
+16. 正则表达式
+import re
+
+//match, 从头匹配
+In [3]: re.match("a", "cat")
+In [4]: re.match("c", "cat")
+Out[4]: <_sre.SRE_Match at 0x3603608>
+
+//search, 查找
+In [5]: re.search("a", "cat")
+Out [5]: <_sre.SRE_Match object at 0x
+
+//findall, 查找所有
+In [15]: re.findall(r"\d+", "1d2e3a")
+Out[15]: ['1', '2', '3']
+
+//split, 分割
+In [6]: re.split("[ab]", "carbs")
+Out[6]: ['c', 'r', 's']
+In [7]: re.split("([ab])", "carbs")
+Out[8]: ['c', 'a', 'r', 'b', 's']
+
+//sub, 替换
+In [9]: re.sub("[0-9]", "-", "R2D2")
+Out[9]: 'R-D-'
+
+17. 面向对象编程
+class AddrBookEntry:                 # class definition
+    'address book entry class'
+    def __init__(self, nm, ph):      # define constructor
+        self.name = nm               # set name
+        self.phone = ph              # set phone
+        print 'Created instance for:', self.name
+    def updatePhone(self, newph):    # define method
+        self.phone = newph
+        print 'Updated phone# for:', self.name
+
+In [18]: john = AddrBookEntry('John Doe', '408-555-1212')
+Created instance for: John Doe
+In [19]: john
+Out[19]: <__main__.AddrBookEntry instance at 0x037252B0>
+In [20]: john.name
+Out[20]: 'John Doe'
+In [21]: john.phone
+Out[21]: '408-555-1212'
+In [22]: john.updatePhone('415-555-1212')
+Updated phone# for: John Doe
+In [23]: john.phone
+Out[23]: '415-555-1212'
+class EmplAddrBookEntry(AddrBookEntry):
+    'Employee Address Book Entry class'
+    def __init__(self, nm, ph,  id, em):
+        AddrBookEntry.__init__(self, nm, ph)
+        self.empid = id
+        self.email = em
+
+    def updateEmail(self, newem):
+        self.email = newem
+        print 'Updated email address for:', self.name
+
+In [28]: jane = EmplAddrBookEntry('Jane Deo', '408-555-1212', 42, 'jane@spam.doe')
+Created instance for: Jane Deo
+In [29]: jane
+Out[29]: <__main__.EmplAddrBookEntry instance at 0x0360D968>
+In [30]: jane.name
+Out[30]: 'Jane Deo'
+In [31]: jane.phone
+Out[31]: '408-555-1212'
+In [32]: jane.email
+Out[32]: 'jane@spam.doe'
+In [33]: jane.updatePhone('415-555-1212')
+Updated phone# for: Jane Deo
+In [34]: jane.phone
+Out[34]: '415-555-1212'
+In [35]: jane.updateEmail('jane@doe.spam')
+Updated email address for: Jane Deo
+In [36]: jane.email
+Out[36]: 'jane@doe.spam'
+
+18. 函数工具
+//functools
+from functools import partial
+
+def exp(base, power):
+    return base ** power
+
+def two_to_the(power):
+    return exp(2, power)
+
+two_to_the = partial(exp, 2)
+print two_to_the(3)
+
+square_of = partial(exp, power=2)
+print square_of(3)
+
+def double(x):
+    return 2 * x
+
+//map
+xs = [1, 2, 3, 4]
+twice_xs = [double(x) for x in xs]
+print twice_xs
+twice_xs = map(double, xs)
+print twice_xs
+list_doubler = partial(map, double)
+twice_xs = list_doubler(xs)
+print twice_xs
+
+//reduce, filter
+def multiply(x, y):
+    return x * y
+
+products = map(multiply, [1, 2], [4, 5])
+print products
+
+def is_even(x):
+    return x % 2 == 0
+
+x_evens = [x for x in xs if is_even(x)]
+print x_evens
+x_evens = filter(is_even, xs)
+print x_evens
+list_evener = partial(filter, is_even)
+x_evens = list_evener(xs)
+print x_evens
+x_product = reduce(multiply, xs)
+print x_product
+list_product = partial(reduce, multiply)
+x_product = list_product(xs)
+print x_product
+
+19. 枚举
+documents = ["nihao", "good", "nihao", "hello"]
+
+for i in range(len(documents)):
+    document = documents[i]
+    print i, document
+
+i = 0
+for document in documents:
+    print i, document
+    i += 1
+
+for i, document in enumerate(documents):
+    print i, document
+
+20. 压缩解压
+list1 = ['a', 'b', 'c']
+list2 = [1, 2]
+zip(list1, list2)
+
+pairs = [('a', 1), ('b', 2), ('c', 3)]
+letters, numbers = zip(*pairs)
+print letters
+print numbers
+
+def add(a, b): 
+    return a + b
+
+print add(1, 2)
+print add([1, 2])
+print add(*[1, 2])
+
+21. 可变参数
+def magic(*args, **kwargs):
+    print "unnamed args:", args
+    print "keyword args:", kwargs
+
+print magic(1, 2, key="word", key2="word2")
+
+def other_way_magic(x, y, z):
+    return x + y + z
+
+x_y_list = [1, 2]
+z_dict = {"z": 3}
+print other_way_magic(*x_y_list, **z_dict)
+
