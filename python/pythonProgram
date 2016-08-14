@@ -1,0 +1,7 @@
+1. 统计文件中每个字符的个数
+fobj = open('nihao')
+from collections import defaultdict
+
+word_counts = defaultdict(int)
+for word in fobj:
+    word_counts[word] += 1
