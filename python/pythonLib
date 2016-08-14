@@ -1,0 +1,107 @@
+1. jdcal 
+Julian dates from proleptic Gregorian and Julian calendars.
+https://pypi.python.org/pypi/jdcal
+
+2. optparse
+Parse for command line option
+https://docs.python.org/2/library/optparse.html
+
+eg.
+# source code 
+from optparse import OptionParser
+
+def main():
+    parser = OptionParser(usage="usage: %prog [options] filename",
+                          version="%prog 1.0")
+    parser.add_option("-x", "--xhtml",
+                      action="store_true",
+                      dest="xhtml_flag",
+                      default=False,
+                      help="create a XHTML template instead of HTML")
+    parser.add_option("-c", "--cssfile",
+                      action="store",
+                      default="style.css",
+                      help="CSS file to link",)
+    parser.add_option('-e', '--env',
+                      type='choice',
+                      action='store',
+                      dest='environment',
+                      choices=['production', 'staging', 'testing',],
+                      default='production',
+                      help='Environment to run on',)
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("wrong number of arguments")
+
+    print options
+    print args
+
+if __name__ == '__main__':
+    main()
+    
+# usage
+'''
+E:\eclipse\temp>python optParseExample.py -h
+Usage: optParseExample.py [options] filename
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -x, --xhtml           create a XHTML template instead of HTML
+  -c CSSFILE, --cssfile=CSSFILE
+                        CSS file to link
+E:\eclipse\temp>python optParseExample.py
+Usage: optParseExample.py [options] filename
+optParseExample.py: error: wrong number of arguments
+E:\eclipse\temp>python optParseExample.py myfile.html
+{'xhtml_flag': False, 'cssfile': 'style.css'}
+['myfile.html']
+E:\eclipse\temp>python optParseExample.py -x -c mystyle.css myfile.html
+{'xhtml_flag': True, 'cssfile': 'mystyle.css'}
+['myfile.html']
+E:\eclipse\temp>python optParseExample.py --xhtml -cssfile=mystyle.css myfile.ht
+ml
+{'xhtml_flag': True, 'cssfile': 'ssfile=mystyle.css'}
+['myfile.html']
+E:\eclipse\temp>python optParseExample.py --xhtml -cssfile=mystyle.css myfile.ht
+ml
+{'environment': 'production', 'xhtml_flag': True, 'cssfile': 'ssfile=mystyle.css
+'}
+['myfile.html']
+E:\eclipse\temp>python optParseExample.py --xhtml -cssfile=mystyle.css myfile.ht
+ml
+{'environment': 'production', 'xhtml_flag': True, 'cssfile': 'ssfile=mystyle.css
+'}
+['myfile.html']
+E:\eclipse\temp>python optParseExample.py -h
+Usage: optParseExample.py [options] filename
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -x, --xhtml           create a XHTML template instead of HTML
+  -c CSSFILE, --cssfile=CSSFILE
+                        CSS file to link
+  -e ENVIRONMENT, --env=ENVIRONMENT
+                        Environment to run on
+                        
+3. datetime
+a. Date-string to datetime
+>>> from datetime import datetime
+>>> date_object = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
+>>> date_object
+datetime.datetime(2005, 6, 1, 13, 33)
+>>> str(date_object)
+'2005-06-01 13:33:00'
+>>> from dateutil import parser
+>>> dt = parser.parse("Aug 28 1999 12:00AM")
+>>> dt
+datetime.datetime(1999, 8, 28, 0, 0)
+>>> str(dt)
+'1999-08-28 00:00:00'
+
+b. Get the current date
+>>> from datetime import datetime
+>>> datetime.now()
+datetime.datetime(2016, 6, 23, 9, 45, 39, 265000)
+>>> str(datetime.now())
+'2016-06-23 09:45:47.393000'
