@@ -84,7 +84,7 @@ Options:
   -e ENVIRONMENT, --env=ENVIRONMENT
                         Environment to run on
                         
-3. datetime
+3. datetime/time
 a. Date-string to datetime
 >>> from datetime import datetime
 >>> date_object = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
@@ -98,6 +98,14 @@ datetime.datetime(2005, 6, 1, 13, 33)
 datetime.datetime(1999, 8, 28, 0, 0)
 >>> str(dt)
 '1999-08-28 00:00:00'
+>>> import datetime
+>>> temp = datetime.datetime.fromtimestamp(1386181800).strftime('%Y-%m-%d %H:%M:%S')
+>>> print temp
+2013-12-05 02:30:00
+>>> import time
+>>> timestamp = int(time.time())
+>>> print timestamp
+1471402578
 
 b. Get the current date
 >>> from datetime import datetime
