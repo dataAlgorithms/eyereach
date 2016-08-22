@@ -113,3 +113,56 @@ b. Get the current date
 datetime.datetime(2016, 6, 23, 9, 45, 39, 265000)
 >>> str(datetime.now())
 '2016-06-23 09:45:47.393000'
+
+4. html formatter
+a. Pretty Print HTML
+>>> from html5print import HTMLBeautifier
+>>> html = '<title>Page Title</title><p>Some text here</p>'
+>>> print(HTMLBeautifier.beautify(html, 4))
+
+b. Pretty Print CSS
+>>> from html5print import CSSBeautifier
+>>> css = """
+... .para { margin: 10px 20px;
+... /* Cette règle contrôle l'espacement de tous les côtés \*/"""
+>>> print(CSSBeautifier.beautify(css, 4))
+.para {
+    margin              : 10px 20px; /* Cette règle contrôle l'espacement de tous les côtés \*/
+}
+
+c. Pretty Print JavaScript
+>>> from html5print import JSBeautifier
+>>> js = '''
+... "use strict"; /* Des bribes de commentaires ici et là \*/
+... function MSIsPlayback() { try { return parent && parent.WebPlayer }
+... catch (e) { return !1 } }
+... '''
+>>> print(JSBeautifier.beautify(js, 4))
+"use strict"; /* Des bribes de commentaires ici et là \*/
+
+function MSIsPlayback() {
+    try {
+        return parent && parent.WebPlayer
+    } catch (e) {
+        return !1
+    }
+}
+
+d. Use lxml
+from lxml import etree, html
+
+document_root = html.fromstring("<html><body><h1>hello world</h1></body></html>")
+print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
+
+e. Use Bs4 and lxml
+from BeautifulSoup import BeautifulSoup as bs
+import lxml.html as lh
+
+sliderRoot = '''
+<title>Page Title</title><p>Some text here</p>
+'''
+sliderRoot = lh.fromstring(sliderRoot)
+root=lh.tostring(sliderRoot, pretty_print = True) #convert the generated HTML to a string
+soup=bs(root)                #make BeautifulSoup
+prettyHTML=soup.prettify()   #prettify the html
+print prettyHTML
