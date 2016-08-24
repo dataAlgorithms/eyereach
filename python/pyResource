@@ -1,0 +1,592 @@
+Awesome Python ，这又是一个 Awesome XXX 系列的资源整理，由 vinta 发起和维护。内容包括：Web框架、网络爬虫、网络内容提取、模板引擎、数据库、数据可视化、图片处理、文本处理、自然语言处理、机器学习、日志、代码分析等。
+
+环境管理
+
+管理 Python 版本和环境的工具
+
+p – 非常简单的交互式 python 版本管理工具。
+pyenv – 简单的 Python 版本管理工具。
+Vex – 可以在虚拟环境中执行命令。
+virtualenv – 创建独立 Python 环境的工具。
+virtualenvwrapper– virtualenv 的一组扩展。
+
+包管理
+
+管理包和依赖的工具。
+
+pip – Python 包和依赖关系管理工具。
+pip-tools – 保证 Python 包依赖关系更新的一组工具。
+conda – 跨平台，Python 二进制包管理工具。
+Curdling – 管理 Python 包的命令行工具。
+wheel – Python 分发的新标准，意在取代 eggs。
+
+包仓库
+
+本地 PyPI 仓库服务和代理。
+
+warehouse – 下一代 PyPI。
+Warehouse bandersnatch – PyPA 提供的 PyPI 镜像工具。
+devpi – PyPI 服务和打包/测试/分发工具。
+localshop – 本地 PyPI 服务（自定义包并且自动对 PyPI 镜像）。
+
+分发
+
+打包为可执行文件以便分发。
+
+PyInstaller – 将 Python 程序转换成独立的执行文件（跨平台）。
+dh-virtualenv – 构建并将 virtualenv 虚拟环境作为一个 Debian 包来发布。
+Nuitka – 将脚本、模块、包编译成可执行文件或扩展模块。
+py2app – 将 Python 脚本变为独立软件包（Mac OS X）。
+py2exe – 将 Python 脚本变为独立软件包（Windows）。
+pynsist – 一个用来创建 Windows 安装程序的工具，可以在安装程序中打包 Python本身。
+
+构建工具
+
+将源码编译成软件。
+
+buildout – 一个构建系统，从多个组件来创建，组装和部署应用。
+BitBake – 针对嵌入式 Linux 的类似 make 的构建工具。
+fabricate – 对任何语言自动找到依赖关系的构建工具。
+PlatformIO – 多平台命令行构建工具。
+PyBuilder – 纯 Python 实现的持续化构建工具。
+SCons – 软件构建工具。
+
+交互式解析器
+
+交互式 Python 解析器。
+
+IPython – 功能丰富的工具，非常有效的使用交互式 Python。
+bpython– 界面丰富的 Python 解析器。
+ptpython – 高级交互式Python解析器， 构建于python-prompt-toolkit 之上。
+
+文件
+
+文件管理和 MIME（多用途的网际邮件扩充协议）类型检测。
+
+imghdr – （Python 标准库）检测图片类型。
+mimetypes – （Python 标准库）将文件名映射为 MIME 类型。
+path.py – 对 os.path 进行封装的模块。
+pathlib – （Python3.4+ 标准库）跨平台的、面向对象的路径操作库。
+python-magic– 文件类型检测的第三方库 libmagic 的 Python 接口。
+Unipath– 用面向对象的方式操作文件和目录
+watchdog – 管理文件系统事件的 API 和 shell 工具
+
+日期和时间
+
+操作日期和时间的类库。
+
+arrow– 更好的 Python 日期时间操作类库。
+Chronyk – Python 3 的类库，用于解析手写格式的时间和日期。
+dateutil – Python datetime 模块的扩展。
+delorean– 解决 Python 中有关日期处理的棘手问题的库。
+moment – 一个用来处理时间和日期的Python库。灵感来自于Moment.js。
+PyTime – 一个简单易用的Python模块，用于通过字符串来操作日期/时间。
+pytz – 现代以及历史版本的世界时区定义。将时区数据库引入Python。
+when.py – 提供用户友好的函数来帮助用户进行常用的日期和时间操作。
+
+文本处理
+
+用于解析和操作文本的库。
+
+通用
+           chardet – 字符编码检测器，兼容 Python2 和 Python3。
+           difflib – (Python 标准库)帮助我们进行差异化比较。
+           ftfy – 让Unicode文本更完整更连贯。
+           fuzzywuzzy – 模糊字符串匹配。
+           Levenshtein – 快速计算编辑距离以及字符串的相似度。
+           pangu.py – 在中日韩语字符和数字字母之间添加空格。
+           pyfiglet -figlet 的 Python实现。
+           shortuuid – 一个生成器库，用以生成简洁的，明白的，URL 安全的 UUID。
+           unidecode – Unicode 文本的 ASCII 转换形式 。
+           uniout – 打印可读的字符，而不是转义的字符串。
+           xpinyin – 一个用于把汉字转换为拼音的库。
+Slug化
+           awesome-slugify – 一个 Python slug 化库，可以保持 Unicode。
+           python-slugify – Python slug 化库，可以把 unicode 转化为 ASCII。
+           unicode-slugify – 一个 slug 工具，可以生成 unicode slugs ,需要依赖 Django 。
+解析器
+           phonenumbers – 解析，格式化，储存，验证电话号码。
+           PLY – lex 和 yacc 解析工具的 Python 实现。
+           Pygments – 通用语法高亮工具。
+           pyparsing – 生成通用解析器的框架。
+           python-nameparser – 把一个人名分解为几个独立的部分。
+           python-user-agents – 浏览器 user agent 解析器。
+           sqlparse – 一个无验证的 SQL 解析器。
+
+特殊文本格式处理
+
+一些用来解析和操作特殊文本格式的库。
+
+通用
+           tablib – 一个用来处理中表格数据的模块。
+Office
+           Marmir – 把输入的Python 数据结构转换为电子表单。
+           openpyxl – 一个用来读写 Excel 2010 xlsx/xlsm/xltx/xltm 文件的库。
+           python-docx – 读取，查询以及修改 Microsoft Word 2007/2008 docx 文件。
+           unoconv – 在 LibreOffice/OpenOffice 支持的任意文件格式之间进行转换。
+           XlsxWriter – 一个用于创建 Excel .xlsx 文件的 Python 模块。
+           xlwings – 一个使得在 Excel 中方便调用 Python 的库（反之亦然），基于 BSD 协议。
+           xlwt / xlrd – 读写 Excel 文件的数据和格式信息。
+           relatorio – 模板化OpenDocument 文件。
+PDF
+           PDFMiner – 一个用于从PDF文档中抽取信息的工具。
+           PyPDF2 – 一个可以分割，合并和转换 PDF 页面的库。
+           ReportLab – 快速创建富文本 PDF 文档。
+Markdown
+           Mistune – 快速并且功能齐全的纯 Python 实现的 Markdown 解析器。
+           Python-Markdown – John Gruber’s Markdown 的 Python 版实现。
+YAML
+           PyYAML – Python 版本的 YAML 解析器。
+CSV
+           csvkit – 用于转换和操作 CSV 的工具。
+Archive
+           unp – 一个用来方便解包归档文件的命令行工具。
+
+自然语言处理
+
+用来处理人类语言的库。
+
+NLTK – 一个先进的平台，用以构建处理人类语言数据的 Python 程序。
+jieba – 中文分词工具。
+langid.py – 独立的语言识别系统。
+Pattern – Python 网络信息挖掘模块。
+SnowNLP – 一个用来处理中文文本的库。
+TextBlob – 为进行普通自然语言处理任务提供一致的 API。
+TextGrocery – 一简单高效的短文本分类工具，基于 LibLinear 和 Jieba。
+
+文档
+
+用以生成项目文档的库。
+
+Sphinx – Python 文档生成器。
+           awesome-sphinxdoc
+MkDocs – 对 Markdown 友好的文档生成器。
+pdoc – 一个可以替换Epydoc 的库，可以自动生成 Python 库的 API 文档。
+Pycco – 文学编程（literate-programming）风格的文档生成器。
+
+配置
+
+用来保存和解析配置的库。
+
+config – logging 模块作者写的分级配置模块。
+ConfigObj – INI 文件解析器，带验证功能。
+ConfigParser – (Python 标准库) INI 文件解析器。
+profig – 通过多种格式进行配置，具有数值转换功能。
+python-decouple – 将设置和代码完全隔离。
+
+命令行工具
+
+用于创建命令行程序的库。
+
+命令行程序开发
+           cement – Python 的命令行程序框架。
+           click – 一个通过组合的方式来创建精美命令行界面的包。
+           cliff – 一个用于创建命令行程序的框架，可以创建具有多层命令的命令行程序。
+           clint – Python 命令行程序工具。
+           colorama – 跨平台彩色终端文本。
+           docopt – Python 风格的命令行参数解析器。
+           Gooey – 一条命令，将命令行程序变成一个 GUI 程序。
+           python-prompt-toolkit – 一个用于构建强大的交互式命令行程序的库。
+生产力工具
+           aws-cli – Amazon Web Services 的通用命令行界面。
+           bashplotlib – 在终端中进行基本绘图。
+           caniusepython3 – 判断是哪个项目妨碍你你移植到 Python 3。
+           cookiecutter – 从 cookiecutters（项目模板）创建项目的一个命令行工具。
+           doitlive – 一个用来在终端中进行现场演示的工具。
+           howdoi – 通过命令行获取即时的编程问题解答。
+           httpie – 一个命令行HTTP 客户端，cURL 的替代品，易用性更好。
+           PathPicker – 从bash输出中选出文件。
+           percol – 向UNIX shell 传统管道概念中加入交互式选择功能。
+           SAWS – 一个加强版的 AWS 命令行。
+           thefuck – 修正你之前的命令行指令。
+           mycli – 一个 MySQL 命令行客户端，具有自动补全和语法高亮功能。
+           pgcli – Postgres 命令行工具，具有自动补全和语法高亮功能。
+
+下载器
+
+用来进行下载的库.
+
+s3cmd – 一个用来管理Amazon S3 和 CloudFront 的命令行工具。
+s4cmd – 超级 S3 命令行工具，性能更加强劲。
+you-get – 一个 YouTube/Youku/Niconico 视频下载器，使用 Python3 编写。
+youtube-dl – 一个小巧的命令行程序，用来下载 YouTube 视频。
+
+图像处理
+
+用来操作图像的库.
+
+pillow – Pillow 是一个更加易用版的 PIL。
+hmap – 图像直方图映射。
+imgSeek – 一个使用视觉相似性搜索一组图片集合的项目。
+nude.py – 裸体检测。
+pyBarcode – 不借助 PIL 库在 Python 程序中生成条形码。
+pygram – 类似 Instagram 的图像滤镜。
+python-qrcode – 一个纯 Python 实现的二维码生成器。
+Quads – 基于四叉树的计算机艺术。
+scikit-image – 一个用于（科学）图像处理的 Python 库。
+thumbor – 一个小型图像服务，具有剪裁，尺寸重设和翻转功能。
+wand – MagickWand的Python 绑定。MagickWand 是 ImageMagick的 C API 。
+
+OCR
+
+光学字符识别库。
+
+pyocr – Tesseract 和 Cuneiform 的一个封装(wrapper)。
+pytesseract – Google Tesseract OCR 的另一个封装(wrapper)。
+python-tesseract – Google Tesseract OCR 的一个包装类。
+
+音频
+
+用来操作音频的库
+
+audiolazy -Python 的数字信号处理包。
+audioread – 交叉库 (GStreamer + Core Audio + MAD + FFmpeg) 音频解码。
+beets – 一个音乐库管理工具及 MusicBrainz 标签添加工具
+dejavu – 音频指纹提取和识别
+django-elastic-transcoder – Django + Amazon Elastic Transcoder。
+eyeD3 – 一个用来操作音频文件的工具，具体来讲就是包含 ID3 元信息的 MP3 文件。
+id3reader – 一个用来读取 MP3 元数据的 Python 模块。
+m3u8 – 一个用来解析 m3u8 文件的模块。
+mutagen – 一个用来处理音频元数据的 Python 模块。
+pydub – 通过简单、简洁的高层接口来操作音频文件。
+pyechonest – Echo Nest API 的 Python 客户端
+talkbox – 一个用来处理演讲/信号的 Python 库
+TimeSide – 开源 web 音频处理框架。
+tinytag – 一个用来读取MP3, OGG, FLAC 以及 Wave 文件音乐元数据的库。
+mingus – 一个高级音乐理论和曲谱包，支持 MIDI 文件和回放功能。
+
+Video
+
+用来操作视频和GIF的库。
+
+moviepy – 一个用来进行基于脚本的视频编辑模块，适用于多种格式，包括动图 GIFs。
+scikit-video – SciPy 视频处理常用程序。
+
+地理位置
+
+地理编码地址以及用来处理经纬度的库。
+
+GeoDjango – 世界级地理图形 web 框架。
+GeoIP – MaxMind GeoIP Legacy 数据库的 Python API。
+geojson – GeoJSON 的 Python 绑定及工具。
+geopy – Python 地址编码工具箱。
+pygeoip – 纯 Python GeoIP API。
+django-countries – 一个 Django 应用程序，提供用于表格的国家选择功能，国旗图标静态文件以及模型中的国家字段。
+
+HTTP
+
+使用HTTP的库。
+
+requests – 人性化的HTTP请求库。
+grequests – requests 库 + gevent ，用于异步 HTTP 请求.
+httplib2 – 全面的 HTTP 客户端库。
+treq – 类似 requests 的Python API 构建于 Twisted HTTP 客户端之上。
+urllib3 – 一个具有线程安全连接池，支持文件 post，清晰友好的 HTTP 库。
+
+数据库
+
+Python实现的数据库。
+
+pickleDB – 一个简单，轻量级键值储存数据库。
+PipelineDB – 流式 SQL 数据库。
+TinyDB – 一个微型的，面向文档型数据库。
+ZODB – 一个 Python 原生对象数据库。一个键值和对象图数据库。
+
+数据库驱动
+
+用来连接和操作数据库的库。
+
+MySQL – awesome-mysql系列
+           mysql-python – Python 的 MySQL 数据库连接器。
+           mysqlclient – mysql-python 分支，支持 Python 3。
+           oursql – 一个更好的 MySQL 连接器，支持原生预编译指令和 BLOBs.
+           PyMySQL – 纯 Python MySQL 驱动，兼容 mysql-python。
+PostgreSQL
+           psycopg2 – Python 中最流行的 PostgreSQL 适配器。
+           queries – psycopg2 库的封装，用来和 PostgreSQL 进行交互。
+           txpostgres – 基于 Twisted 的异步 PostgreSQL 驱动。
+其他关系型数据库
+            apsw – 另一个 Python SQLite封装。
+            dataset – 在数据库中存储Python字典 – 可以协同SQLite，MySQL，和 PostgreSQL工作。
+            pymssql– 一个简单的Microsoft SQL Server数据库接口。
+NoSQL 数据库
+            cassandra-python-driver – Cassandra 的 Python 驱动。
+            HappyBase – 一个为 Apache HBase 设计的，对开发者友好的库。
+            Plyvel – 一个快速且功能丰富的 LevelDB 的 Python 接口。
+            py2neo – Neo4j restful 接口的Python 封装客户端。
+            pycassa – Cassandra 的 Python Thrift 驱动。
+            PyMongo – MongoDB 的官方 Python 客户端。
+            redis-py – Redis 的 Python 客户端。
+            telephus – 基于 Twisted 的 Cassandra 客户端。
+            txRedis – 基于 Twisted 的 Redis 客户端。
+
+ORM
+
+实现对象关系映射或数据映射技术的库。
+
+关系型数据库
+           Django Models – Django 的一部分。
+           SQLAlchemy – Python SQL 工具以及对象关系映射工具。
+           awesome-sqlalchemy系列
+           Peewee – 一个小巧，富有表达力的 ORM。
+           PonyORM – 提供面向生成器的 SQL 接口的 ORM。
+           python-sql – 编写 Python 风格的 SQL 查询。
+NoSQL 数据库
+           django-mongodb-engine – Django MongoDB 后端。
+           PynamoDB – Amazon DynamoDB 的一个 Python 风格接口。
+           flywheel – Amazon DynamoDB 的对象映射工具。
+           MongoEngine – 一个Python 对象文档映射工具，用于 MongoDB。
+           hot-redis – 为 Redis 提供 Python 丰富的数据类型。
+           redisco – 一个 Python 库，提供可以持续存在在 Redis 中的简单模型和容器。
+其他
+           butterdb – Google Drive 电子表格的 Python ORM。
+
+Web 框架
+
+全栈 web 框架。
+
+Django – Python 界最流行的 web 框架。
+           awesome-django系列
+Flask – 一个 Python 微型框架。
+           awesome-flask系列
+Pyramid – 一个小巧，快速，接地气的开源Python web 框架。
+           awesome-pyramid系列
+Bottle – 一个快速小巧，轻量级的 WSGI 微型 web 框架。
+CherryPy – 一个极简的 Python web 框架，服从 HTTP/1.1 协议且具有WSGI 线程池。
+TurboGears – 一个可以扩展为全栈解决方案的微型框架。
+web.py – 一个 Python 的 web 框架，既简单，又强大。
+web2py – 一个全栈 web 框架和平台，专注于简单易用。
+Tornado – 一个web 框架和异步网络库。
+
+权限
+
+允许或拒绝用户访问数据或功能的库。
+
+Carteblanche – Module to align code with thoughts of users and designers. Also magically handles navigation and permissions.
+django-guardian – Django 1.2+ 实现了单个对象权限。
+django-rules – 一个小巧但是强大的应用，提供对象级别的权限管理，且不需要使用数据库。
+
+CMS
+
+内容管理系统
+
+django-cms – 一个开源的，企业级 CMS，基于 Django。
+djedi-cms – 一个轻量级但却非常强大的 Django CMS ，考虑到了插件，内联编辑以及性能。
+FeinCMS – 基于 Django 构建的最先进的内容管理系统之一。
+Kotti – 一个高级的，Python 范的 web 应用框架，基于 Pyramid 构建。
+Mezzanine – 一个强大的，持续的，灵活的内容管理平台。
+Opps – 一个为杂志，报纸网站以及大流量门户网站设计的 CMS 平台，基于 Django。
+Plone – 一个构建于开源应用服务器 Zope 之上的 CMS。
+Quokka – 灵活，可扩展的小型 CMS，基于 Flask 和 MongoDB。
+Wagtail – 一个 Django 内容管理系统。
+Widgy – 最新的 CMS 框架，基于 Django。
+
+电子商务
+
+用于电子商务以及支付的框架和库。
+
+django-oscar – 一个用于 Django 的开源的电子商务框架。
+django-shop – 一个基于 Django 的店铺系统。
+Cartridge – 一个基于 Mezzanine 构建的购物车应用。
+shoop – 一个基于 Django 的开源电子商务平台。
+alipay – 非官方的 Python 支付宝 API。
+merchant – 一个可以接收来自多种支付平台支付的 Django 应用。
+money – 货币类库with optional CLDR-backed locale-aware formatting and an extensible currency exchange solution.
+python-currencies – 显示货币格式以及它的数值。
+
+RESTful API
+
+用来开发RESTful APIs的库
+
+Django
+           django-rest-framework – 一个强大灵活的工具，用来构建 web API。
+           django-tastypie – 为Django 应用开发API。
+           django-formapi – 为 Django 的表单验证，创建 JSON APIs 。
+Flask
+           flask-api – 为 flask 开发的，可浏览 Web APIs 。
+           flask-restful – 为 flask 快速创建REST APIs 。
+           flask-restless – 为 SQLAlchemy 定义的数据库模型创建 RESTful APIs 。
+           flask-api-utils – 为 Flask 处理 API 表示和验证。
+           eve – REST API 框架，由 Flask, MongoDB 等驱动。
+Pyramid
+           cornice – 一个Pyramid 的 REST 框架 。
+与框架无关的
+           falcon – 一个用来建立云 API 和 web app 后端的噶性能框架。
+           sandman – 为现存的数据库驱动系统自动创建 REST APIs 。
+           restless – 框架无关的 REST 框架 ，基于从 Tastypie 学到的知识。
+           ripozo – 快速创建 REST/HATEOAS/Hypermedia APIs。
+
+验证
+
+实现验证方案的库。
+
+OAuth
+           Authomatic – 简单但是强大的框架，身份验证/授权客户端。
+           django-allauth – Django 的验证应用。
+           django-oauth-toolkit – 为 Django 用户准备的 OAuth2。
+           django-oauth2-provider – 为 Django 应用提供 OAuth2 接入。
+           Flask-OAuthlib – OAuth 1.0/a, 2.0 客户端实现，供 Flask 使用。
+           OAuthLib – 一个 OAuth 请求-签名逻辑通用、 完整的实现。
+           python-oauth2 – 一个完全测试的抽象接口。用来创建 OAuth 客户端和服务端。
+           python-social-auth – 一个设置简单的社会化验证方式。
+           rauth – OAuth 1.0/a, 2.0, 和 Ofly 的 Python 库。
+           sanction – 一个超级简单的OAuth2 客户端实现。
+其他
+           jose – JavaScript 对象签名和加密草案的实现。
+           PyJWT – JSON Web 令牌草案 01。
+           python-jws – JSON Web 签名草案 02 的实现。
+           python-jwt – 一个用来生成和验证 JSON Web 令牌的模块。
+
+模板引擎
+
+模板生成和词法解析的库和工具。
+
+Jinja2 – 一个现代的，对设计师友好的模板引擎。
+Chameleon – 一个 HTML/XML 模板引擎。 模仿了 ZPT（Zope Page Templates）, 进行了速度上的优化。
+Genshi – Python 模板工具，用以生成 web 感知的结果。
+Mako – Python 平台的超高速轻量级模板。
+
+Queue
+
+处理事件以及任务队列的库。
+
+celery – 一个异步任务队列/作业队列，基于分布式消息传递。
+huey – 小型多线程任务队列。
+mrq – Mr. Queue -一个 Python 的分布式 worker 任务队列， 使用 Redis 和 gevent。
+rq – 简单的 Python 作业队列。
+simpleq – 一个简单的，可无限扩张的，基于亚马逊 SQS 的队列。
+
+搜索
+
+对数据进行索引和执行搜索查询的库和软件。
+
+django-haystack – Django 模块化搜索。
+elasticsearch-py – Elasticsearch 的官方底层 Python 客户端。
+elasticsearch-dsl-py -Elasticsearch 的官方高级 Python 客户端。
+solrpy – solr的 Python 客户端。
+Whoosh – 一个快速的纯 Python 搜索引擎库。
+
+动态消息
+
+用来创建用户活动的库。
+
+django-activity-stream – 从你的站点行为中生成通用活动信息流。
+Stream-Framework – 使用 Cassandra 和 Redis 创建动态消息和通知系统。
+
+资源管理
+
+管理、压缩、缩小网站资源的工具。
+
+django-compressor – 将链接和内联的 JavaScript 或 CSS 压缩到一个单独的缓存文件中。
+django-storages – 一个针对 Django 的自定义存储后端的工具集合。
+fanstatic – 打包、优化，并且把静态文件依赖作为 Python 的包来提供。
+File Conveyor – 一个后台驻留的程序，用来发现和同步文件到 CDNs, S3 和 FTP。
+Flask-Assets – 帮你将 web 资源整合到你的 Flask app 中。
+jinja-assets-compressor – 一个 Jinja 扩展，用来编译和压缩你的资源。
+webassets – 为你的静态资源打包、优化和管理生成独一无二的缓存 URL。
+
+电子邮件
+
+用来发送和解析电子邮件的库。
+
+django-celery-ses – 带有 AWS SES 和 Celery 的 Django email 后端。
+envelopes – 供人类使用的电子邮件库。
+flanker – 一个 email 地址和 Mime 解析库。
+imbox – Python IMAP 库
+inbox.py – Python SMTP 服务器。
+inbox – 一个开源电子邮件工具箱。
+lamson – Python 风格的 SMTP 应用服务器。
+mailjet – Mailjet API 实现，用来提供批量发送邮件，统计等功能。
+marrow.mailer – 高性能可扩展邮件分发框架。
+modoboa – 一个邮件托管和管理平台，具有现代的、简约的 Web UI。
+pyzmail – 创建，发送和解析电子邮件。
+Talon – Mailgun 库，用来抽取信息和签名。
+
+URL处理
+
+解析URLs的库
+
+furl – 一个让处理 URL 更简单小型 Python 库。
+purl – 一个简单的，不可变的URL类，具有简洁的 API 来进行询问和处理。
+pyshorteners – 一个纯 Python URL 缩短库。
+shorturl– 生成短小 URL 和类似 bit.ly 短链的Python 实现。
+webargs – 一个解析 HTTP 请求参数的库，内置对流行 web 框架的支持，包括 Flask, Django, Bottle, Tornado和 Pyramid。
+
+HTML处理
+
+处理 HTML和XML的库。
+
+BeautifulSoup – 以 Python 风格的方式来对 HTML 或 XML 进行迭代，搜索和修改。
+bleach – 一个基于白名单的 HTML 清理和文本链接库。
+cssutils – 一个 Python 的 CSS 库。
+html5lib – 一个兼容标准的 HTML 文档和片段解析及序列化库。
+lxml – 一个非常快速，简单易用，功能齐全的库，用来处理 HTML 和 XML。
+MarkupSafe – 为Python 实现 XML/HTML/XHTML 标记安全字符串。
+pyquery – 一个解析 HTML 的库，类似 jQuery。
+untangle – 将XML文档转换为Python对象，使其可以方便的访问。
+xhtml2pdf – HTML/CSS 转 PDF 工具。
+xmltodict – 像处理 JSON 一样处理 XML。
+
+网络站点爬取
+
+爬取网络站点的库
+
+Scrapy – 一个快速高级的屏幕爬取及网页采集框架。
+cola – 一个分布式爬虫框架。
+Demiurge – 基于PyQuery 的爬虫微型框架。
+feedparser – 通用 feed 解析器。
+Grab – 站点爬取框架。
+MechanicalSoup – 用于自动和网络站点交互的 Python 库。
+portia – Scrapy 可视化爬取。
+pyspider – 一个强大的爬虫系统。
+RoboBrowser – 一个简单的，Python 风格的库，用来浏览网站，而不需要一个独立安装的浏览器。
+
+网页内容提取
+
+用于进行网页内容提取的库。
+
+Haul – 一个可以扩展的图像爬取工具。
+html2text – 将 HTML 转换为 Markdown 格式文本
+lassie – 人性化的网页内容检索库。
+micawber -一个小型网页内容提取库，用来从 URLs 提取富内容。
+newspaper – 使用 Python 进行新闻提取，文章提取以及内容策展。
+opengraph – 一个用来解析开放内容协议(Open Graph Protocol)的 Python模块。
+python-goose – HTML内容/文章提取器。
+python-readability– arc90 公司 readability 工具的 Python 高速端口
+sanitize – 为杂乱的数据世界带来调理性。
+sumy – 一个为文本文件和 HTML 页面进行自动摘要的模块。
+textract – 从任何格式的文档中提取文本，Word，PowerPoint，PDFs 等等。
+
+表单
+
+进行表单操作的库。
+
+Deform – Python HTML 表单生成库，受到了 formish 表单生成库的启发。
+django-bootstrap3– 集成了 Bootstrap 3 的 Django。
+django-crispy-forms – 一个 Django 应用，他可以让你以一种非常优雅且 DRY（Don’t repeat yourself） 的方式来创建美观的表单。
+django-remote-forms– 一个平台独立的 Django 表单序列化工具。
+WTForms – 一个灵活的表单验证和呈现库。
+WTForms-JSON– 一个 WTForms 扩展，用来处理 JSON 数据。
+
+数据验证
+
+数据验证库。多用于表单验证。
+
+Cerberus – A mappings-validator with a variety of rules, normalization-features and simple customization that uses a pythonic schema-definition.
+colander – 一个用于对从 XML, JSON，HTML 表单获取的数据或其他同样简单的序列化数据进行验证和反序列化的系统。
+kmatch – 一种用于匹配/验证/筛选 Python 字典的语言。
+schema -一个用于对 Python 数据结构进行验证的库。
+Schematics – 数据结构验证。
+valideer – 轻量级可扩展的数据验证和适配库。
+voluptuous – 一个 Python 数据验证库。主要是为了验证传入 Python的 JSON，YAML 等数据。
+
+静态站点生成器
+
+静态站点生成器是一个软件，它把文本和模板作为输入，然后输出HTML文件。
+
+Pelican – 使用 Markdown 或 ReST 来处理内容， Jinja 2 来制作主题。支持 DVCS, Disqus.。AGPL 许可。
+Cactus – 为设计师设计的静态站点生成器。
+Hyde – 基于 Jinja2 的静态站点生成器。
+Nikola – 一个静态网站和博客生成器。
+Tinkerer – Tinkerer 是一个博客引擎/静态站点生成器，由Sphinx驱动。
+Lektor – 一个简单易用的静态 CMS 和博客引擎。
