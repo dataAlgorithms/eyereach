@@ -64,3 +64,25 @@ awk '$1 > 1 && $2 > 100' hihao.txt
 
 9. 查看进程的线程
 ps -T -p 5065 (5065为进程pid)
+
+10. 压缩解压
+命令格式：tar -zxvf 【压缩包文件名.tar.gz】 -C  【路径】/
+注释：解压.tar.gz格式到指定的目录下
+例如：tar -zxvf japan.tar.gz -C /tmp/
+
+
+命令格式：tar -jxvf 【压缩包文件名.tar.bz2】 -C  【路径】/
+注释：解压.tar.bz2格式到指定的目录下
+例如：tar -jxvf japan.tar.bz2 -C /tmp/
+
+
+压缩.tar.gz格式到指定目录下
+命令格式：tar -zcvf 【目录】/ 【压缩包文件名.tar.gz】【源文件】
+例如：tar -zcvf /tmp/test.tar.gz japan/
+注意：一次压缩多个文件直接在源文件后用空格格开即可
+
+
+压缩.tar.bz2格式到指定目录下
+命令格式：tar -jcvf 【目录】/ 【压缩包文件名.tar.gz】【源文件】
+例如：tar -jcvf /tmp/test.tar.bz2 japan/
+注意：一次压缩多个文件直接在源文件后用空格格开即可
