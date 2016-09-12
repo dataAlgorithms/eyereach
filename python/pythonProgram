@@ -5,3 +5,68 @@ from collections import defaultdict
 word_counts = defaultdict(int)
 for word in fobj:
     word_counts[word] += 1
+    
+2. Date to timestamp or vice versa
+import sys
+from datetime import datetime
+import re
+import time
+
+from datetime import datetime, timedelta
+
+def totimestampNew(dt, epoch=datetime(1970,1,1)):
+
+    '''
+    The script can be run at Python2.4
+    '''
+    tmpList = dt.split(",")
+    if len(tmpList) == 5:
+        year,month,day,hour,minute = tmpList
+        second = 0
+    else:
+        year,month,day,hour,minute,second = tmpList
+    dt = datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+
+    td = dt - epoch
+    # return td.total_seconds()
+    return (td.microseconds + (td.seconds + td.days * 86400) * 10**6) / 10.0**6 - 60*60*8 
+
+def toDate(ts):
+
+    return datetime.fromtimestamp(float(ts)).strftime('%Y-%m-%d %H:%M:%S')
+
+def totimestamp(dt):
+
+    '''
+    The script can be run at Python27 or later
+    '''
+    tmpList = dt.split(",")
+    if len(tmpList) == 5:
+        year,month,day,hour,minute = tmpList
+        second = 0
+        
+    else:
+        year,month,day,hour,minute,second = tmpList
+
+    dt = datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+    return time.mktime(datetime.strptime(dt, "%Y,%m,%d,%H,%M,%S").timetuple())
+
+'''
+./cdate.py 2016,9,12,10,44,59
+1473648299.0
+
+./cdate.py 1473648409
+2016-09-12 10:46:49
+'''
+if __name__ == "__main__":
+
+    if len(sys.argv) != 2:
+        print 'If you change timestamp to date, please input timestamp, eg, 1473648409'
+        print 'If you change date to timestamp, please input date, eg, 2016,9,12,10,59'
+        sys.exit(0)
+
+    inputPara = sys.argv[1]
+    if re.search(',', inputPara):
+        print totimestampNew(inputPara)
+    else:
+        print toDate(inputPara)
