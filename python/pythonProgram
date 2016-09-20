@@ -70,3 +70,12 @@ if __name__ == "__main__":
         print totimestampNew(inputPara)
     else:
         print toDate(inputPara)
+
+3. remove 0x of hex number
+In [59]: a = '\xc0\xa8\x20\xca'
+
+In [60]: a
+Out[60]: '\xc0\xa8 \xca'
+
+In [61]: a.encode('hex')
+Out[61]: 'c0a820ca'
