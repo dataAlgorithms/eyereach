@@ -49,3 +49,703 @@ LIMIT count | offset count
 
 -- Others
 SHOW WARNINGS; -- Show the warnings of the previous statement
+
+2. SQL Tutorial
+2.1. CREATE DATABASE and DROP DATABASE
+mysql> create database if not exists southwind;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW CREATE DATABASE southwind;
++-----------+----------------------------------------------------------------------+
+| Database  | Create Database                                                      |
++-----------+----------------------------------------------------------------------+
+| southwind | CREATE DATABASE `southwind` /*!40100 DEFAULT CHARACTER SET latin1 */ |
++-----------+----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> drop database if exists southwind;
+Query OK, 0 rows affected (0.00 sec)
+
+2.2. Setting the Default Database 
+mysql> use southwind;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| southwind  |
++------------+
+1 row in set (0.00 sec)
+
+2.3. Creating and Deleting a Table 
+mysql> CREATE TABLE IF NOT EXISTS products (
+    -> productID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    -> productCode CHAR(3) NOT NULL DEFAULT '',
+    -> name VARCHAR(30) NOT NULL DEFAULT '',
+    -> quantity INT UNSIGNED NOT NULL DEFAULT 0,
+    -> price DECIMAL(7,2) NOT NULL DEFAULT 99999.99,
+    -> PRIMARY KEY (productID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_southwind |
++---------------------+
+| products            |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> desc products;
++-------------+------------------+------+-----+----------+----------------+
+| Field       | Type             | Null | Key | Default  | Extra          |
++-------------+------------------+------+-----+----------+----------------+
+| productID   | int(10) unsigned | NO   | PRI | NULL     | auto_increment |
+| productCode | char(3)          | NO   |     |          |                |
+| name        | varchar(30)      | NO   |     |          |                |
+| quantity    | int(10) unsigned | NO   |     | 0        |                |
+| price       | decimal(7,2)     | NO   |     | 99999.99 |                |
++-------------+------------------+------+-----+----------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> show create table products;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                        |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| products | CREATE TABLE `products` (
+  `productID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `productCode` char(3) NOT NULL DEFAULT '',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `quantity` int(10) unsigned NOT NULL DEFAULT '0',
+  `price` decimal(7,2) NOT NULL DEFAULT '99999.99',
+  PRIMARY KEY (`productID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+2.4 Inserting Rows 
+mysql> INSERT INTO products VALUES (1001, 'PEN', 'Pen Red', 5000, 1.23);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from products;
++-----------+-------------+---------+----------+-------+
+| productID | productCode | name    | quantity | price |
++-----------+-------------+---------+----------+-------+
+|      1001 | PEN         | Pen Red |     5000 |  1.23 |
++-----------+-------------+---------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO products VALUES
+    -> (NULL, 'PEN', 'Pen Blue', 8000, 1.25),
+    -> (NULL, 'PEN', 'Pen Black', 2000, 1.25);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO products (productCode, name, quantity, price) VALUES
+    -> ('PEC', 'Pencil 2B', 10000, 0.48),
+    -> ('PEC', 'Pencil 2H', 8000, 0.49);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO products (productCode, name) VALUES ('PEC', 'Pencil HB');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+2.5 Select
+mysql> select name, price from products;
++-----------+----------+
+| name      | price    |
++-----------+----------+
+| Pen Red   |     1.23 |
+| Pen Blue  |     1.25 |
+| Pen Black |     1.25 |
+| Pencil 2B |     0.48 |
+| Pencil 2H |     0.49 |
+| Pencil HB | 99999.99 |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select 1+1;
++-----+
+| 1+1 |
++-----+
+|   2 |
++-----+
+1 row in set (0.06 sec)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2016-09-27 15:38:49 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> select 1+1, now();
++-----+---------------------+
+| 1+1 | now()               |
++-----+---------------------+
+|   2 | 2016-09-27 15:39:25 |
++-----+---------------------+
+1 row in set (0.00 sec)
+
+mysql> select name, price from products where price < 1.0;
++-----------+-------+
+| name      | price |
++-----------+-------+
+| Pencil 2B |  0.48 |
+| Pencil 2H |  0.49 |
++-----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select name, quantity from products where quantity <= 2000;
++-----------+----------+
+| name      | quantity |
++-----------+----------+
+| Pen Black |     2000 |
+| Pencil HB |        0 |
++-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select name, quantity from products where productCode = "PEN";
++-----------+----------+
+| name      | quantity |
++-----------+----------+
+| Pen Red   |     5000 |
+| Pen Blue  |     8000 |
+| Pen Black |     2000 |
++-----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name, quantity from products where name like "Pencil%";
++-----------+----------+
+| name      | quantity |
++-----------+----------+
+| Pencil 2B |    10000 |
+| Pencil 2H |     8000 |
+| Pencil HB |        0 |
++-----------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select name, quantity from products where name like "P__%";
++-----------+----------+
+| name      | quantity |
++-----------+----------+
+| Pen Red   |     5000 |
+| Pen Blue  |     8000 |
+| Pen Black |     2000 |
+| Pencil 2B |    10000 |
+| Pencil 2H |     8000 |
+| Pencil HB |        0 |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products where quantity >= 5000 and name like "Pen%";
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1001 | PEN         | Pen Red   |     5000 |  1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |  1.25 |
+|      1004 | PEC         | Pencil 2B |    10000 |  0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |  0.49 |
++-----------+-------------+-----------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from products where quantity >= 5000 and name like "Pen%" and price < 1.24;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1001 | PEN         | Pen Red   |     5000 |  1.23 |
+|      1004 | PEC         | Pencil 2B |    10000 |  0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |  0.49 |
++-----------+-------------+-----------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from products where not(quantity >= 5000 and name like "Pen%" and price < 1.24);
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from products where name in ('Pen Red', 'Pen Black') ;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1001 | PEN         | Pen Red   |     5000 |  1.23 |
+|      1003 | PEN         | Pen Black |     2000 |  1.25 |
++-----------+-------------+-----------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from products where (price between 1.0 and 2.0);
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1001 | PEN         | Pen Red   |     5000 |  1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |  1.25 |
+|      1003 | PEN         | Pen Black |     2000 |  1.25 |
++-----------+-------------+-----------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from products where productCode is NULL;
+Empty set (0.00 sec)
+
+mysql> select * from products where name like 'Pen%' order by price;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products where name like 'Pen%' order by price,quantity;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products where name like 'Pen%' order by price,quantity limit 2;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1004 | PEC         | Pencil 2B |    10000 |  0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |  0.49 |
++-----------+-------------+-----------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from products where name like 'Pen%' order by price,quantity limit 2,1;
++-----------+-------------+---------+----------+-------+
+| productID | productCode | name    | quantity | price |
++-----------+-------------+---------+----------+-------+
+|      1001 | PEN         | Pen Red |     5000 |  1.23 |
++-----------+-------------+---------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> select productID as ID, price as `Unit Price` from products order by ID;
++------+------------+
+| ID   | Unit Price |
++------+------------+
+| 1001 |       1.23 |
+| 1002 |       1.25 |
+| 1003 |       1.25 |
+| 1004 |       0.48 |
+| 1005 |       0.49 |
+| 1006 |   99999.99 |
++------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select concat (productCode, '-', name) as `product Description`, price from products;
++---------------------+----------+
+| product Description | price    |
++---------------------+----------+
+| PEN-Pen Red         |     1.23 |
+| PEN-Pen Blue        |     1.25 |
+| PEN-Pen Black       |     1.25 |
+| PEC-Pencil 2B       |     0.48 |
+| PEC-Pencil 2H       |     0.49 |
+| PEC-Pencil HB       | 99999.99 |
++---------------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select price from products;
++----------+
+| price    |
++----------+
+|     1.23 |
+|     1.25 |
+|     1.25 |
+|     0.48 |
+|     0.49 |
+| 99999.99 |
++----------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct price from products;
++----------+
+| price    |
++----------+
+|     1.23 |
+|     1.25 |
+|     0.48 |
+|     0.49 |
+| 99999.99 |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct price as `Distinct Price` from products;
++----------------+
+| Distinct Price |
++----------------+
+|           1.23 |
+|           1.25 |
+|           0.48 |
+|           0.49 |
+|       99999.99 |
++----------------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct price, name from products;
++----------+-----------+
+| price    | name      |
++----------+-----------+
+|     1.23 | Pen Red   |
+|     1.25 | Pen Blue  |
+|     1.25 | Pen Black |
+|     0.48 | Pencil 2B |
+|     0.49 | Pencil 2H |
+| 99999.99 | Pencil HB |
++----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products order by productCode, productID;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products group by productCode;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1004 | PEC         | Pencil 2B |    10000 |  0.48 |
+|      1001 | PEN         | Pen Red   |     5000 |  1.23 |
++-----------+-------------+-----------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select count(*) as `Count` from products;
++-------+
+| Count |
++-------+
+|     6 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select productCode, count(*) from products group by productCode;
++-------------+----------+
+| productCode | count(*) |
++-------------+----------+
+| PEC         |        3 |
+| PEN         |        3 |
++-------------+----------+
+2 rows in set (0.01 sec)
+
+mysql> select productCode, count(*) as `Count` from products group by productCode order by Count desc;
++-------------+-------+
+| productCode | Count |
++-------------+-------+
+| PEN         |     3 |
+| PEC         |     3 |
++-------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select MAX(price), MIN(price), AGV(price), STD(price), SUM(quantity) from products;
+ERROR 1305 (42000): FUNCTION southwind.AGV does not exist
+mysql> select MAX(price), MIN(price), AVG(price), STD(price), SUM(quantity) from products;
++------------+------------+--------------+--------------+---------------+
+| MAX(price) | MIN(price) | AVG(price)   | STD(price)   | SUM(quantity) |
++------------+------------+--------------+--------------+---------------+
+|   99999.99 |       0.48 | 16667.448333 | 37267.445582 |         33000 |
++------------+------------+--------------+--------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select MAX(price) as `Highest Price`, MIN(price) as `Lowest Price` from products group by productCode;
++---------------+--------------+
+| Highest Price | Lowest Price |
++---------------+--------------+
+|      99999.99 |         0.48 |
+|          1.25 |         1.23 |
++---------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select MAX(price), MIN(price), CAST(AVG(price) as DECIMAL(7, 2)) as `AVERAGE`  from products group by productCode;
++------------+------------+----------+
+| MAX(price) | MIN(price) | AVERAGE  |
++------------+------------+----------+
+|   99999.99 |       0.48 | 33333.65 |
+|       1.25 |       1.23 |     1.24 |
++------------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select productCode, count(*) as `Count` from products group by productCode having count>=3;
++-------------+-------+
+| productCode | Count |
++-------------+-------+
+| PEC         |     3 |
+| PEN         |     3 |
++-------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select productCode, count(*) as `Count` from products group by productCode with ROLLUP;
++-------------+-------+
+| productCode | Count |
++-------------+-------+
+| PEC         |     3 |
+| PEN         |     3 |
+| NULL        |     6 |
++-------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+2.6 Modify data
+mysql> select * from products;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1001 | PEN         | Pen Red   |     5000 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.25 |
+|      1003 | PEN         | Pen Black |     2000 |     1.25 |
+|      1004 | PEC         | Pencil 2B |    10000 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.49 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> update products set price = price * 1.1;
+Query OK, 5 rows affected, 6 warnings (0.03 sec)
+Rows matched: 6  Changed: 5  Warnings: 6
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1001 | PEN         | Pen Red   |     5000 |     1.35 |
+|      1002 | PEN         | Pen Blue  |     8000 |     1.38 |
+|      1003 | PEN         | Pen Black |     2000 |     1.38 |
+|      1004 | PEC         | Pencil 2B |    10000 |     0.53 |
+|      1005 | PEC         | Pencil 2H |     8000 |     0.54 |
+|      1006 | PEC         | Pencil HB |        0 | 99999.99 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> update products set price = price / 1.1, quantity=quantity+50;
+Query OK, 6 rows affected, 6 warnings (0.01 sec)
+Rows matched: 6  Changed: 6  Warnings: 6
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+----------+
+| productID | productCode | name      | quantity | price    |
++-----------+-------------+-----------+----------+----------+
+|      1001 | PEN         | Pen Red   |     5050 |     1.23 |
+|      1002 | PEN         | Pen Blue  |     8050 |     1.25 |
+|      1003 | PEN         | Pen Black |     2050 |     1.25 |
+|      1004 | PEC         | Pencil 2B |    10050 |     0.48 |
+|      1005 | PEC         | Pencil 2H |     8050 |     0.49 |
+|      1006 | PEC         | Pencil HB |       50 | 90909.08 |
++-----------+-------------+-----------+----------+----------+
+6 rows in set (0.00 sec)
+
+2.7. Delete row
+mysql> delete from products where name like "Pen%";
+Query OK, 6 rows affected (0.00 sec)
+
+mysql> select * from products;
+Empty set (0.00 sec)
+
+2.8. Load data into mysql
+[root@httpsource ~]# cat products_in.csv 
+\N,PEC,Pencil 3B,500,0.52
+\N,PEC,Pencil 4B,200,0.62
+\N,PEC,Pencil 5B,100,0.73
+\N,PEC,Pencil 6B,500,0.47
+[root@httpsource ~]# mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14773
+Server version: 5.5.47 MySQL Community Server (GPL) by Remi
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sms                |
+| southwind          |
+| statistics         |
+| test               |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use southwind;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_southwind |
++---------------------+
+| products            |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> delete from products;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE 'products_in.csv' INTO TABLE products
+    -> COLUMNS TERMINATED BY ','
+    -> LINES TERMINATED BY '\n';
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      1008 | PEC         | Pencil 3B |      500 |  0.52 |
+|      1009 | PEC         | Pencil 4B |      200 |  0.62 |
+|      1010 | PEC         | Pencil 5B |      100 |  0.73 |
+|      1011 | PEC         | Pencil 6B |      500 |  0.47 |
++-----------+-------------+-----------+----------+-------+
+4 rows in set (0.01 sec)
+mysql> delete from products;
+Query OK, 4 rows affected (0.01 sec)
+
+[root@httpsource ~]# cat products.tsv 
+\N      PEC     Pencil  3B      500     0.52
+\N      PEC     Pencil  4B      200     0.62
+\N      PEC     Pencil  5B      100     0.73
+\N      PEC     Pencil  6B      500     0.47
+[root@httpsource ~]# mysqlimport -u root -p --local southwind products.tsv
+Enter password: 
+southwind.products: Records: 4  Deleted: 0  Skipped: 0  Warnings: 8
+[root@httpsource ~]# mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14795
+Server version: 5.5.47 MySQL Community Server (GPL) by Remi
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use southwind;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from products;
++-----------+-------------+--------+----------+--------+
+| productID | productCode | name   | quantity | price  |
++-----------+-------------+--------+----------+--------+
+|      1036 | PEC         | Pencil |        3 | 500.00 |
+|      1037 | PEC         | Pencil |        4 | 200.00 |
+|      1038 | PEC         | Pencil |        5 | 100.00 |
+|      1039 | PEC         | Pencil |        6 | 500.00 |
++-----------+-------------+--------+----------+--------+
+4 rows in set (0.01 sec)
+
+2.9 Running sql script
+[root@httpsource ~]# cat load_products.sql 
+use southwind;
+DELETE FROM products;
+INSERT INTO products VALUES (2001, 'PEC', 'Pencil 3B', 500, 0.52),
+(NULL, 'PEC', 'Pencil 4B', 200, 0.62),
+(NULL, 'PEC', 'Pencil 5B', 100, 0.73),
+(NULL, 'PEC', 'Pencil 6B', 500, 0.47);
+SELECT * FROM products;
+[root@httpsource ~]# mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14801
+Server version: 5.5.47 MySQL Community Server (GPL) by Remi
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> source load_products.sql 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |
++-----------+-------------+-----------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+
+| productID | productCode | name      | quantity | price |
++-----------+-------------+-----------+----------+-------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |
++-----------+-------------+-----------+----------+-------+
+4 rows in set (0.00 sec)
