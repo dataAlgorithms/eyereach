@@ -1168,3 +1168,46 @@ mysql> SELECT p.name AS `Product Name`, s.name AS `Supplier Name`
 | Pencil 4B    | ABC Traders   |
 +--------------+---------------+
 2 rows in set (0.00 sec)
+
+3.3 One-to-one Relationship
+mysql> CREATE TABLE product_details (
+    -> productID INT UNSIGNED NOT NULL,
+    -> -- same data type as the parent table
+    -> comment TEXT NULL,
+    -> -- up to 64KB
+    -> PRIMARY KEY (productID),
+    -> FOREIGN KEY (productID) REFERENCES products (productID)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> DESCRIBE product_details;
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| productID | int(10) unsigned | NO   | PRI | NULL    |       |
+| comment   | text             | YES  |     | NULL    |       |
++-----------+------------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE product_details \G;
+*************************** 1. row ***************************
+       Table: product_details
+Create Table: CREATE TABLE `product_details` (
+  `productID` int(10) unsigned NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`productID`),
+  CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `products` (`productID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+
+3.4 Backup and Restore
+> cd path-to-mysql-bin
+> mysqldump -u root -p --databases southwind > "d:\myProject\backup_southwind.sql"
+
+(For Windows)-- Start a MySQL client mysql> source
+d:/myProject/backup_southwind.sql
+
+or 
+> cd path-to-mysql-bin
+> mysql -u root -p southwind < d:\myProject\backup_southwind.sql
