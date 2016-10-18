@@ -749,3 +749,257 @@ mysql> select * from products;
 |      2008 | PEC         | Pencil 6B |      500 |  0.47 |
 +-----------+-------------+-----------+----------+-------+
 4 rows in set (0.00 sec)
+
+3. More Than One Tables
+3.1 One-To-Many Relationship
+mysql> show tables;
++---------------------+
+| Tables_in_southwind |
++---------------------+
+| products            |
+| suppliers           |
++---------------------+
+2 rows in set (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> select * from suppliers;
+Empty set (0.00 sec)
+
+mysql> USE southwind;
+Database changed
+mysql> 
+mysql> 
+mysql> DROP TABLE IF EXISTS suppliers;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> CREATE TABLE suppliers (
+    -> supplierID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    -> name VARCHAR(30) NOT NULL DEFAULT '',
+    -> phone CHAR(8) NOT NULL DEFAULT '',
+    -> PRIMARY KEY (supplierID)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> 
+mysql> 
+mysql> DESCRIBE suppliers;
++------------+------------------+------+-----+---------+----------------+
+| Field      | Type             | Null | Key | Default | Extra          |
++------------+------------------+------+-----+---------+----------------+
+| supplierID | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(30)      | NO   |     |         |                |
+| phone      | char(8)          | NO   |     |         |                |
++------------+------------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> INSERT INTO suppliers VALUE
+    -> (501, 'ABC Traders', '88881111'),
+    -> (502, 'XYZ Company', '88882222'),
+    -> (503, 'QQ Corp', '88883333');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from suppliers;
++------------+-------------+----------+
+| supplierID | name        | phone    |
++------------+-------------+----------+
+|        501 | ABC Traders | 88881111 |
+|        502 | XYZ Company | 88882222 |
+|        503 | QQ Corp     | 88883333 |
++------------+-------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> ALTER TABLE products
+    -> ADD COLUMN supplierID INT UNSIGNED NOT NULL;
+Query OK, 4 rows affected (0.05 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+------------+
+| productID | productCode | name      | quantity | price | supplierID |
++-----------+-------------+-----------+----------+-------+------------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |          0 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |          0 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |          0 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |          0 |
++-----------+-------------+-----------+----------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> desc products;
++-------------+------------------+------+-----+----------+----------------+
+| Field       | Type             | Null | Key | Default  | Extra          |
++-------------+------------------+------+-----+----------+----------------+
+| productID   | int(10) unsigned | NO   | PRI | NULL     | auto_increment |
+| productCode | char(3)          | NO   |     |          |                |
+| name        | varchar(30)      | NO   |     |          |                |
+| quantity    | int(10) unsigned | NO   |     | 0        |                |
+| price       | decimal(7,2)     | NO   |     | 99999.99 |                |
+| supplierID  | int(10) unsigned | NO   |     | NULL     |                |
++-------------+------------------+------+-----+----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql>  UPDATE products SET supplierID = 501;
+Query OK, 4 rows affected (0.00 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> desc products;
++-------------+------------------+------+-----+----------+----------------+
+| Field       | Type             | Null | Key | Default  | Extra          |
++-------------+------------------+------+-----+----------+----------------+
+| productID   | int(10) unsigned | NO   | PRI | NULL     | auto_increment |
+| productCode | char(3)          | NO   |     |          |                |
+| name        | varchar(30)      | NO   |     |          |                |
+| quantity    | int(10) unsigned | NO   |     | 0        |                |
+| price       | decimal(7,2)     | NO   |     | 99999.99 |                |
+| supplierID  | int(10) unsigned | NO   |     | NULL     |                |
++-------------+------------------+------+-----+----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+------------+
+| productID | productCode | name      | quantity | price | supplierID |
++-----------+-------------+-----------+----------+-------+------------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |        501 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |        501 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |        501 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |        501 |
++-----------+-------------+-----------+----------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> ALTER TABLE products
+    -> ADD FOREIGN KEY (supplierID) REFERENCES suppliers (supplierID);
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE products
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+------------+
+| productID | productCode | name      | quantity | price | supplierID |
++-----------+-------------+-----------+----------+-------+------------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |        501 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |        501 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |        501 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |        501 |
++-----------+-------------+-----------+----------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE products;
++-------------+------------------+------+-----+----------+----------------+
+| Field       | Type             | Null | Key | Default  | Extra          |
++-------------+------------------+------+-----+----------+----------------+
+| productID   | int(10) unsigned | NO   | PRI | NULL     | auto_increment |
+| productCode | char(3)          | NO   |     |          |                |
+| name        | varchar(30)      | NO   |     |          |                |
+| quantity    | int(10) unsigned | NO   |     | 0        |                |
+| price       | decimal(7,2)     | NO   |     | 99999.99 |                |
+| supplierID  | int(10) unsigned | NO   | MUL | NULL     |                |
++-------------+------------------+------+-----+----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> UPDATE products SET supplierID = 502 WHERE productID = 2004;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> 
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+------------+
+| productID | productCode | name      | quantity | price | supplierID |
++-----------+-------------+-----------+----------+-------+------------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |        501 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |        501 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |        501 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |        501 |
++-----------+-------------+-----------+----------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT products.name, price, suppliers.name
+    -> FROM products
+    -> JOIN suppliers ON products.supplierID = suppliers.supplierID
+    -> WHERE price < 0.6;
++-----------+-------+-------------+
+| name      | price | name        |
++-----------+-------+-------------+
+| Pencil 3B |  0.52 | ABC Traders |
+| Pencil 6B |  0.47 | ABC Traders |
++-----------+-------+-------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from products;
++-----------+-------------+-----------+----------+-------+------------+
+| productID | productCode | name      | quantity | price | supplierID |
++-----------+-------------+-----------+----------+-------+------------+
+|      2001 | PEC         | Pencil 3B |      500 |  0.52 |        501 |
+|      2006 | PEC         | Pencil 4B |      200 |  0.62 |        501 |
+|      2007 | PEC         | Pencil 5B |      100 |  0.73 |        501 |
+|      2008 | PEC         | Pencil 6B |      500 |  0.47 |        501 |
++-----------+-------------+-----------+----------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from suppliers;
++------------+-------------+----------+
+| supplierID | name        | phone    |
++------------+-------------+----------+
+|        501 | ABC Traders | 88881111 |
+|        502 | XYZ Company | 88882222 |
+|        503 | QQ Corp     | 88883333 |
++------------+-------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT products.name, price, suppliers.name
+    -> FROM products, suppliers
+    -> WHERE products.supplierID = suppliers.supplierID
+    -> AND price < 0.6;
++-----------+-------+-------------+
+| name      | price | name        |
++-----------+-------+-------------+
+| Pencil 3B |  0.52 | ABC Traders |
+| Pencil 6B |  0.47 | ABC Traders |
++-----------+-------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT products.name AS `Product Name`, price, suppliers.name AS `Supplier
+    `> Name`
+    -> FROM products
+    -> JOIN suppliers ON products.supplierID = suppliers.supplierID
+    -> WHERE price < 0.6;
++--------------+-------+---------------+
+| Product Name | price | Supplier
+Name |
++--------------+-------+---------------+
+| Pencil 3B    |  0.52 | ABC Traders   |
+| Pencil 6B    |  0.47 | ABC Traders   |
++--------------+-------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> SELECT p.name AS `Product Name`, p.price, s.name AS `Supplier Name`
+    -> FROM products AS p
+    -> JOIN suppliers AS s ON p.supplierID = s.supplierID
+    -> WHERE p.price < 0.6;
++--------------+-------+---------------+
+| Product Name | price | Supplier Name |
++--------------+-------+---------------+
+| Pencil 3B    |  0.52 | ABC Traders   |
+| Pencil 6B    |  0.47 | ABC Traders   |
++--------------+-------+---------------+
+2 rows in set (0.01 sec)
