@@ -22,3 +22,86 @@ string, tuple, 和 number 是不可更改的对象，
 小节:
 不可变对象传递为函数参数时候,当函数中修改该对象后,在函数外面访问的时候,对象维持不变
 可变对象传递为函数参数时候,当函数中修改该对象后,在函数外面访问的时候,对象被修改
+
+2. Python中的元类(metaclass)
+//简介
+Python中的一切都是对象，它们要么是类的实例，要么是元类的实例，除了type。type实际上是它自己的元类.
+//作用
+拦截类的创建
+修改类
+返回修改之后的类
+//主要应用
+元类的主要用途是创建API。
+一个典型的例子是Django ORM(面向对象映射)
+//实例
+def make_hook(f):
+    """Decorator to turn 'foo' method into '__foo__'"""
+    f.is_hook = 1
+    return f
+
+class MyType(type):
+    def __new__(cls, name, bases, attrs):
+
+        if name.startswith('None'):
+            return None
+
+        # Go over attributes and see if they should be renamed.
+        newattrs = {}
+        for attrname, attrvalue in attrs.iteritems():
+            if getattr(attrvalue, 'is_hook', 0):
+                newattrs['__%s__' % attrname] = attrvalue
+            else:
+                newattrs[attrname] = attrvalue
+
+        return super(MyType, cls).__new__(cls, name, bases, newattrs)
+
+    def __init__(self, name, bases, attrs):
+        super(MyType, self).__init__(name, bases, attrs)
+
+        # classregistry.register(self, self.interfaces)
+        print "Would register class %s now." % self
+
+    def __add__(self, other):
+        class AutoClass(self, other):
+            pass
+        return AutoClass
+        # Alternatively, to autogenerate the classname as well as the class:
+        # return type(self.__name__ + other.__name__, (self, other), {})
+
+    def unregister(self):
+        # classregistry.unregister(self)
+        print "Would unregister class %s now." % self
+
+class MyObject:
+    __metaclass__ = MyType
+
+
+class NoneSample(MyObject):
+    pass
+
+# Will print "NoneType None"
+print type(NoneSample), repr(NoneSample)
+
+class Example(MyObject):
+    def __init__(self, value):
+        self.value = value
+    @make_hook
+    def add(self, other):
+        return self.__class__(self.value + other.value)
+
+# Will unregister the class
+Example.unregister()
+
+inst = Example(10)
+# Will fail with an AttributeError
+#inst.unregister()
+
+print inst + inst
+class Sibling(MyObject):
+    pass
+
+ExampleSibling = Example + Sibling
+# ExampleSibling is now a subclass of both Example and Sibling (with no
+# content of its own) although it will believe it's called 'AutoClass'
+print ExampleSibling
+print ExampleSibling.__mro__
