@@ -323,3 +323,110 @@ In [20]: print mc.__dict__
 
 In [21]: print mc._MyClass__superprivate
 Hello
+
+8. % operator vs format
+//basic usage
+sub1 = "python string!"
+sub2 = "an arg"
+
+a = "i am a %s" % sub1
+b = "i am a {0}".format(sub1)
+
+c = "with %(kwarg)s!" % {'kwarg':sub2}
+d = "with {kwarg}!".format(kwarg=sub2)
+
+print a    # "i am a python string!"
+print b    # "i am a python string!"
+print c    # "with an arg!"
+print d    # "with an arg!"
+
+//format advantage
+#multi elements
+name = (1,2,3)
+"hi there %s" % name
+yet, if name happens to be (1, 2, 3), it will throw a TypeError. 
+"hi there {0}".format(name)
+Results:
+'hi there (1, 2, 3)'
+# get any part of elements
+tu = (12,45,22222,103,6)
+print '{0} {2} {1} {2} {3} {2} {4} {2}'.format(*tu)
+Results:
+12 22222 45 22222 103 22222 6 22222
+# format is as a function
+li = [12,45,78,784,2,69,1254,4785,984]
+print map('the number is {}'.format,li)   
+print
+Results:
+['the number is 12', 'the number is 45', 'the number is 78', 'the number is 784'
+, 'the number is 2', 'the number is 69', 'the number is 1254', 'the number is 47
+85', 'the number is 984']
+
+from datetime import datetime,timedelta
+once_upon_a_time = datetime(2010, 7, 1, 12, 0, 0)
+delta = timedelta(days=13, hours=8,  minutes=20)
+gen =(once_upon_a_time +x*delta for x in xrange(20))
+
+print '\n'.join(map('{:%Y-%m-%d %H:%M:%S}'.format, gen))
+Results:
+2010-07-01 12:00:00
+2010-07-14 20:20:00
+2010-07-28 04:40:00
+2010-08-10 13:00:00
+2010-08-23 21:20:00
+2010-09-06 05:40:00
+2010-09-19 14:00:00
+2010-10-02 22:20:00
+2010-10-16 06:40:00
+2010-10-29 15:00:00
+2010-11-11 23:20:00
+2010-11-25 07:40:00
+2010-12-08 16:00:00
+2010-12-22 00:20:00
+2011-01-04 08:40:00
+2011-01-17 17:00:00
+2011-01-31 01:20:00
+2011-02-13 09:40:00
+2011-02-26 18:00:00
+2011-03-12 02:20:00
+# print element of class
+class A(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+a = A(2,3)
+'x is {0.x}, y is {0.y}'.format(a)
+Out[14]: 'x is 2, y is 3'
+Or, as a keyword argument:
+'x is {a.x}, y is {a.y}'.format(a=a)
+Out[15]: 'x is 2, y is 3'
+
+//non-ascii
+; s='й'
+; u=u'й'
+; s
+'\xd0\xb9'
+; u
+u'\u0439'
+s is just a string (called 'byte array' in Python3) and u is a Unicode string (called 'string' in Python3):
+
+; '%s' % s
+'\xd0\xb9'
+; '%s' % u
+u'\u0439'
+When you give a Unicode object as a parameter to % operator it will produce a Unicode string even if the original string wasn't Unicode:
+
+; '{}'.format(s)
+'\xd0\xb9'
+; '{}'.format(u)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeEncodeError: 'latin-1' codec can't encode character u'\u0439' in position 0: ordinal not in range(256)
+but the .format function will raise "UnicodeEncodeError":
+
+; u'{}'.format(s)
+u'\xd0\xb9'
+; u'{}'.format(u)
+u'\u0439'
+and it will work with a Unicode argument fine only if the original string was Unicode.
