@@ -127,3 +127,46 @@ a = A()
 \        实例方法     类方法          静态方法
 a = A()  a.foo(x)  a.class_foo(x)  a.static_foo(x)
 A        不可用    A.class_foo(x)  A.static_foo(x)
+
+4. class variable vs install variable
+在类设计中，经常遇到两种类型的变量：类变量和实例变量。
+类变量（class variable）被该类的所有实例可以共享的变量；
+如果某个实例修改了该变量，这种变化可以被其他实例看到。
+实例变量（object variable, instance variable）属于实例私有；
+ 对实例变量的操作不会影响到其他实例对象。
+
+举个简单的例子，就很清楚了。
+#!/usr/bin/env python
+
+class   Person(object) :
+    count_beans = 0
+
+    def __init__(self, name) :
+        self.name = name
+        self.count_beans = 0
+
+    def pick(self) :
+        self.count_beans += 1
+        Person.count_beans += 1     #self.__class__.count_beans += 1
+
+        print '%s pick a bean. He picked %d beans, and we all picked %d beans.' % (self.name, self.count_beans, Person.count_beans)
+
+alex = Person('Alex')
+alex.pick()
+
+mike = Person('Mike')
+mike.pick()
+alex.pick()
+
+jack = Person('Jack')
+jack.pick()
+alex.pick()
+mike.pick()
+
+运行结果：
+Alex pick a bean. He picked 1 beans, and we all picked 1 beans.
+Mike pick a bean. He picked 1 beans, and we all picked 2 beans.
+Alex pick a bean. He picked 2 beans, and we all picked 3 beans.
+Jack pick a bean. He picked 1 beans, and we all picked 4 beans.
+Alex pick a bean. He picked 3 beans, and we all picked 5 beans.
+Mike pick a bean. He picked 2 beans, and we all picked 6 beans.
