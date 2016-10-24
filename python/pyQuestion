@@ -527,3 +527,45 @@ An example? Let's see the possible orders of arrival for a 4 horse race:
  (4, 2, 3, 1),
  (4, 3, 1, 2),
  (4, 3, 2, 1)]
+
+10, *args vs **kwargs
+//any number of arguments
+def print_everything(*args):
+    for count, thing in enumerate(args):
+        print '{0}. {1}'.format(count, thing)
+
+print_everything('apple', 'banana', 'cabbage')
+Result:
+0. apple
+1. banana
+2. cabbage
+
+//any number of named arguments
+def table_things(**kwargs):     
+     for name, value in kwargs.items():         
+         print '{0} = {1}'.format(name, value)
+
+table_things(apple = 'fruit', cabbage = 'vegetable')
+Result:
+cabbage = vegetable
+apple = fruit
+
+You can use these along with named arguments too. The explicit arguments get values first and then everything else is passed to *args and **kwargs. The named arguments come first in the list. For example:
+
+//any number of un-named arguments and named arguments
+def arg_with_kwargs(*args, **kwargs):
+    for count, thing in enumerate(args):
+        print '{0}. {1}'.format(count, thing)
+
+    for name, value in kwargs.items(): 
+        print '{0} = {1}'.format(name, value)
+
+argList = ['apple', 'banana', 'cabbage']
+kwargList = {"apple":"fruit", "cabbage":"vegetable"}
+arg_with_kwargs(*argList, **kwargList)
+Result:
+0. apple
+1. banana
+2. cabbage
+cabbage = vegetable
+apple = fruit
