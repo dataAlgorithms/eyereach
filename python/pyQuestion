@@ -199,3 +199,106 @@ Out[26]: 'not found'
 
 In [27]: hasattr(a, 'name')
 Out[27]: False
+
+6. 字典推导式
+L = [1,2,3,4,5,6,7,8,9]
+
+要生成下面这样的字典：
+{1: 10, 2: 20, 3: 30, 4: 40, 5: 50, 6: 60, 7: 70, 8: 80, 9: 90}
+
+以前需要这样：
+dict([(v, v*10) for v in L])
+
+现在可以直接这样：(字典推导式)
+{v: v*10 for v in L}
+
+附录：
+//什么是字典？
+字典是Python语言中唯一的映射类型。
+映射类型对象里哈希值（键，key）和指向的对象（值，value）是一对多的的关系，通常被认为是可变的哈希表。
+字典对象是可变的，它是一个容器类型，能存储任意个数的Python对象，其中也可包括其他容器类型。
+
+字典类型与序列类型的区别：
+存取和访问数据的方式不同。
+序列类型只用数字类型的键（从序列的开始按数值顺序索引）；
+映射类型可以用其他对象类型作键（如：数字、字符串、元祖，一般用字符串作键），和序列类型的键不同，
+映射类型的键直接或间接地和存储数据值相关联。
+映射类型中的数据是无序排列的。这和序列类型是不一样的，序列类型是以数值序排列的。
+映射类型用键直接“映射”到值。
+
+字典是Python中最强大的数据类型之一。
+
+//如何创建字典和给字典赋值
+简单地说字典就是用大括号包裹的键值对的集合。（键值对也被称作项）
+一般形式：
+adict = {}
+adict = {key1：value2， key2：value2， …}
+或用dict()函数，如，adict = dict() 或 adict = dict（（['x',1],['y',2]））这样写对吗？adict = dict（['x',1],['y',2]）。关键字参数创建字典，如：adict= dict(name=’allen’,age=’40′)
+或用fromkeys()方法，如，adict = {}.fromkeys((‘x’,'y’), -1) 这样创建的字典的value是一样的，若不给值，默认为None。
+特点：
+z1、键与值用冒号“：”分开；
+z2、项与项用逗号“，”分开；
+z3、字典中的键必须是唯一的，而值可以不唯一。
+adict = {‘name’:'allen’, ‘name’:'lucy’, ‘age’:’40′} 与 bdict = {‘name’:'allen’, ‘name2′:’allen’, ‘age’:’40′}
+注意：如果字典中的值为数字，最好使用字符串数字形式，如：’age’:’040′ 而不用 ‘age’:040
+
+//字典的基本操作
+z1、如何访问字典中的值？
+adict[key] 形式返回键key对应的值value，如果key不在字典中会引发一个KeyError。
+z2、如何检查key是否在字典中？
+a、has_key()方法 形如：adict.haskey(‘name’) 有–>True，无–>False
+b、in 、not in   形如：’name’ in adict      有–>True，无–>False
+z3、如何更新字典？
+a、添加一个数据项（新元素）或键值对
+adict[new_key] = value 形式添加一个项
+b、更新一个数据项（元素）或键值对
+adict[old_key] = new_value
+c、删除一个数据项（元素）或键值对
+del adict[key] 删除键key的项 / del adict 删除整个字典
+adict.pop(key) 删除键key的项并返回key对应的 value值
+
+//映射类型操作符
+标准类型操作符（+，-，*，<,>,<=,>=,==,!=,and,or, not)
+a、字典不支持拼接和重复操作符（+，*）
+b、字典的比较操作
+先比较字典的长度也就是字典的元素个数
+键比较
+值比较
+例子：
+adict = {}
+bdict = {‘name’:'allen’, ‘age’:’40′}
+cmp(adict, bdict)  < –>-1 or > –>1 or ==  –>0
+
+//映射相关的函数
+z1、len() 返回字典的长度
+z2、hash() 返回对象的哈希值，可以用来判断一个对象能否用来作为字典的键
+z3、dict() 工厂函数，用来创建字典
+
+//字典的方法
+z1、adict.keys() 返回一个包含字典所有KEY的列表；
+z2、adict.values() 返回一个包含字典所有value的列表；
+z3、adict.items() 返回一个包含所有（键，值）元祖的列表；
+z4、adict.clear() 删除字典中的所有项或元素；
+z5、adict.copy() 返回一个字典浅拷贝的副本；
+z6、adict.fromkeys(seq, val=None) 创建并返回一个新字典，以seq中的元素做该字典的键，val做该字典中所有键对应的初始值（默认为None）；
+z7、adict.get(key, default = None) 返回字典中key对应的值，若key不存在字典中，则返回default的值（default默认为None）；
+z8、adict.has_key(key) 如果key在字典中，返回True，否则返回False。 现在用 in 、 not in；
+z9、adict.iteritems()、adict.iterkeys()、adict.itervalues() 与它们对应的非迭代方法一样，不同的是它们返回一个迭代子，而不是一个列表；
+z10、adict.pop(key[,default]) 和get方法相似。如果字典中存在key，删除并返回key对应的vuale；如果key不存在，且没有给出default的值，则引发keyerror异常；
+z11、adict.setdefault(key, default=None) 和set()方法相似，但如果字典中不存在Key键，由 adict[key] = default 为它赋值；
+z12、adict.update(bdict) 将字典bdict的键值对添加到字典adict中。
+
+//字典的遍历
+z1、遍历字典的key（键）
+for key in adict.keys():print key
+z2、遍历字典的value（值）
+for value in adict.values(): print value
+z3、遍历字典的项（元素）
+for item in adict.items():print item
+z4、遍历字典的key-value
+for item，value in adict.items(): print ‘key=%s, value=%s’ %(item, value)  或   for item，value in adict.iteritems(): print ‘key=%s, value=%s’ %(item, value)
+注意：for item,value in adict.items(): print ‘key=%s’, ‘value=%s’, %(item, value) 这种写法是错误的
+
+//使用字典的注意事项
+z1、不能允许一键对应多个值；
+z2、键必须是可哈希的。
