@@ -170,3 +170,32 @@ Alex pick a bean. He picked 2 beans, and we all picked 3 beans.
 Jack pick a bean. He picked 1 beans, and we all picked 4 beans.
 Alex pick a bean. He picked 3 beans, and we all picked 5 beans.
 Mike pick a bean. He picked 2 beans, and we all picked 6 beans.
+
+5. Python自省函数getattr(),setattr(),delattr(),hasattr() 
+自省: 自省就是面向对象的语言所写的程序在运行时,所能知道对象的类型.
+简单一句就是运行时能够获得对象的类型
+class A:
+    def __init__(self):
+        self.name = 'zhangjing'
+    def method(self):
+        print "method print"
+In [20]: a = A()
+
+In [21]: getattr(a, 'name', 'not found')
+Out[21]: 'zhangjing'
+
+In [22]: hasattr(a, 'name')
+Out[22]: True
+
+In [23]: setattr(a, 'name', 'zhangpeng')
+
+In [24]: hasattr(a, 'name')
+Out[24]: True
+
+In [25]: delattr(a, 'name')
+
+In [26]: getattr(a, 'name', 'not found')
+Out[26]: 'not found'
+
+In [27]: hasattr(a, 'name')
+Out[27]: False
