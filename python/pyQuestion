@@ -569,3 +569,320 @@ Result:
 2. cabbage
 cabbage = vegetable
 apple = fruit
+
+11. 修饰器
+a. 简单的修饰器
+def hello(fn):
+    def wrapper():
+        print "Hello, %s" % fn.__name__
+        fn()
+        print "Goodbye, %s" % fn.__name__
+
+    return wrapper
+
+@hello
+def foo():
+    print "I am foo"
+
+foo()
+
+Result:
+Hello, foo
+I am foo
+Goodbye, foo
+
+Explain:
+@hello修饰符等同foo = hello(foo)
+
+b. 多个修饰器
+@decorator_one
+@decorator_two
+def func():
+    pass
+
+等同于:
+func = decorator_one(decorator_two(func))
+
+c. 带参数修饰器
+@decorator(arg1, arg2)
+def func():
+pass
+
+等同于:
+func = decorator(arg1,arg2)(func)
+
+eg.
+def makeHtmlTag(tag, *args, **kwds):
+    def real_decorator(fn):
+        css_class = " class='{0}'".format(kwds["css_class"]) \
+                     if "css_class" in kwds else ""
+        def wrapped(*args, **kwds):
+            return "<"+tag+css_class+">" + fn(*args, **kwds) + "</"+tag+">"
+        return wrapped
+    return real_decorator
+
+@makeHtmlTag(tag="b", css_class="bold_css")
+@makeHtmlTag(tag="i", css_class="italic_css")
+def hello():
+    return "hello world"
+
+print hello()
+
+等同于:
+hello = makeHtmlTag(arg1, arg2)(hello) 
+
+结果:
+<b class='bold_css'><i class='italic_css'>hello world</i></b>
+
+d. 类方式的修饰器
+egA:
+class MyDecorator:
+    def __init__(self, fn):
+        print "inside MyDecorator.__init__()"
+        self.fn = fn
+
+    def __call__(self):
+        self.fn()
+        print "inside MyDecorator.__call__()"
+
+@MyDecorator
+def aFunction():
+    print "inside aFunction()"
+
+print "Finished decorating aFunction()"
+
+aFunction()
+
+结果:
+inside MyDecorator.__init__()
+Finished decorating aFunction()
+inside aFunction()
+inside MyDecorator.__call__()
+
+说明:
+1）一个是__init__()，这个方法是在我们给某个函数decorator时被调用，
+所以，需要有一个fn的参数，也就是被decorator的函数。
+2）一个是__call__()，这个方法是在我们调用被decorator函数时被调用的。
+
+egB:
+class MakeHtmlTag:
+    def __init__(self, tag, css_class=""):
+        self._tag = tag
+        self._css_class = " class='{0}'".format(css_class) \
+                if css_class != "" else ""
+
+    def __call__(self, fn):
+        def wrapped(*args, **kwargs):
+            return "<" + self._tag + self._css_class+">" \
+                     + fn(*args, **kwargs) + "</" + self._tag + ">"
+        return wrapped
+
+@MakeHtmlTag(tag="b", css_class="bold_css")
+@MakeHtmlTag(tag="i", css_class="italic_css")
+def hello(name):
+    return "Hello, {}".format(name)
+
+print hello("Hao Chen")
+
+结果:
+<b class='bold_css'><i class='italic_css'>Hello, Hao Chen</i></b>
+
+e. 使用修生气设置函数的调用参数
+//通过 **kwargs，这种方法decorator会在kwargs中注入参数。
+def decorate_A(function):
+    def wrap_function(*args, **kwargs):
+        kwargs['str'] = 'Hello!'
+        return function(*args, **kwargs)
+    return wrap_function
+
+@decorate_A
+def print_message_A(*args, **kwargs):
+    print(kwargs['str'])
+
+print_message_A()
+
+//约定好参数，直接修改参数
+def decorate_B(function):
+    def wrap_function(*args, **kwargs):
+        str = 'Hello!'
+        return function(str, *args, **kwargs)
+    return wrap_function
+
+@decorate_B
+def print_message_B(str, *args, **kwargs):
+    print(str)
+
+print_message_B()
+
+//通过 *args 注入
+def decorate_C(function):
+    def wrap_function(*args, **kwargs):
+        str = 'Hello!'
+        #args.insert(1, str)
+        args = args +(str,)
+        return function(*args, **kwargs)
+    return wrap_function
+
+class Printer:
+    @decorate_C
+    def print_message(self, str, *args, **kwargs):
+        print(str)
+
+p = Printer()
+p.print_message()
+
+结果:
+Hello!
+
+f. 修饰器的副作用
+def hello(fn):
+    def wrapper():
+        print "hello, %s" % fn.__name__
+        fn()
+        print "goodby, %s" % fn.__name__
+    return wrapper
+
+@hello
+def foo():
+    '''foo help doc'''
+    print "i am foo"
+    pass
+
+foo()
+print foo.__name__  #这里输出的是wrapper, 实际上应该是foo
+
+解决方法:
+from functools import wraps
+def hello(fn):
+    @wraps(fn)
+    def wrapper():
+        print "hello, %s" % fn.__name__
+        fn()
+        print "goodby, %s" % fn.__name__
+    return wrapper
+ 
+@hello
+def foo():
+    '''foo help doc'''
+    print "i am foo"
+    pass
+ 
+foo()
+print foo.__name__ #这里输出的是foo
+
+g. 修饰器实例
+//给函数调用做缓存
+from functools import wraps
+def memo(fn):
+    cache = {}
+    miss = object()
+ 
+    @wraps(fn)
+    def wrapper(*args):
+        result = cache.get(args, miss)
+        if result is miss:
+            result = fn(*args)
+            cache[args] = result
+        return result
+ 
+    return wrapper
+ 
+@memo
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+上面这个例子中，是一个斐波拉契数例的递归算法。我们知道，这个递归是相当没有效率的，因为会重复调用。比如：我们要计算fib(5)，于是其分解成fib(4) + fib(3)，而fib(4)分解成fib(3)+fib(2)，fib(3)又分解成fib(2)+fib(1)…… 你可看到，基本上来说，fib(3), fib(2), fib(1)在整个递归过程中被调用了两次。
+
+而我们用decorator，在调用函数前查询一下缓存，如果没有才调用了，有了就从缓存中返回值。一下子，这个递归从二叉树式的递归成了线性的递归。
+
+//Profiler
+import cProfile, pstats, StringIO
+ 
+def profiler(func):
+    def wrapper(*args, **kwargs):
+        datafn = func.__name__ + ".profile" # Name the data file
+        prof = cProfile.Profile()
+        retval = prof.runcall(func, *args, **kwargs)
+        #prof.dump_stats(datafn)
+        s = StringIO.StringIO()
+        sortby = 'cumulative'
+        ps = pstats.Stats(prof, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        print s.getvalue()
+        return retval
+ 
+    return wrapper
+
+//注册回调函数
+class MyApp():
+    def __init__(self):
+        self.func_map = {}
+ 
+    def register(self, name):
+        def func_wrapper(func):
+            self.func_map[name] = func
+            return func
+        return func_wrapper
+ 
+    def call_method(self, name=None):
+        func = self.func_map.get(name, None)
+        if func is None:
+            raise Exception("No function registered against - " + str(name))
+        return func()
+ 
+app = MyApp()
+ 
+@app.register('/')
+def main_page_func():
+    return "This is the main page."
+ 
+@app.register('/next_page')
+def next_page_func():
+    return "This is the next page."
+ 
+print app.call_method('/')
+print app.call_method('/next_page')
+
+上面这个示例中，用类的实例来做decorator。
+decorator类中没有__call__()，但是wrapper返回了原函数。所以，原函数没有发生任何变化。
+
+//给函数打日志
+import inspect
+ 
+def advance_logger(loglevel):
+ 
+    def get_line_number():
+        return inspect.currentframe().f_back.f_back.f_lineno
+ 
+    def _basic_log(fn, result, *args, **kwargs):
+        print "function   = " + fn.__name__,
+        print "    arguments = {0} {1}".format(args, kwargs)
+        print "    return    = {0}".format(result)
+ 
+    def info_log_decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            result = fn(*args, **kwargs)
+            _basic_log(fn, result, args, kwargs)
+        return wrapper
+ 
+    def debug_log_decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            ts = time.time()
+            result = fn(*args, **kwargs)
+            te = time.time()
+            _basic_log(fn, result, args, kwargs)
+            print "    time      = %.6f sec" % (te-ts)
+            print "    called_from_line : " + str(get_line_number())
+        return wrapper
+ 
+    if loglevel is "debug":
+        return debug_log_decorator
+    else:
+        return info_log_decorator
+你可以看到两点，
+1）我们分了两个log level，一个是info的，一个是debug的，然后我们在外尾根据不同的参数返回不同的decorator。
+2）我们把info和debug中的相同的代码抽到了一个叫_basic_log的函数里，DRY原则。
