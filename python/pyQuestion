@@ -942,3 +942,9 @@ class Info(object):
 a = Info()
 b = Info()
 print a + b
+
+13. Python新式类 vs 旧类
+区别:
+  MRO (Method Resolution Order)
+新式类: 广度优先
+旧式类: 深度优先
