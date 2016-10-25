@@ -943,8 +943,17 @@ a = Info()
 b = Info()
 print a + b
 
-13. Python新式类 vs 旧类
+14. Python新式类 vs 旧类
 区别:
   MRO (Method Resolution Order)
 新式类: 广度优先
 旧式类: 深度优先
+
+15 __new__和__init__的区别
+__new__确实很少见到,先做了解吧. 
+a. __new__是一个静态方法,而__init__是一个实例方法.
+b.  __new__方法会返回一个创建的实例,而__init__什么都不返回.
+c.  只有在__new__返回一个 cls 的实例时后面的__init__才能被调用.
+d.  当创建一个新实例时调用__new__,初始化一个实例时用__init__.
+e: __metaclass__是创建类时起作用.所以我们可以分别使用__metaclass__,
+   __new__和__init__来分别在类创建,实例创建和实例初始化的时候做一些小手脚
