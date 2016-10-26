@@ -7,3 +7,24 @@ eg. 匹配不包括cutv.com的字符串
 http://www.cutv.com
 www.cutv.com
 sina.com.cn   <==只有这个被匹配上
+
+2. 提取任意字符串(与顺序无关)
+正则:
+http://(.*?)/(.*?)\?(?=.*fid=(\w+))(?=.*uuid=(\w+))(?=.*nid=(\w+)).*$
+
+测试:
+http://pcvideocc.titan.imgo.tv/c1/2016/10/24_0/B17C9A418B1B8AF2F04625872D932189_20161024_1_1_315_mp4
+/FFEBFCC456E9F54B4726C4FC78189267.m3u8?t=580f6567&pno=1000&sign=6974268351b693aca34c95b75cd0c680&
+ld=1477366477372&win=3600&srgid=25004&urgid=1&srgids=25004&nid=25004&payload=usertoken%3dhit%3d0%5eruip%3d3232237658
+&rdur=21600&arange=0&limitrate=0&fid=B17C9A418B1B8AF2F04625872D932189&ver=0x03&uuid=374dfc24e21541a7a97113b2474cac5c&r=38596495149549
+&tt=4291
+
+替换:
+$1 $2 $3 $4 $5
+
+结果:
+pcvideocc.titan.imgo.tv c1/2016/10/24_0/B17C9A418B1B8AF2F04625872D932189_20161024_1_1_315_mp4/FFEBFCC456E9F54B4726C4FC78189267.m3u8
+B17C9A418B1B8AF2F04625872D932189 374dfc24e21541a7a97113b2474cac5c 25004
+
+
+
