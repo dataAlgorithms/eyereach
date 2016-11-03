@@ -1,0 +1,153 @@
+1. redis install (centos)
+yum install gcc-c++
+yum install -y tcl
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+cd src
+cp redis-server /usr/local/bin/
+cp redis-cli /usr/local/bin/
+mkdir /etc/redis
+mkdir /var/redis
+mkdir /var/redis/log
+mkdir /var/redis/run
+mkdir /var/redis/6379
+/usr/local/bin/redis-server &
+
+2. auth set
+CONFIG get requirepass
+AUTH "root"
+CONFIG set requirepass "yiibai"
+CONFIG get requirepass
+AUTH "yiibai"
+
+3. redis use
+a. start redis client
+[root@httpsource sbin]# ./redis-cli
+127.0.0.1:6379> auth root
+OK
+
+b. select db
+127.0.0.1:6379> select 0
+OK
+
+c. flush db
+127.0.0.1:6379> flushdb
+OK
+127.0.0.1:6379> keys *
+(empty list or set)
+
+d. add data
+//string type
+127.0.0.1:6379> set mykey 2
+OK
+127.0.0.1:6379> set mykey2 "hello"
+OK
+127.0.0.1:6379> keys *
+1) "mykey2"
+2) "mykey"
+127.0.0.1:6379> get mykey
+"2"
+127.0.0.1:6379> get mykey2
+"hello"
+127.0.0.1:6379> 
+
+//set type
+127.0.0.1:6379> sadd mysetkey 1 2 3
+(integer) 3
+127.0.0.1:6379> keys *
+1) "mysetkey"
+2) "mykey2"
+3) "mykey"
+127.0.0.1:6379> exists mysetkey
+(integer) 1
+127.0.0.1:6379> smembers mysetkey
+1) "1"
+2) "2"
+3) "3"
+
+//hash type
+127.0.0.1:6379> hset mmtest usernmae "stephen"
+(integer) 1
+127.0.0.1:6379> keys *
+1) "mmtest"
+2) "mysetkey"
+3) "mykey2"
+4) "mykey"
+127.0.0.1:6379> hgetall mmtest
+1) "usernmae"
+2) "stephen"
+
+e. multi db (move key)
+127.0.0.1:6379> select 0
+OK
+127.0.0.1:6379> keys *
+1) "mmtest"
+2) "mysetkey"
+127.0.0.1:6379> select 1
+OK
+127.0.0.1:6379[1]> keys *
+(empty list or set)
+127.0.0.1:6379[1]> select 0
+OK
+127.0.0.1:6379> keys *
+1) "mmtest"
+2) "mysetkey"
+127.0.0.1:6379> move mysetkey 1
+(integer) 1
+127.0.0.1:6379> keys *
+1) "mmtest"
+127.0.0.1:6379> select 1
+OK
+127.0.0.1:6379[1]> keys *
+1) "mysetkey"
+127.0.0.1:6379[1]> 
+
+f. new value
+127.0.0.1:6379> set mykey 2
+OK
+127.0.0.1:6379> keys *
+1) "mykey"
+2) "mmtest"
+127.0.0.1:6379> get mykey
+"2"
+127.0.0.1:6379> set mykey "hello"
+OK
+127.0.0.1:6379> get mykey
+"hello"
+
+g. rename
+127.0.0.1:6379> rename mykey mykey1
+OK
+127.0.0.1:6379> keys *
+1) "mykey1"
+2) "mmtest"
+
+g. timeout
+127.0.0.1:6379> 
+127.0.0.1:6379> set mykey "hello"
+OK
+127.0.0.1:6379> get mykey
+"hello"
+127.0.0.1:6379> expire mykey 5
+(integer) 1
+127.0.0.1:6379> get mykey
+(nil)
+127.0.0.1:6379> set mykey "hello"
+OK
+127.0.0.1:6379> ttl mykey
+(integer) -1
+127.0.0.1:6379> expire mykey 10
+(integer) 1
+127.0.0.1:6379> ttl mykey
+(integer) 8
+127.0.0.1:6379> persist mykey
+(integer) 1
+127.0.0.1:6379> ttl mykey
+(integer) -1
+127.0.0.1:6379> 
+
+h. type check
+127.0.0.1:6379> type mykey
+string
