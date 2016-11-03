@@ -1,0 +1,82 @@
+1. python-MySQLdb使用经验谈  
+<1>安装MySQLdb
+        通过下面的一条命令可以很方便的安装MySQLdb
+sudo apt-get install python-MySQLdb
+
+        同样也可以通过easy_install或者pip install来安装。
+        MySQLdb的默认配置文件为：/etc/mysql/my.cnf
+
+<2>测试连接
+        
+>>>import MySQLdb
+>>> db_conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='123456',db='test')
+
+
+        错误一：
+        如果使用host='localhost'进行连接的时候出现无法连接的错误
+_mysql_exceptions.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' (10061)") 
+
+        只需要把localhost改写为127.0.0.1即可正常连接。
+
+        错误二：
+        如果要进行远程连接，出现如下错误
+_mysql_exceptions.OperationalError: (2003, "Can't connect to MySQL server on '***.***.***.***' (110)")
+
+        解决方法：编辑my.cnf，默认为/etc/mydql/my.cnf，注释掉bind-address = 127.0.0.1或者修改为0.0.0.0 ，如下
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+# bind-address           = 127.0.0.1
+
+        
+        错误三：
+        如果连接数据库过程中出现如下错误
+_mysql_exceptions.OperationalError: (1130, "Host 'xxx.xxx.xxx.xxx' is not allowed to connect to this MySQL server")
+
+        意为需要登录数据库的用户名没有远程登录的权限，解决方法
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+
+        用户名和密码替换为需要的，其中'root'@'%'，意味着用户root可以在任意主机上登录该数据库，如果将'%'换成相应主机名，则只有在该主机才可以登陆该数据库。
+        
+        错误四：
+        如果运行多线程时候出现以下错误
+(1040, 'Too many connections')
+
+        解决方法如下：编辑my.cnf，默认为/etc/mydql/my.cnf，修改max_connections的值为10000，默认为100，实际MySQL服务器允许的最大连接数16384。
+        之前的程序结构为抓取到一条数据即产生一条sql语句即插入一条数据，修改程序结构为将各进程线程产生的sql语句put进Queue，用一个单独的进程不断get出sql插入数据库同样可以解决以上问题。
+
+        练习Demo如下：
+# -*- coding: utf-8 -*-     
+#mysqldb    
+import time, MySQLdb    
+   
+#连接    
+conn=MySQLdb.connect(host="localhost",user="root",passwd="",db="test",charset="utf8")  
+cursor = conn.cursor()    
+   
+#写入    
+sql = "insert into user(name,created) values(%s,%s)"   
+param = ("aaa",int(time.time()))    
+n = cursor.execute(sql,param)    
+print n    
+   
+#更新    
+sql = "update user set name=%s where id=3"   
+param = ("bbb")    
+n = cursor.execute(sql,param)    
+print n    
+   
+#查询    
+n = cursor.execute("select * from user")    
+for row in cursor.fetchall():    
+    for r in row:    
+        print r    
+   
+#删除    
+sql = "delete from user where name=%s"   
+param =("aaa")    
+n = cursor.execute(sql,param)    
+print n    
+cursor.close()    
+   
+#关闭    
+conn.close()
