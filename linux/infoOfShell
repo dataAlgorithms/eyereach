@@ -1,5 +1,26 @@
-1. 查询大于1G的文件
+1. 查询文件(按名字,按文件内容,按文件大小)
 find / type f -size +1G
+
+# find file by content
+grep -rnw '/usr/local/sms/conf' -e "smsupper"
+
+eg.
+[root@newissupper ~]# grep -rnw '/usr/local/sms/conf' -e "smsupper"
+/usr/local/sms/conf/smsupper.conf:33:        server_name smsupper;
+/usr/local/sms/conf/smsupper.conf:105:            set $reqip_host smsupper;                            
+/usr/local/sms/conf/smsupper.conf:131:        server_name smsupper;
+/usr/local/sms/conf/issupper.conf:35:        server_name smsupper;
+/usr/local/sms/conf/issupper.conf:96:        server_name smsupper;
+
+# find file by name(substring)
+find / -type f -name "*sms*"
+
+eg.
+[root@newissupper ~]# find / -type f -name "*sms*"
+/root/soft/sms-2.1.37-1-r43604.x86_64.rpm
+/root/soft/sms-2.2.21-2-r54392.x86_64.rpm
+/root/soft/sms-2.1.82-2-r48264.x86_64.rpm
+/root/soft/sms-2.1.52-2-r45218.x86_64.rpm
 
 2. 进制转换
 //10进制转2进制：
