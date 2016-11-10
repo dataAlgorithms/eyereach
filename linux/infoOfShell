@@ -121,3 +121,6 @@ ps -T -p 5065 (5065为进程pid)
 命令格式：tar -jcvf 【目录】/ 【压缩包文件名.tar.gz】【源文件】
 例如：tar -jcvf /tmp/test.tar.bz2 japan/
 注意：一次压缩多个文件直接在源文件后用空格格开即可
+
+11. 获取nginx运行时长
+ps -p `ps ax|grep nginx|grep master|cut -c -5` -o etime=
