@@ -1,4 +1,5 @@
 1. 查询文件(按名字,按文件内容,按文件大小)
+# find file by size
 find / type f -size +1G
 
 # find file by content
