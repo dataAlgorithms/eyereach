@@ -124,3 +124,6 @@ ps -T -p 5065 (5065为进程pid)
 
 11. 获取nginx运行时长
 ps -p `ps ax|grep nginx|grep master|cut -c -5` -o etime=
+或者
+[root@newissupper logs]# ps -p `cat /usr/local/sms/logs/nginx.pid` -o etime=
+      12:40
