@@ -13,6 +13,19 @@ eg.
 /usr/local/sms/conf/issupper.conf:35:        server_name smsupper;
 /usr/local/sms/conf/issupper.conf:96:        server_name smsupper;
 
+or
+
+[root@newissupper ~]# find /usr/local/sms/conf -exec grep -al 'smsupper' {} \;
+/usr/local/sms/conf/smsupper.conf
+/usr/local/sms/conf/issupper.conf
+/usr/local/sms/conf/streamReport.conf
+/usr/local/sms/conf/nginx.conf.rpmsave
+/usr/local/sms/conf/core/core.21638
+/usr/local/sms/conf/core/core.21602
+/usr/local/sms/conf/rtmpauth.conf
+/usr/local/sms/conf/timecode.conf
+/usr/local/sms/conf/smsupper_mul.conf
+
 # find file by name(substring)
 find / -type f -name "*sms*"
 
