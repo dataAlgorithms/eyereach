@@ -30,3 +30,6 @@ net stop MongoDB
 
 To remove the MongoDB service, first stop the service and then run the following command
 sc.exe delete MongoDB
+
+//windows client
+mongovue 
