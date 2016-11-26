@@ -1,2 +1,32 @@
-1. install and start
-https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+//download
+https://www.mongodb.org/dl/win32/x86_64
+
+//install and start
+Configure a windows service for MongoDb
+
+The following procedure assumes you have installed MongoDB using the MSI installer, with the default path C:\Program Files\MongoDB 2.6 Standard
+
+1. Open an Administrator command prompt
+windows/cmd
+
+2. Create directories
+cd c:
+mkdir c:\data\db
+mkdir c:\data\log
+
+3. Create a configuration file
+echo logpath=c:\data\log\mongod.log> "C:\Program Files\MongoDB 2.6 Standard\mongod.cfg"
+echo dbpath=c:\data\db>> "C:\Program Files\MongoDB 2.6 Standard\mongod.cfg"
+
+4. Create the MongoDB service
+sc.exe create MongoDB binPath= "\"C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe\" --service --config=\"C:\Program Files\MongoDB 2.6 Standard\mongod.cfg\"" DisplayName= "MongoDB 2.6 Standard" start= "auto"
+
+5. Start the MongoDb service
+net start MongoDB
+
+6. Stop or remove the MongoDB service as needed
+To stop the MongoDB service, use the following command:
+net stop MongoDB
+
+To remove the MongoDB service, first stop the service and then run the following command
+sc.exe delete MongoDB
