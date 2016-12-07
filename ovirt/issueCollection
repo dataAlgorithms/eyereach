@@ -57,3 +57,13 @@ eth0      Link encap:Ethernet  HWaddr 08:00:27:FE:C1:03
           collisions:0 txqueuelen:1000
           RX bytes:387597 (378.5 KiB)  TX bytes:19567 (19.1 KiB)
 Enjoy!
+
+2. No eth0 device
+1. /etc/udev/rules.d/70-persistent-net.rules
+保留eth0
+
+2. ifconfig 查看HWADDR的值,比如为A
+3. /etc/sysconfig/network-script/ifcfg-eth0中
+修改ifconfig中查出的HWADDR值A
+
+4. service network restart
