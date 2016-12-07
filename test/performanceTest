@@ -1,0 +1,41 @@
+一. ab
+AB(ApacheBench) 是 Apache 自带的超文本传输协议 (HTTP) 性能测试工具。 
+其设计意图是描绘当前所安装的 Apache 的执行性能， 主要是显示 Apache 每秒可以处理多少个请求。
+
+ab一般常用参数就是 -n， -t ，和 -c。
+-c（concurrency）表示用多少并发来进行测试；
+-t表示测试持续多长时间；
+-n表示要发送多少次测试请求。
+一般-t或者-n选一个用。
+
+
+1. ab测试简单http请求
+ab -n30000 -c1000 "http://10.1.1.21:8080/"
+
+2. ab测试http接口 (POST)
+img.json 为符合接口格式的字符串
+MIME 类型 application/x-www-form-urlencoded 与 multipart/form-data 和 text/plain 参考
+
+其中①application/x-www-form-urlencoded是默认值，大家可能在AJAX里见过这 个：xmlHttp.setRequestHeader("Content-Type","application/x-www-form- urlencoded"); 
+这两个要做的是同一件事情，就是设置表单传输的编码。在AJAX里不写有可能会报错，但是在HTML的form表单里是可以不写 enctype="application/x-www-form-urlencoded"的，
+因为默认HTML表单就是这种传输编码类型。
+②multipart-form-data是用来指定传输数据的特殊类型的，主要就是我们上传的非文本的内容，比如图片或者mp3等等。
+③text/plain是纯文本传输的意思，在发送邮件时要设置这种编码类型，否则会出现接收时编码混乱的问题，网络上经常拿text/plain和 text/html做比较，
+其实这两个很好区分，
+前者用来传输纯文本文件，
+后者则是传递html代码的编码类型，
+在发送头文件时才用得上。
+①和③都不能用 于上传文件，只有multipart/form-data才能完整的传递文件数据。
+
+cat img.json
+[{"msgs":[{"devSrc":[{"devIp":33333333333,"lossrate":1,"pv":1,"flux":1,"speed":1}],"devIp":3232243812,"flux":1,"abstime":1469430509,"pv":1,"speed":1,"devName":"CNC-ZU-3-3WN"}],"method":"DeviceMsgReport","version":2}]
+
+ab -n400 -c20  -p "img.json" -T "application/json" "http://192.168.32.223:8081/core?cchost_tag=issCluster" 
+
+3. ab 测试 webservice 接口
+ab -k -T "Content-Type:text/xml;charset=UTF-8" -p data.xml -n 1000 -c 32 http://10.1.1.21:8080/services/routeService?wsdl 
+
+注意：data.xml 必须符合 wsdl 规范，可以使用 soapUI 生成
+如果报错：no soapaction header
+ab -k -T "Content-Type:text/xml;charset=UTF-8;soapaction=''" -p data.xml -n 1000 -c 32 http://10.1.1.21:8080/services/routeService?wsdl
+
