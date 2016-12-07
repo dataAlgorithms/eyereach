@@ -1,0 +1,17 @@
+1. 10240 worker_connections exceed open file resource limit: 1024
+Solution:
+
+user  root;
+worker_processes 2;
+rtmp_auto_push off;
+rtmp_auto_push_reconnect 1s;
+#worker_cpu_affinity 01 10;
+worker_rlimit_core 50G;
+error_log   /usr/local/sms/logs/error.log debug;
+worker_rlimit_nofile 65535;   <===Add this
+
+events {
+
+    worker_connections  10240;
+    accept_mutex off;
+}
