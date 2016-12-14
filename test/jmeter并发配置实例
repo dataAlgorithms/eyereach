@@ -1,0 +1,135 @@
+1. 下载并且解压
+http://mirrors.tuna.tsinghua.edu.cn/apache//jmeter/binaries/apache-jmeter-3.1.zip
+
+2. 进入到bin中打开ApacheJMeter.jar
+
+3. 右击测试计划
+a. 点击 添加/Threads(User)/线程组
+b. 右击 线程组  (线程数: 100)
+添加/Sampler/Http请求
+添加/配置元件/Http信息头管理器
+添加/配置元件/CSV Data Set Config
+添加/监听器/用表格查看结果
+添加/监听器/查看结果树
+
+4. 点击 Http信息头管理器
+添加 Content-Type(名称) / application/json (值)
+
+5. 点击 Http请求
+原始请求:
+curl -i -d "[{\"msgs\":[{\"startTime\":11111111,\"devIp\":3232243812,\"resolutionV\":480,\"videoCode\":7,\"lossrate\":0.003,\"framerate\":25,\"pv\":12,\"devName\":\"BGP-BJ-5-3e9\",\"external\":{\"lossrate\":0,\"speed\":500,\"pv\":1,\"flux\":40000,\"concurrence\":1},
+
+\"srcInfos\":[{\"devIp\":3232243812,\"lossrate\":0,\"realFramerate\":25,\"flux\":40000,\"internal\":1,\"speed\":200}],\"abstime\":1469430500,\"protocol\":1,\"speed\":7000,\"guid\":11111111,\"urlHash\":122222,\"concurrence\":35,\"audioCode\":10,\"flux\":1,\"domain\":
+
+\"www.cc.com\",\"bitrate\":180,\"name\":\"\\/live\\/1.flv\",\"resolutionH\":720},{\"startTime\":11111111,\"devIp\":3232243812,\"resolutionV\":480,\"videoCode\":7,\"lossrate\":0.003,\"framerate\":25,\"pv\":12,\"devName\":\"BGP-BJ-5-3e9\",\"external\":{\"lossrate\":0,
+
+\"speed\":500,\"pv\":1,\"flux\":40000,\"concurrence\":1},\"srcInfos\":[{\"devIp\":3232243812,\"lossrate\":0,\"realFramerate\":25,\"flux\":40000,\"internal\":1,\"speed\":200}],\"abstime\":1469430560,\"protocol\":1,\"speed\":7000,\"guid\":2222222,\"urlHash\":122222,
+
+\"concurrence\":35,\"audioCode\":10,\"flux\":1,\"domain\":\"www.cc.com\",\"bitrate\":180,\"name\":\"\\/live\\/2.flv\",\"resolutionH\":720}],\"version\":2,\"method\":\"StreamMsgReport\"}]"  "http://192.168.10.46:8081/core?cchost_tag=issCluster"
+
+服务器名称或IP: issCluster 端口: 8081 (在windows hosts写入192.168.10.46 issCluster)
+Implementation: HttpClient4 协议: http 方法: post Content encoding: utf-8
+路径: /core
+Body Data:
+[
+  {
+    "msgs": [
+      {
+        "startTime": 11111111,
+        "devIp": 3232243812,
+        "resolutionV": 480,
+        "videoCode": 7,
+        "lossrate": 0.003,
+        "framerate": 25,
+        "pv": 12,
+        "devName": "${devName}",
+        "external": {
+          "lossrate": 0,
+          "speed": 500,
+          "pv": "${pv}",
+          "flux": 40000,
+          "concurrence": 1
+        },
+        "srcInfos": [
+          {
+            "devIp": 3232243812,
+            "lossrate": 0,
+            "realFramerate": 25,
+            "flux": 40000,
+            "internal": 1,
+            "speed": 200
+          }
+        ],
+        "abstime": 1469430500,
+        "protocol": 1,
+        "speed": 7000,
+        "guid": 11111111,
+        "urlHash": 122222,
+        "concurrence": 35,
+        "audioCode": 10,
+        "flux": 1,
+        "domain": "www.cc.com",
+        "bitrate": 180,
+        "name": "\/live\/1.flv",
+        "resolutionH": 720
+      },
+      {
+        "startTime": 11111111,
+        "devIp": 3232243812,
+        "resolutionV": 480,
+        "videoCode": 7,
+        "lossrate": 0.003,
+        "framerate": 25,
+        "pv": 12,
+        "devName": "BGP-BJ-5-3e9",
+        "external": {
+          "lossrate": 0,
+          "speed": 500,
+          "pv": 1,
+          "flux": 40000,
+          "concurrence": 1
+        },
+        "srcInfos": [
+          {
+            "devIp": 3232243812,
+            "lossrate": 0,
+            "realFramerate": 25,
+            "flux": 40000,
+            "internal": 1,
+            "speed": 200
+          }
+        ],
+        "abstime": 1469430560,
+        "protocol": 1,
+        "speed": 7000,
+        "guid": 2222222,
+        "urlHash": 122222,
+        "concurrence": 35,
+        "audioCode": 10,
+        "flux": 1,
+        "domain": "www.cc.com",
+        "bitrate": 180,
+        "name": "\/live\/2.flv",
+        "resolutionH": 720
+      }
+    ],
+    "version": 2,
+    "method": "StreamMsgReport"
+  }
+]
+
+6. 点击 CSV Data Set Config
+Filename: d:\eclipse\temp\devName.txt
+Variable Names(comma-delimited): devName,pv
+Delimiter (use '\t' for tab): ,
+
+cat devName.txt
+--------------
+BGP-BJ-5-3e9,100
+BGP-BJ-5-3e1,101
+
+7. 点击 运行
+点击 用表格查看结果
+点击 查看结果树
+
+
