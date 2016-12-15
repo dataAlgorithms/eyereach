@@ -75,3 +75,11 @@ solution:
 d. error: db3 error(12) from dbcursor->c_put: 无法分配内存 
 rm -f /var/lib/rpm/__db* 
      rpm --rebuilddb
+
+11. json format
+wget http://stedolan.github.io/jq/download/linux32/jq (32-bit system)
+wget http://stedolan.github.io/jq/download/linux64/jq (64-bit system)
+chmod +x ./jq
+sudo cp jq /usr/bin
+
+cat print_json |jq .
