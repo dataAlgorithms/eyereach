@@ -1,2 +1,1 @@
-http://flume.apache.org/
-https://www.elastic.co/products/logstash
+http://www.findbestopensource.com/tagged/log-analysis
