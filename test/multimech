@@ -1,0 +1,15 @@
+1. multi-mech run demo
+error can not find test script v_user.py
+
+Solution:
+https://github.com/cgoldberg/multi-mechanize/archive/master.zip 
+unzip and run: python setup.py install 
+
+then, works.
+
+2. usage
+wget https://github.com/cgoldberg/multi-mechanize/archive/master.zip 
+unzip and run: python setup.py install 
+
+multimech-newproject demo
+multimech-run demo
