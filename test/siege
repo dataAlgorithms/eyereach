@@ -1,3 +1,33 @@
 1. download
 http://download.joedog.org/siege/
 http://centminmod.com/centminmodparts/siege/
+
+2. simulate-real-users-load-on-a-webserver-using-siege-and-sproxy/
+1) Sproxy:
+wget http://centminmod.com/centminmodparts/siege/sproxy-latest.tar.gz
+tar xzvf  sproxy-latest.tar.gz
+./configure
+make
+make install
+2) Siege:
+wget http://centminmod.com/centminmodparts/siege/siege-4.0.2.tar.gz
+tar xzvf  siege-4.0.2.tar.gz
+./configure
+make
+make install
+We know need to collect some urls using Sproxy.
+3) start sproxy
+sproxy -o urls.txt
+wget -r -o verbose.txt -l 0 -t 1 --spider -w 1 -e robots=on -e "http_proxy = http://127.0.0.1:9001" "http://www.example.com"
+-w: specify the seconds to wait between requests to avoid overloading the webserver
+-l: the number of maximum levels to descend, 0 means infinite.
+4) sort and simulate user 
+sort -u -o uniq_urls.txt urls.txt
+siege -v -c 50 -i -t 3M -f uniq_urls.txt -d 10
+-v will give you more information of what siege is doing during the test.
+-c specifies the number of total users simulated.
+-i indicates to hit the urls in a random fashion.
+-t specify the running time of siege, you can use S, M or H
+-f is pretty obvious.
+-d specify the maximum delay between a simulated user requests.
+
