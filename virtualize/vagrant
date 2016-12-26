@@ -1,3 +1,8 @@
 http://www.vagrantbox.es/
 https://gold.xitu.io/entry/579015868ac247005ffa76ad
 https://my.oschina.net/u/248080/blog/618518
+
+vagrant init --force laravel/homestead
+vagrant box add laravel/homestead http://atlas.hashicorp.com/laravel/boxes/homestead
+vagrant up
+
