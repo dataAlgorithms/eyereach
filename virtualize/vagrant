@@ -6,3 +6,10 @@ vagrant init --force laravel/homestead
 vagrant box add laravel/homestead http://atlas.hashicorp.com/laravel/boxes/homestead
 vagrant up
 
+vagrant init ubuntu/trusty64
+ 
+vim Vagrantfile
+config.vm.synced_folder "/Vagrant", "D:\\HashiCorp\\Vagrant\\packt-vagrant-book",  disabled: true
+
+vagrant up
+
