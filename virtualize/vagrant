@@ -5,3 +5,6 @@ vagrant up
 2. issue collection
 a. vagrant-up-error-changing-ownership-of-vagrant-not-a-directory
 we should upgrade vitualbox to 5.1.12
+
+b. unable-to-connect-to-vagrant-private-network-from-host
+http://stackoverflow.com/questions/23497855/unable-to-connect-to-vagrant-private-network-from-host
