@@ -15,7 +15,7 @@ eg.
 
 or
 
-[root@newissupper ~]# find -type f /usr/local/sms/conf -exec grep -al 'smsupper' {} \;
+[root@newissupper ~]# find /usr/local/sms/conf -type f  -exec grep -al 'smsupper' {} \;
 /usr/local/sms/conf/smsupper.conf
 /usr/local/sms/conf/issupper.conf
 /usr/local/sms/conf/streamReport.conf
