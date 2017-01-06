@@ -1,6 +1,11 @@
 1. Jekyll
 https://jekyllrb.com/docs/installation/
 
+ubantu14:
+sudo apt-get install ruby2.0 ruby2.0-dev
+sudo apt-get install zlib1g-dev
+sudo gem2.0 install jekyll
+
 2. Git
 wget https://www.kernel.org/pub/software/scm/git/git-2.5.0.tar.gz
 or 
