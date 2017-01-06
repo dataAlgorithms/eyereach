@@ -1,2 +1,14 @@
 1. Jekyll
 https://jekyllrb.com/docs/installation/
+
+2. Git
+wget https://www.kernel.org/pub/software/scm/git/git-2.5.0.tar.gz
+or 
+wget https://github.com/git/git/archive/v2.5.0.tar.gz
+
+tar -zxvf git-2.5.0.tar.gz
+cd git-2.5.0
+make prefix=/usr/local/git all
+make prefix=/usr/local/git install
+echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/bashrc
+source /etc/bashrc
