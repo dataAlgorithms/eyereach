@@ -114,3 +114,55 @@ DEqyPQrcaX64dI2p1wpF2rL+t3q4Vwqg1fB3uFpRkA==
 ztLKx9fWt/u0rg==
 >>> print base64.b64decode(a)
 我是字符串
+
+6. sort str based on the int number in the string
+def numInStrSort(sStr):
+
+    import re
+
+    primaryStr = sStr
+
+    tmpStr = primaryStr.split('\n')
+    finStr = filter(None, tmpStr)
+
+    students = finStr 
+
+    y = sorted(students, key=lambda student:int(re.search(r"\d+", student).group())) 
+    print y
+
+    return y
+
+'''
+['global_expire_queue_1_lock L', 'global_expire_queue_5_lock L', 'global_expire_
+queue_7_lock L', 'global_expire_queue_16_lock L', 'global_expire_queue_25_lock L
+', 'global_expire_queue_26_lock L', 'global_expire_queue_27_lock L', 'global_exp
+ire_queue_31_lock L', 'global_expire_queue_38_lock L', 'global_expire_queue_42_l
+ock L', 'global_expire_queue_43_lock L', 'global_expire_queue_46_lock L', 'globa
+l_expire_queue_47_lock L', 'global_expire_queue_49_lock L', 'global_expire_queue
+_50_lock L', 'global_expire_queue_56_lock L', 'global_expire_queue_57_lock L', '
+global_expire_queue_58_lock L']
+'''
+if __name__ == "__main__":
+
+    primaryStr = '''
+global_expire_queue_5_lock L
+global_expire_queue_1_lock L
+global_expire_queue_38_lock L
+global_expire_queue_47_lock L
+global_expire_queue_43_lock L
+global_expire_queue_42_lock L
+global_expire_queue_58_lock L
+global_expire_queue_7_lock L
+global_expire_queue_50_lock L
+global_expire_queue_31_lock L
+global_expire_queue_27_lock L
+global_expire_queue_25_lock L
+global_expire_queue_57_lock L
+global_expire_queue_56_lock L
+global_expire_queue_49_lock L
+global_expire_queue_26_lock L
+global_expire_queue_46_lock L
+global_expire_queue_16_lock L
+'''
+
+    numInStrSort(primaryStr)
