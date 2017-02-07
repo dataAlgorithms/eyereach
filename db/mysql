@@ -1,3 +1,4 @@
+一. 基础知识
 1. Summary of MySQL Commands 
 For detailed syntax, check MySQL manual "SQL Statement Syntax"
 @ http://dev.mysql.com/doc/refman/5.5/en/sql-syntax.html.
@@ -1211,3 +1212,59 @@ d:/myProject/backup_southwind.sql
 or 
 > cd path-to-mysql-bin
 > mysql -u root -p southwind < d:\myProject\backup_southwind.sql
+
+二. 安装部分
+错误一：
+如果使用host='localhost'进行连接的时候出现无法连接的错误
+_mysql_exceptions.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' (10061)") 
+只需要把localhost改写为127.0.0.1即可正常连接。
+
+错误二：
+如果要进行远程连接，出现如下错误
+_mysql_exceptions.OperationalError: (2003, "Can't connect to MySQL server on '***.***.***.***' (110)")
+解决方法：编辑my.cnf，默认为/etc/mydql/my.cnf，注释掉bind-address = 127.0.0.1或者修改为0.0.0.0 ，如下
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+# bind-address           = 127.0.0.1
+        
+错误三：
+如果连接数据库过程中出现如下错误
+_mysql_exceptions.OperationalError: (1130, "Host 'xxx.xxx.xxx.xxx' is not allowed to connect to this MySQL server")
+意为需要登录数据库的用户名没有远程登录的权限，解决方法
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+用户名和密码替换为需要的，其中'root'@'%'，意味着用户root可以在任意主机上登录该数据库，如果将'%'换成相应主机名，则只有在该主机才可以登陆该数据库。
+        
+错误四：
+如果运行多线程时候出现以下错误
+(1040, 'Too many connections')
+解决方法如下：编辑my.cnf，默认为/etc/mydql/my.cnf，修改max_connections的值为10000，默认为100，实际MySQL服务器允许的最大连接数16384。
+之前的程序结构为抓取到一条数据即产生一条sql语句即插入一条数据，修改程序结构为将各进程线程产生的sql语句put进Queue，用一个单独的进程不断get出sql插入数据库同样可以解决以上问题。
+
+错误五:
+/usr/sbin/mysqld: Can't create/write to file '/tmp/ib16rzbE' (Errcode: 13 - Permission denied)
+解决方法:
+[root@newissupper mysql]# chown root:root /tmp
+[root@newissupper mysql]# chmod 1777 /tmp
+[root@newissupper mysql]# /etc/init.d/mysqld start
+
+//Python &MySql
+#centos安装pip和easy_install
+wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
+python get-pip.py
+
+yum -y install python-setuptools
+easy_install simplejson
+
+https://michaelheap.com/installing-simplejson-on-python-2-4-for-centos-5-7/
+
+# centos安装python27
+wget http://python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2
+tar jxvf Python-2.7.5.tar.bz2
+cd Python-2.7.5
+./configure
+make
+make install
+
+# install at centos
+yum install -y mysql-devel python-devel python-setuptools
+easy_install  MySQL-python
