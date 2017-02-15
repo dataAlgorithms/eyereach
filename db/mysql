@@ -1268,3 +1268,7 @@ make install
 # install at centos
 yum install -y mysql-devel python-devel python-setuptools
 easy_install  MySQL-python
+
+
+三. Windows工具
+Navicat for mysql
