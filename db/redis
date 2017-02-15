@@ -151,3 +151,6 @@ OK
 h. type check
 127.0.0.1:6379> type mykey
 string
+
+e. windows工具
+redis desktop manager
