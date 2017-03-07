@@ -181,3 +181,6 @@ chkconfig mysqld on        #设定mysqld在各等级为on，“各等级”包�
     在chkconfig工具服务列表中增加此服务，此时服务会被在/etc/rc.d/rcN.d中赋予K/S入口了；
 3.chkconfig --level 35 mysqld on
     修改服务的默认启动等级。
+
+13. crontab 按秒
+http://blog.csdn.net/fdipzone/article/details/22701113
