@@ -1214,6 +1214,48 @@ or
 > mysql -u root -p southwind < d:\myProject\backup_southwind.sql
 
 二. 安装部分
+//安装步骤
+//uninstall mysql
+yum remove mysql mysql-server mysql-libs compat-mysql51
+rm -rf /var/lib/mysql
+rm /etc/my.cnf
+
+//install mysql 
+yum install mysql
+
+//upgrade mysql from5.0 to 5.5(centos5)
+wget http://dev.mysql.com/get/mysql-community-release-el5-5.noarch.rpm
+rpm -Uvh mysql-community-release-el5-5.noarch.rpm
+yum install mysql
+yum install mysql-server
+service mysqld restart
+
+//mysql download address
+http://download.softagency.net/MySQL/Downloads/MySQL-5.6/
+https://dl.iuscommunity.org/pub/ius/stable/CentOS/6/x86_64/
+
+//install perl
+http://www.centoscn.com/image-text/install/2015/0707/5808.html
+
+//install mysql5 on centos6
+https://my.oschina.net/lxrm/blog/542706
+//install mysql5 centos6 (source)
+http://blog.csdn.net/wendi_0506/article/details/39478369
+
+https://opensourcedbms.com/dbms/how-to-install-mysql-5-5-on-cent-os-6-3-linux-redhat-el-6/
+
+//忘记密码
+service mysqld stop
+/usr/bin/mysqld_safe --skip-grant-tables & 
+mysql -u root -p
+       use mysql;
+       update user set password=password('123') where user='root';
+       flush privileges;
+       exit;
+service mysqld stop
+service mysqld start
+
+//安装错误
 错误一：
 如果使用host='localhost'进行连接的时候出现无法连接的错误
 _mysql_exceptions.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' (10061)") 
@@ -1268,7 +1310,6 @@ make install
 # install at centos
 yum install -y mysql-devel python-devel python-setuptools
 easy_install  MySQL-python
-
 
 三. Windows工具
 Navicat for mysql
