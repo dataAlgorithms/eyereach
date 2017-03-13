@@ -187,3 +187,10 @@ http://blog.csdn.net/fdipzone/article/details/22701113
 
 14. 查询top5 (依次按cpu,内存排序)
 ps -eo pcpu,pmem,vsize,pid,cmd | sort -k 1 -nr | head -5
+
+
+15. 竖列相加
+[root@newisscenter ~]# lsof -n|awk '{print $2}'|sort|uniq -c |sort -nr|cat|grep -E "4958|4960"|awk 'BEGIN{COUNT=0}COUNT+=$1;END{print COUNT}'
+    937 4960
+    812 4958
+1749
