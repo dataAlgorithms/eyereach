@@ -184,3 +184,6 @@ chkconfig mysqld on        #设定mysqld在各等级为on，“各等级”包�
 
 13. crontab 按秒
 http://blog.csdn.net/fdipzone/article/details/22701113
+
+14. 查询top5 (依次按cpu,内存排序)
+ps -eo pcpu,pmem,vsize,pid,cmd | sort -k 1 -nr | head -5
