@@ -14,3 +14,29 @@ http://lovelace.blog.51cto.com/1028430/1423343
 
 //Install
 Centos: https://tecadmin.net/install-oracle-virtualbox-on-centos-redhat-and-fedora/#
+
+Using Vagrant on headless CentOS/RHEL6.5
+
+VAGRANT CENTOS RHEL HEADLESS
+In order to install Vagrant on CentOS/RHEL using purely the command line you can do the following:
+
+# Add Virtual Box yum repo
+sudo curl http://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo > /etc/yum.repos.d/virtualbox.repo
+
+# Install VirtualBox
+sudo yum install VirtualBox-4.2
+
+# Install Vagrant via RPM (obtain URL of version you want via http://downloads.vagrantup.com/)
+wget https://releases.hashicorp.com/vagrant/1.8.1/vagrant_1.8.1_x86_64.rpm --no-check-certificate
+
+# Install Vagrant
+sudo rpm -i vagrant-1.3.1.rpm
+
+# Download 
+https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.0.0/centos-6.6-x86_64.box
+
+# Vagrant
+vagrant init
+vagrant box add centos66 centos-6.6-x86_64.box
+vagrant up
+vagrant ssh
