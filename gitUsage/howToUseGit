@@ -21,3 +21,10 @@ git gui:
   Stage changed
   Commit
   Push
+
+3. git rename
+$ git clone git@github.com:username/reponame.git
+$ cd reponame
+$ git mv README README.md
+$ git commit -m "renamed"
+$ git push origin master
