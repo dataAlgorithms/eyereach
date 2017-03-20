@@ -31,3 +31,10 @@ $ git push origin master
 
 4. cancel git
 git reset HEAD~1
+
+5. push error 
+D:\eclipse\eclipse\workspace\Sae\guaguastd>git push -u origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'https://git.sinacloud.com/guaguastd'
+
+git push --all -u
