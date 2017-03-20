@@ -28,3 +28,6 @@ $ cd reponame
 $ git mv README README.md
 $ git commit -m "renamed"
 $ git push origin master
+
+4. cancel git
+git reset HEAD~1
