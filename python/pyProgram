@@ -166,3 +166,17 @@ global_expire_queue_16_lock L
 '''
 
     numInStrSort(primaryStr)
+
+7. Switch case for Python
+def f(x):
+    return {
+        'a': 1,
+        'b': 2,
+    }.get(x, 9)
+    
+In [6]: f('a')
+Out[6]: 1
+In [7]: f('b')
+Out[7]: 2
+In [9]: f('bc')
+Out[9]: 9
