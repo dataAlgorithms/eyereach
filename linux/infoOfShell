@@ -198,3 +198,28 @@ ps -eo pcpu,pmem,vsize,pid,cmd | sort -k 1 -nr | head -5
 16. linux下监控进程带宽
 https://centos.pkgs.org/6/epel-x86_64/nethogs-0.8.5-1.el6.x86_64.rpm.html
 https://centos.pkgs.org/5/epel-x86_64/nethogs-0.7-3.20080627cvs.el5.x86_64.rpm.html
+
+17. 按列排序
+netstat -anlp|grep nginx|grep ES|grep -v 127.0.0.1|sort -k5
+
+18. 按列排序后按某列合并汇总
+ netstat -anlp|grep nginx|grep ES|grep -v 127.0.0.1|sort -k5|awk {'print $5'}|cut -d ":" -f1| awk '{s[$1] += 1}END{ for(i in s){  print i, s[i] } }' 
+ 
+19. 获取指定进程的cpu, 内存
+[root@CHN-CA-d-3WG conf]# ps -p 94307 -o %cpu,%mem,cmd (按pid)
+%CPU %MEM CMD
+16.2  0.3 nginx: worker process                  
+
+[root@CHN-CA-d-3WG conf]# ps -C nginx -o %cpu,%mem,cmd (按进程名字)
+%CPU %MEM CMD
+ 0.0  0.3 nginx: master process /usr/local/sms/sbin/nginx -c /usr/local/sms/conf/nginx.conf
+ 7.3  0.2 nginx: worker process is shutting down                     
+12.4  0.2 nginx: worker process is shutting down                     
+16.4  0.2 nginx: worker process is shutting down                     
+17.5  0.2 nginx: worker process is shutting down                     
+16.2  0.3 nginx: worker process                                      
+ 0.6  0.3 nginx: worker process                                      
+ 0.7  0.3 nginx: worker process                                      
+ 1.0  0.3 nginx: worker process                                      
+ 0.0  0.3 nginx: cache manager process   
+ 
