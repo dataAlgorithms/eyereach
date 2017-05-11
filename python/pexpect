@@ -1,0 +1,138 @@
+#! /usr/bin/env python
+
+"""
+The script is used to check consumer
+
+Usage:
+
+./yyPubDisCpuMemCheck.py server_ips
+
+eg. 
+./yyPubDisCpuMemCheck.py '180.97.184.75 180.97.184.77 180.97.184.105 180.97.184.74 180.97.184.84 180.97.184.81' 
+"""
+
+# import
+import sys
+import os
+import pexpect
+import time
+import re
+
+# Define glboal parameter
+user_name = 'root'
+user_password = '123456'
+prompt = '[a-z\.A-Z]+@'
+finalResult = {}
+
+# Usage
+def exit_with_usage():
+    print globals()['__doc__']
+    os._exit(1)
+
+# Server login
+def server_ssh_login(server_ip=None, user_name=None, user_password=None):
+    
+    if server_ip == '180.97.184.84':
+        child = pexpect.spawn('f %s' % (server_ip))
+    else:
+        child = pexpect.spawn('c %s' % (server_ip))
+    child.logfile = sys.stdout
+
+    while True:
+        try:
+            i = child.expect([pexpect.TIMEOUT, '#', 'yes/no', 'assword:'], timeout=60)
+            if i == 0 or i == 1:
+                child.sendline('')
+                break
+            elif i == 2:
+                child.sendline('yes')   
+            else:
+                child.sendline('%s' % user_password)
+        except:
+            print '%s can not login.' % server_ip
+            return None
+
+    child.expect(prompt)
+    child.expect('.*') 
+    return child
+
+# Excute send and expect
+def excute_send_expect(server_ip=None, commands=None, exp_prompt=None, sms_id=None):
+   
+    import re
+
+    finalResult.setdefault(server_ip, {})
+    child = server_ssh_login(server_ip=server_ip, user_name=user_name, user_password=user_password)
+    if child is None:
+        return
+
+    print '\r:::Source IP is %s\r\r' % server_ip
+
+    print '1111'
+    print commands
+    print ''
+
+    for command in commands:
+        print 'command:', command
+        if re.search("netstat", command):
+            print '\r:::Stream from Upper server and Transcoded server!!!\r'
+            child.sendline ('%s' % command)
+            child.expect(pattern=command, timeout=None)
+            child.expect('(.*?)[a-z\.A-Z]+@', timeout=10)
+
+            netstat = child.match.group(1).split(',')[1]
+            netstat = re.sub(r"(?s)(\d+\.\d+\.\d+\.\d+\s+\d+.*)\[root@", r"\1", netstat)
+            finalResult[server_ip]['netstat'] = netstat
+
+            print 'netstat:', netstat
+        elif re.search("ps -C nginx", command):
+            print '\r\r:::Cpu Mem usage!!!\r'
+            child.sendline ('%s' % command)
+            child.expect(pattern=command, timeout=None)
+            child.expect('(.*?)[a-z\.A-Z]+@', timeout=10)
+
+            cpuMem = re.sub("(?s)(.*?)root@", r"\1", child.match.group(1))
+            #cpuMem = child.match.group(1)
+            finalResult[server_ip]['cpuMem'] = cpuMem
+            #print '2222222222222'
+            #print cpuMem
+        else:
+            child.sendline ('%s' % command)
+            child.expect(pattern=command, timeout=None)
+            child.expect('(.*?)[a-z\.A-Z]+@')
+
+        time.sleep(1)
+
+    child.close()
+
+# Main
+def excute_main(server_ips=None, sms_id=None):
+
+    commands = ["""netstat -anlp|grep nginx|grep ES|grep -v 127.0.0.1|sort -k5|awk {'print $5'}|cut -d ":" -f1| awk '{s[$1] += 1}END{ for(i in s){  print i, s[i] } }'""",
+               """ps -C nginx -o %cpu,%mem,cmd""",
+               """pwd"""]
+
+    for server_ip in server_ips:
+        excute_send_expect(server_ip=server_ip, commands=commands, exp_prompt='root@', sms_id=sms_id)
+
+# Entrance
+print 'You entered: ', len(sys.argv), 'arguments...'
+print 'they are: ', str(sys.argv)
+
+if len(sys.argv) < 2:
+    exit_with_usage()
+elif len(sys.argv) == 2:
+    server_ips = [w for w in sys.argv[1:][0].split()]
+    print 'server_ips:', server_ips
+    excute_main(server_ips=server_ips)
+    #print finalResult
+
+    fobj = open("yyFinalResult.txt", "w+")
+    for server in finalResult:
+        fobj.write('%s:::::server %s' % (os.linesep, server))
+        fobj.write('%s' % os.linesep)
+        for key in finalResult[server]:
+            fobj.write('::: %s' % (key))
+            fobj.write(finalResult[server][key])
+            fobj.write(os.linesep)
+    fobj.close()
