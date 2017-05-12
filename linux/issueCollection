@@ -18,3 +18,12 @@ root@webserver:~# lsattr /etc/resolv.conf
 
 root@webserver:~# vim /etc/resolv.conf
 root@webserver:~#
+
+3. check why cpu usage is very high
+eg, 比如进程名字是nginx
+  for i in `ps -AL |grep nginx |cut -c 7-12`; do \
+    echo === $i ===; \
+    gdb --q --n --ex bt --batch --pid $i; \
+  done 2>&1 |tee stacks.txt
+  
+  https://newspaint.wordpress.com/2013/07/24/how-to-diagnose-high-sys-cpu-on-linux/
