@@ -1,1 +1,2 @@
 http://blog.csdn.net/21aspnet/article/details/8172124
+valgrind --trace-children=yes --log-file=memcheck.log --tool=memcheck --leak-check=full /usr/local/sms/sbin/nginx
