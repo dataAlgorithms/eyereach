@@ -223,3 +223,5 @@ netstat -anlp|grep nginx|grep ES|grep -v 127.0.0.1|sort -k5
  1.0  0.3 nginx: worker process                                      
  0.0  0.3 nginx: cache manager process   
  
+20. 查询指定进程的内存
+top -bn1 | sed -n '/nginx/p'
