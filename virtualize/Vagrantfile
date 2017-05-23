@@ -1,0 +1,98 @@
+﻿Vagrant.configure("2") do |config|
+  config.vm.define "ipupper" do |ipupper|
+    ipupper.vm.box = "centos65"
+    ipupper.vm.hostname = 'ipupper'
+    ipupper.vm.box_url = "centos/centos65"
+
+    ipupper.vm.network :private_network, ip: "192.168.56.101"
+    ipupper.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
+
+
+    ipupper.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipupper"]
+    end
+  end
+
+  config.vm.define "ipsourceA" do |ipsourceA|
+    ipsourceA.vm.box = "centos65"
+    ipsourceA.vm.hostname = 'ipsourceA'
+    ipsourceA.vm.box_url = "centos/centos65"
+
+    ipsourceA.vm.network :private_network, ip: "192.168.56.102"
+    ipsourceA.vm.network :forwarded_port, guest: 22, host: 10222, id: "ssh"
+
+
+    ipsourceA.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipsourceA"]
+    end
+  end
+  
+  config.vm.define "ipsourceB" do |ipsourceB|
+    ipsourceB.vm.box = "centos65"
+    ipsourceB.vm.hostname = 'ipsourceB'
+    ipsourceB.vm.box_url = "centos/centos65"
+
+    ipsourceB.vm.network :private_network, ip: "192.168.56.103"
+    ipsourceB.vm.network :forwarded_port, guest: 22, host: 10322, id: "ssh"
+
+
+    ipsourceB.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipsourceB"]
+    end
+  end
+
+  config.vm.define "ipsuperA" do |ipsuperA|
+    ipsuperA.vm.box = "centos65"
+    ipsuperA.vm.hostname = 'ipsuperA'
+    ipsuperA.vm.box_url = "centos/centos65"
+
+    ipsuperA.vm.network :private_network, ip: "192.168.56.104"
+    ipsuperA.vm.network :forwarded_port, guest: 22, host: 10422, id: "ssh"
+
+
+    ipsuperA.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--name", "ipsuperA"]
+    end
+  end
+ 
+  config.vm.define "ipsuperB" do |ipsuperB|
+    ipsuperB.vm.box = "centos65"
+    ipsuperB.vm.hostname = 'ipsuperB'
+    ipsuperB.vm.box_url = "centos/centos65"
+
+    ipsuperB.vm.network :private_network, ip: "192.168.56.105"
+    ipsuperB.vm.network :forwarded_port, guest: 22, host: 10522, id: "ssh"
+
+
+    ipsuperB.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipsuperB"]
+    end
+  end
+  
+  config.vm.define "ipedge" do |ipedge|
+    ipedge.vm.box = "centos65"
+    ipedge.vm.hostname = 'ipedge'
+    ipedge.vm.box_url = "centos/centos65"
+
+    ipedge.vm.network :private_network, ip: "192.168.56.106"
+    ipedge.vm.network :forwarded_port, guest: 22, host: 10622, id: "ssh"
+
+
+    ipedge.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipedge"]
+    end
+  end
+   
+end
