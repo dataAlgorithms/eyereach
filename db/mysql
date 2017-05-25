@@ -1313,3 +1313,17 @@ easy_install  MySQL-python
 
 三. Windows工具
 Navicat for mysql
+
+四, 存储查询
+//所有库
+SELECT table_schema AS "Database", 
+ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)" 
+FROM information_schema.TABLES 
+GROUP BY table_schema;
+
+//特定表
+SELECT table_name AS "Table",
+ROUND(((data_length + index_length) / 1024 / 1024), 2) AS "Size (MB)"
+FROM information_schema.TABLES
+WHERE table_schema = "database_name"
+ORDER BY (data_length + index_length) DESC;
