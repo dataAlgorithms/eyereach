@@ -1,2 +1,8 @@
 1. mp4 to flv
 ffmpeg -i speed.mp4 -c copy  speed.flv
+
+2. concat
+[root@newisscenter ffmpegBin]# cat concat.txt 
+file '/root/ffmpegBin/speed.mp4'
+file '/root/ffmpegBin/speed.mp4'
+[root@newisscenter ffmpegBin]# ./ffmpeg -f concat -i concat.txt -c copy -f flv rtmp://192.168.32.217:1936/httpflv?vhost=smsupper/stream
