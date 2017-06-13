@@ -225,3 +225,11 @@ netstat -anlp|grep nginx|grep ES|grep -v 127.0.0.1|sort -k5
  
 20. 查询指定进程的内存
 top -bn1 | sed -n '/nginx/p'
+
+24. 查看linux进程链接状态
+[root@CHN-CA-j-3W2 ~]# netstat -n |awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
+TIME_WAIT 29
+SYN_SENT 1
+FIN_WAIT1 1
+ESTABLISHED 60
+LAST_ACK 1
