@@ -1,0 +1,67 @@
+1. 应用程序
+[root@CMN-SY-4-3gU ~]# opcontrol --setup --event=CPU_CLK_UNHALTED:10000:0:0:1
+No vmlinux file specified. You must specify the correct vmlinux file, e.g.
+opcontrol --vmlinux=/path/to/vmlinux
+If you do not have a vmlinux file, use 
+opcontrol --no-vmlinux
+Enter opcontrol --help for full options
+[root@CMN-SY-4-3gU ~]# opcontrol --init
+[root@CMN-SY-4-3gU ~]#  opcontrol --no-vmlinux
+[root@CMN-SY-4-3gU ~]#  opcontrol --reset
+[root@CMN-SY-4-3gU ~]#  opcontrol --start 
+Using default event: CPU_CLK_UNHALTED:100000:0:1:1
+Using 2.6+ OProfile kernel interface.
+Using log file /var/lib/oprofile/samples/oprofiled.log
+Daemon started.
+[root@CMN-SY-4-3gU ~]#  opcontrol --dump
+[root@CMN-SY-4-3gU ~]#  opreport -l /usr/local/sms/sbin/nginx  
+CPU: Intel Architectural Perfmon, speed 2100.27 MHz (estimated)
+Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask of 0x00 (No unit mask) count 100000
+samples  %        image name               symbol name
+9787     25.0525  nginx                    ngx_media_quality_stat_handler
+9092     23.2734  nginx                    ngx_http_billing_sync
+2104      5.3858  nginx                    ngx_rtmp_send_message
+1805      4.6204  nginx                    ngx_rtmp_live_av
+1050      2.6878  nginx                    ngx_rtmp_billing_sync
+740       1.8942  nginx                    ngx_rtmp_send
+701       1.7944  nginx                    ngx_rtmp_recv
+610       1.5615  nginx                    ngx_rtmp_alloc_shared_buf
+539       1.3797  nginx                    llex
+443       1.1340  nginx                    lj_str_new
+394       1.0085  nginx                    ngx_epoll_process_events
+362       0.9266  nginx                    ngx_vslprintf
+[root@CMN-SY-4-3gU ~]#  opreport                              
+CPU: Intel Architectural Perfmon, speed 2100.27 MHz (estimated)
+Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask of 0x00 (No unit mask) count 100000
+CPU_CLK_UNHALT...|
+  samples|      %|
+------------------
+   430058 56.6620 no-vmlinux
+    97001 12.7803 python2.7
+    48542  6.3956 nginx
+	CPU_CLK_UNHALT...|
+	  samples|      %|
+	------------------
+	    48521 99.9567 nginx
+	        8  0.0165 anon (tgid:46963 range:0x340000-0x350000)
+	        7  0.0144 anon (tgid:46964 range:0x340000-0x350000)
+	        4  0.0082 anon (tgid:46962 range:0x340000-0x350000)
+	        2  0.0041 anon (tgid:46961 range:0x340000-0x350000)
+    36053  4.7501 python (deleted)
+    35132  4.6288 libc-2.5.so
+    31635  4.1681 98ac12f5.so
+    19745  2.6015 libperl.so
+    12073  1.5907 libc-2.5.so
+     6183  0.8146 falcon-agent
+	CPU_CLK_UNHALT...|
+	  samples|      %|
+	------------------
+	     6165 99.7089 falcon-agent
+	       18  0.2911 [vdso] (tgid:5768 range:0x7fff8efff000-0x7fff8f000000)
+     5776  0.7610 libfreebl3.so
+     4256  0.5607 firewood_lightweight
+     4041  0.5324 libpthread-2.5.so
+     3824  0.5038 libperl.so (deleted)
+     
+ 2. 内核
+ strace -s -p 
