@@ -17,3 +17,7 @@ make prefix=/usr/local/git all
 make prefix=/usr/local/git install
 echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/bashrc
 source /etc/bashrc
+
+3. autoconf and automake
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz 
+wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
