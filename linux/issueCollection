@@ -27,3 +27,6 @@ eg, 比如进程名字是nginx
   done 2>&1 |tee stacks.txt
   
   https://newspaint.wordpress.com/2013/07/24/how-to-diagnose-high-sys-cpu-on-linux/
+  
+4. kill tcp connection
+https://gist.github.com/vdw/09efee4f264bb2630345
