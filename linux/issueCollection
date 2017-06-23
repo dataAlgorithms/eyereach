@@ -1,6 +1,8 @@
 1. -bash: /bin/rm: 参数列表过长 (rm -rf stream*)
 Solution:
 find . -name "stream*"|xargs rm -rf "*"
+或者
+time rsync -a --delete 文件夹名字
 
 2. resolv.conf permission denied
 root@webserver:~# lsattr /etc/resolv.conf
