@@ -6,3 +6,7 @@ ffmpeg -i speed.mp4 -c copy  speed.flv
 file '/root/ffmpegBin/speed.mp4'
 file '/root/ffmpegBin/speed.mp4'
 [root@newisscenter ffmpegBin]# ./ffmpeg -f concat -i concat.txt -c copy -f flv rtmp://192.168.32.217:1936/httpflv?vhost=smsupper/stream
+
+3. rtmp to mp4
+./ffmpeg -i rtmp://admin:123456@192.168.32.218:1935/live?vhost=www.chinache.hls.com/stream -c copy -map 0 
+     -f segment -segment_time 100 -segment_format mp4 "out%03d.mp4"
