@@ -1,0 +1,86 @@
+一. Linux时间戳和标准时间的互转
+
+在LINUX系统中，有许多场合都使用时间戳的方式表示时间，即从1970年1月1日起至当前的天数或秒数。
+如/etc/shadow里的密码更改日期和失效日期，还有代理服务器的访问日志对访问时间的记录等等。
+ 
+下面介绍几种时间戳格式和标准时间格式转换的方法：
+1、分别以标准格式和时间戳来显示当前时间
+[root@365linux ~]# date    
+2010年 08月 10日 星期二 03:39:21 CST   
+[root@365linux ~]# date +%s 
+1281382775
+2、显示指定时间的时间戳
+[root@365linux ~]# date -d "2010-07-20 10:25:30" +%s    
+1279592730
+3、将时间戳转换为标准时间格式
+方法1：使用date命令
+[root@365linux ~]# date -d "@1279592730" 
+ 2010年 07月 20日 星期二 10:25:30 CST
+[root@365linux ~]# date -d "1970-01-01 utc 1279592730 seconds" 
+ 2010年 07月 20日 星期二 10:25:30 CST
+[root@365linux ~]# date -d "1970-01-01 14781 days" "+%Y/%m/%d %H:%M:%S" 
+ 2010/06/21 00:00:00
+[root@localhost tmp]#  date -d "@1279592730" 
+ Tue Jul 20 10:25:30 CST 2010
+ [root@localhost tmp]#  date -d "@1279592730" +"%Y%m%d %H:%M:%S"
+ 20100720 10:25:30
+ [root@localhost tmp]#  date -d "@1279592730" +"%F %H:%M:%S" 
+2010-07-20 10:25:30
+ [root@localhost tmp]# date -d "1970-01-01 utc 1279592730 seconds"  
+Tue Jul 20 10:25:30 CST 2010
+ [root@localhost tmp]# date -d "1970-01-01 utc 1279592730 seconds" +"%F %H:%M:%S" 2010-07-20 10:25:30
+ 
+ 
+方法2：使用awk里的时间函数
+[root@365linux ~]# echo "1279592730" |awk '{print strftime ("%F %T",$0)}' 
+ 2010-07-20 10:25:30
+ 
+方法3：使用perl处理
+[root@365linux ~]# perl -e 'print localtime(1279592730)."\n";' 
+ Tue Jul 20 10:25:30 2010
+ 
+补充：
+关于时间格式的解释
+ 
+UTC  (Universal Time Coordinated,UTC)世界协调时间
+CST  (China Standard Time UTC+8:00)中国沿海时间(北京时间)
+GMT  (Greenwich Mean Time)格林威治标准时间：
+ 
+系统时区设置：
+[root@365linux ~]# vim /etc/sysconfig/clock ZONE="Asia/Shanghai" 
+ UTC=true
+ ARC=false
+[root@365linux ~]# cp /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
+
+二. 设置日期时间
+我们一般使用“date -s”命令来修改系统时间。比如将系统时间设定成2010年4月5日的命令如下。　　
+[root@rhel ~]# date -s 20100405
+Mon Apr  5 00:00:00 CST 2010
+ 
+将系统时间设定成14点31分0秒的命令如下
+[root@rhel ~]# date -s 14:31:00
+Mon Apr  5 14:31:00 CST 2010
+ 
+以上日期和时间也可以一次输入完成：(此时日期和时间用双引号引起来)
+[root@rhel ~]# date -s "20100405 14:31:00"
+Mon Apr  5 14:31:00 CST 2010
+ 
+----------------------------
+用以下格式也可以完成：
+#date -s 07/26/2005 　　　　
+将系统时间设定成下午11点12分0秒的命令如下。　　　　
+#date -s 11:12:00 　　　
+　
+ 
+注意，这里说的是系统时间，是由Linux操作系统维护的。　　　　
+在系统启动时，Linux操作系统将时间从CMOS中读到系统时间变量中，以后修改时间通过修改系统时间实现。
+为了保持系统时间与CMOS时间的一致性，Linux每隔一段时间会将系统时间写入CMOS。由于该同步是每隔一段时间（大约是11分钟）
+进行的，在我们执行date -s后，如果马上重起机器，修改时间就有可能没有被写入CMOS,这就是问题的原因。如果要确保修改生效可以执行如下命令。　　　　
+#clock -w 　　　　这个命令强制把系统时间写入CMOS。
+----------------------------
+CST：中国标准时间（China Standard Time），这个解释可能是针对RedHat Linux。
+UTC：协调世界时，又称世界标准时间，简称UTC，从英文国际时间/法文协调时间“Universal Time/Temps Cordonné”而来。
+中国大陆、香港、澳门、台湾、蒙古国、新加坡、马来西亚、菲律宾、澳洲西部的时间与UTC的时差均为+8，也就是UTC+8。
+GMT：格林尼治标准时间（旧译格林威治平均时间或格林威治标准时间；英语：Greenwich Mean Time，GMT）是指位于英国伦敦
+郊区的皇家格林尼治天文台的标准时间，因为本初子午线被定义在通过那里的经线。
+设置完系统时间后,还需要同步到硬件时钟上
