@@ -28,3 +28,6 @@ sc.exe delete MongoDB
 
 //windows client
 mongovue 
+
+6. mongo_spark
+https://github.com/mongodb/mongo-hadoop/blob/master/spark/src/main/python/README.rst
