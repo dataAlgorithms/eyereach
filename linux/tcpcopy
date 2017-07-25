@@ -1,0 +1,11 @@
+1. Install
+//centos5.8
+wget https://github.com/wangbin579/tcpcopy/archive/0.9.6.tar.gz -O tcpcopy-0.9.6.tar.gz --no-check-certificate
+tar -zxvf tcpcopy-0.9.6.tar.gz 
+cd tcpcopy-0.9.6
+./autogen.sh
+export LIBS=
+export CFLAGS=
+./configure --enable-advanced --enable-pcap --prefix=/usr/local/tcpcopy
+make
+make install
