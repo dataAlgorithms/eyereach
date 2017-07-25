@@ -1,5 +1,7 @@
 1. Install
 //centos5.8
+//Online server
+yum -y install libpcap-devel gcc
 wget https://github.com/wangbin579/tcpcopy/archive/0.9.6.tar.gz -O tcpcopy-0.9.6.tar.gz --no-check-certificate
 tar -zxvf tcpcopy-0.9.6.tar.gz 
 cd tcpcopy-0.9.6
@@ -9,3 +11,29 @@ export CFLAGS=
 ./configure --enable-advanced --enable-pcap --prefix=/usr/local/tcpcopy
 make
 make install
+
+//Test server
+ip route add 192.168.90.35/32 dev eth0
+route add -net 0.0.0.0/0 gw 192.168.90.35
+
+//Assitant server
+yum install libpcap-devel
+git clone http://github.com/session-replay-tools/intercept
+cd intercept
+./configure 
+make
+make install
+
+2. Refer
+http://www.cnblogs.com/zhengyun_ustc/p/tcpcopy.html
+
+3. Cmd
+Online server:
+./tcpcopy -x 80-192.168.168.10.46:80 -s 192.168.90.35 -d
+
+Test server:
+ip route add 192.168.90.35/32 dev eth0
+route add -net 0.0.0.0/0 gw 192.168.90.35
+
+Assistant server:
+./intercept -i eth0 -F 'tcp and src port 80' -d
