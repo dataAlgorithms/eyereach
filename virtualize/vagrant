@@ -40,3 +40,31 @@ vagrant init
 vagrant box add centos66 centos-6.6-x86_64.box
 vagrant up
 vagrant ssh
+
+# Copy file to vagrant device
+法1：Vagrant配置
+在Vagrantfile加入provision
+Vagrant.configure("2") do |config|
+  config.vm.define "ipupper" do |ipupper|
+    ipupper.vm.box = "centos65"
+    ipupper.vm.hostname = 'ipupper'
+    ipupper.vm.box_url = "centos/centos65"
+
+    ipupper.vm.network :private_network, ip: "192.168.56.101"
+    ipupper.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
+
+
+    ipupper.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "ipupper"]
+    end
+  end
+  
+  config.vm.provision "file", source: "D:\\ads\\elasticsearch-2.3.5.tar.gz", destination: "/home/vagrant/elasticsearch-2.3.5.tar.gz"
+
+end
+
+法2： Scp
+cp -P 2222 your_file vagrant@127.0.0.1:/home/vagrant
+其中:2222 为vagrant配置中的端口
