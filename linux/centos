@@ -83,3 +83,9 @@ chmod +x ./jq
 sudo cp jq /usr/bin
 
 cat print_json |jq .
+
+12. 查看安装什么软件
+yum list installed |grep java
+
+13. 卸载
+yum -y remove java-1.7.0-openjdk*
