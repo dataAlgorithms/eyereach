@@ -1,0 +1,12 @@
+1. 查询文件大小
+[root@hlssource logs]# du -sh *
+4.0K    access.log
+4.0K    error.log
+4.0K    http_access.log
+137M    httpbillingd.log
+8.0K    nginx.pid
+1.4M    redis.log
+2.1M    result
+160M    rtmpbillingd.log
+1008K   slavehttpd.log
+70M     swfserver.log
