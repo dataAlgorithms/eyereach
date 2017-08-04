@@ -68,3 +68,6 @@ end
 法2： Scp
 cp -P 2222 your_file vagrant@127.0.0.1:/home/vagrant
 其中:2222 为vagrant配置中的端口
+
+# increase disk space
+https://github.com/sprotheroe/vagrant-disksize
