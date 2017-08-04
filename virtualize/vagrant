@@ -71,3 +71,8 @@ cp -P 2222 your_file vagrant@127.0.0.1:/home/vagrant
 
 # increase disk space
 https://github.com/sprotheroe/vagrant-disksize
+https://stackoverflow.com/questions/31746907/vagrant-no-space-left-on-device
+
+mkfs -t ext3 -L /newfs -v /dev/sdb2
+mkdir /newfs
+mount -t ext3 /dev/sdb2 /newfs
