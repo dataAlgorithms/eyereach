@@ -21,3 +21,6 @@ source /etc/bashrc
 3. autoconf and automake
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz 
 wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
+
+4. x11
+https://corpocrat.com/2008/08/19/how-to-install-xvfb-x11-server-in-linux-server/
