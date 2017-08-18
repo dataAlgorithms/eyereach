@@ -10,3 +10,36 @@ file '/root/ffmpegBin/speed.mp4'
 3. rtmp to mp4
 ./ffmpeg -i rtmp://admin:123456@192.168.32.218:1935/live?vhost=www.chinache.hls.com/stream -c copy -map 0 
      -f segment -segment_time 100 -segment_format mp4 "out%03d.mp4"
+
+4. ffmpeg debug
+[root@hlssource sbin]# ./ffmpeg -re -fdebug ts -i rtmp://116.251.231.12/tz22/8-221 -c copy  -y -f flv test_source.flv
+ffmpeg version 3.2 Copyright (c) 2000-2016 the FFmpeg developers
+  built with gcc 4.1.2 (GCC) 20080704 (Red Hat 4.1.2-55)
+  configuration: --disable-shared --enable-static
+  libavutil      55. 34.100 / 55. 34.100
+  libavcodec     57. 64.100 / 57. 64.100
+  libavformat    57. 56.100 / 57. 56.100
+  libavdevice    57.  1.100 / 57.  1.100
+  libavfilter     6. 65.100 /  6. 65.100
+  libswscale      4.  2.100 /  4.  2.100
+  libswresample   2.  3.100 /  2.  3.100
+ matched as AVOption 'fdebug' with argument 'ts'.
+Reading option '-i' ... matched as input file with argument 'rtmp://116.251.231.12/tz22/8-221'.
+Reading option '-c' ... matched as option 'c' (codec name) with argument 'copy'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option '-f' ... matched as option 'f' (force format) with argument 'flv'.
+Reading option 'test_source.flv' ... matched as output file.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input file rtmp://116.251.231.12/tz22/8-221.
+Applying option re (read input at native frame rate) with argument 1.
+Successfully parsed a group of options.
+Opening an input file: rtmp://116.251.231.12/tz22/8-221.
+[rtmp @ 0x115a3d60] No default whitelist set
+[tcp @ 0x115a3c40] No default whitelist set
+[rtmp @ 0x115a3d60] Handshaking...
+[rtmp @ 0x115a3d60] Type answer 3
+[rtmp @ 0x115a3d60] Server version 3.5.2.1
+[rtmp @ 0x115a3d60] Proto = rtmp, path = /tz22/8-221, app = tz22, fname = 8-221
