@@ -10,3 +10,8 @@
 160M    rtmpbillingd.log
 1008K   slavehttpd.log
 70M     swfserver.log
+
+2. 查看硬盘大小
+[root@CNC-GX-f-3n9 conf]# fdisk -l |grep Disk
+Disk /dev/sda: 599.5 GB, 599550590976 bytes
+[root@CNC-GX-f-3n9 conf]# 
