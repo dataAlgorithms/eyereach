@@ -65,3 +65,6 @@ CPU_CLK_UNHALT...|
      
  2. 内核
  strace -s -p 
+ 
+ 3. fd
+ https://www.cyberciti.biz/faq/linux-find-all-file-descriptors-used-by-a-process/
