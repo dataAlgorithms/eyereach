@@ -32,3 +32,15 @@ eg, 比如进程名字是nginx
   
 4. kill tcp connection
 https://gist.github.com/vdw/09efee4f264bb2630345
+
+5. CentOS 6.4 更新失敗 Error: requested datatype primary not available
+% sudo yum upgrade
+Loaded plugins: security
+Error: requested datatype primary not available
+
+--
+解决方案：
+a. 更新源的問題
+% sudo yum clean all
+% cd /etc/yum.repos.d
+% rm -rf 更新源
