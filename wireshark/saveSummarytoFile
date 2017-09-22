@@ -1,0 +1,7 @@
+https://ask.wireshark.org/questions/25936/how-to-export-packet-summary-to-text-file
+
+关键点:
+tshark -r aaa.pcapng -P -O "http" > http_summary.txt
+
+安装:
+yum install wireshark
