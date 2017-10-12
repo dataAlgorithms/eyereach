@@ -163,3 +163,29 @@ Block Outgoing Request From LAN IP 192.168.1.200?
 Use the following syntax:
 # /sbin/iptables -A OUTPUT -s 192.168.1.200 -j DROP
 # /sbin/service iptables save
+
+######################
+centos使能iptables
+
+iptables提示：Firewall modules are not loaded
+
+具体的异常现象： 
+1.启动或者关闭防火墙没任何的提示
+
+[root@ethnicity ~]# service iptables start
+[root@ethnicity ~]# service iptables stop
+1
+2
+2.查看防火墙的状态直接提示模块未加载
+
+[root@ethnicity ~]# service iptables status
+iptables: Firewall modules are not loaded.
+1
+2
+修复的方法：
+
+modprobe  ip_tables  #加载ip_tables模块
+modprobe  iptable_filter  #加载iptable_filter模块
+[root@ethnicity ~]# lsmod | grep iptable  #查看模块，有模块即解决了
+iptable_filter          2173  0 
+ip_tables               9567  1 iptable_filter
