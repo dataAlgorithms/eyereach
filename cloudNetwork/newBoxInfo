@@ -1,7 +1,6 @@
 1. CBN-WH-5-3g7  (湖北机器)
 
 2. CBN-WH-5-3gD  (湖北机器)
-
 [root@CBN-WH-5-3gD ~]# ifconfig
 eth0      Link encap:Ethernet  HWaddr 48:43:5A:29:7E:ED  
           inet addr:119.36.161.185  Bcast:119.36.161.191  Mask:255.255.255.192
@@ -103,3 +102,17 @@ ethtool -G eth3 tx 4096 >/dev/null 2>&1
 ulimit -Hn 348160
 echo "1024 61000" > /proc/sys/net/ipv4/ip_local_port_range
 echo "FlexiCache Version: `/usr/local/squid/sbin/squid -v |grep Version |awk '{print $4}'`" > /etc/motd
+[root@CBN-WH-5-3gD ~]#      route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+223.202.52.88   119.36.161.129  255.255.255.255 UGH   0      0        0 eth0
+119.36.161.128  0.0.0.0         255.255.255.192 U     0      0        0 eth0
+111.200.33.192  119.36.161.129  255.255.255.192 UG    0      0        0 eth0
+36.110.51.0     119.36.161.129  255.255.255.192 UG    0      0        0 eth0
+61.135.207.0    119.36.161.129  255.255.255.0   UG    0      0        0 eth0
+100.126.1.0     0.0.0.0         255.255.255.0   U     0      0        0 eth1
+101.251.97.0    119.36.161.129  255.255.255.0   UG    0      0        0 eth0
+220.181.64.0    119.36.161.129  255.255.255.0   UG    0      0        0 eth0
+58.68.140.0     119.36.161.129  255.255.255.0   UG    0      0        0 eth0
+169.254.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth1
+0.0.0.0         100.126.1.1     0.0.0.0         UG    0      0        0 eth1
