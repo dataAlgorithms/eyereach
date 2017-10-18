@@ -116,3 +116,8 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 58.68.140.0     119.36.161.129  255.255.255.0   UG    0      0        0 eth0
 169.254.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth1
 0.0.0.0         100.126.1.1     0.0.0.0         UG    0      0        0 eth1
+
+[root@CBN-WH-5-3gD ~]#                  wget -qO- http://223.203.98.51/client_info.sh|bash
+,CBN-WH-5-3gD,100.126.3.57,100.126.1.57,255.255.255.0,100.126.1.1,100.126.1.57,255.255.255.0,48:43:5A:29:7E:EE,40002753gD,CentOS release 5.8 (Final),NObond0NObond1,0%,cbn-wh-5-3gd-185
+[root@CBN-WH-5-3gD ~]#       /etc/init.d/ipmi  restart  >/dev/null &&   ipmitool -I open lan print |grep "IP Address     "|awk -F":" '{print $2}'  &&  /etc/init.d/ipmi stop >/dev/null
+ 100.126.3.57
