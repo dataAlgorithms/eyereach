@@ -1,3 +1,105 @@
 1. CBN-WH-5-3g7  (湖北机器)
 
 2. CBN-WH-5-3gD  (湖北机器)
+
+[root@CBN-WH-5-3gD ~]# ifconfig
+eth0      Link encap:Ethernet  HWaddr 48:43:5A:29:7E:ED  
+          inet addr:119.36.161.185  Bcast:119.36.161.191  Mask:255.255.255.192
+          inet6 addr: fe80::4a43:5aff:fe29:7eed/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:2555052 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2240737 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:182059879 (173.6 MiB)  TX bytes:1186338068 (1.1 GiB)
+
+eth1      Link encap:Ethernet  HWaddr 48:43:5A:29:7E:EE  
+          inet addr:100.126.1.57  Bcast:100.126.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::4a43:5aff:fe29:7eee/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4357978 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:13063641 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:365804471 (348.8 MiB)  TX bytes:2066245997 (1.9 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:106849428 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:106849428 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:44462553517 (41.4 GiB)  TX bytes:44462553517 (41.4 GiB)
+
+[root@CBN-WH-5-3gD ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth0
+HWADDR=48:43:5A:29:7E:ED
+ONBOOT=yes
+IPADDR=119.36.161.185
+NETMASK=255.255.255.192
+GATEWAY=119.36.161.129
+[root@CBN-WH-5-3gD ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth1
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth1
+HWADDR=48:43:5A:29:7E:EE
+ONBOOT=yes
+HOTPLUG=no
+IPADDR=100.126.1.57
+NETMASK=255.255.255.0
+GATEWAY=100.126.1.1
+[root@CBN-WH-5-3gD ~]# ifconfig
+eth0      Link encap:Ethernet  HWaddr 48:43:5A:29:7E:ED  
+          inet addr:119.36.161.185  Bcast:119.36.161.191  Mask:255.255.255.192
+          inet6 addr: fe80::4a43:5aff:fe29:7eed/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:2555128 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2240790 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:182065579 (173.6 MiB)  TX bytes:1186344504 (1.1 GiB)
+
+eth1      Link encap:Ethernet  HWaddr 48:43:5A:29:7E:EE  
+          inet addr:100.126.1.57  Bcast:100.126.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::4a43:5aff:fe29:7eee/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4358023 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:13063801 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:365807852 (348.8 MiB)  TX bytes:2066257375 (1.9 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:106851110 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:106851110 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:44463252372 (41.4 GiB)  TX bytes:44463252372 (41.4 GiB)
+
+[root@CBN-WH-5-3gD ~]# cat /etc/rc.local 
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+touch /var/lock/subsys/local
+route add -net 223.202.197.192 netmask=255.255.255.192 gw 119.36.161.129
+route add -host 223.202.52.88 gw 119.36.161.129
+route add -net 220.181.64.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 36.110.51.0 netmask 255.255.255.192 gw 119.36.161.129
+route add -net 58.68.140.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 61.135.207.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 111.200.33.192 netmask 255.255.255.192 gw 119.36.161.129
+route add -net 101.251.97.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 223.202.75.0 netmsk 255.255.255.0 gw 119.36.161.129
+ethtool -G eth0 rx 4096 >/dev/null 2>&1
+ethtool -G eth0 tx 4096 >/dev/null 2>&1
+ethtool -G eth1 rx 4096 >/dev/null 2>&1
+ethtool -G eth1 tx 4096 >/dev/null 2>&1
+ethtool -G eth2 rx 4096 >/dev/null 2>&1
+ethtool -G eth2 tx 4096 >/dev/null 2>&1
+ethtool -G eth3 rx 4096 >/dev/null 2>&1
+ethtool -G eth3 tx 4096 >/dev/null 2>&1
+ulimit -Hn 348160
+echo "1024 61000" > /proc/sys/net/ipv4/ip_local_port_range
+echo "FlexiCache Version: `/usr/local/squid/sbin/squid -v |grep Version |awk '{print $4}'`" > /etc/motd
