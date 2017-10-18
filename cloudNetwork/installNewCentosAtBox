@@ -1,3 +1,6 @@
+IPMI密码：root/Huawei12#$  
+
+
 1. CBN-WH-5-3g7  (湖北机器)
 特别注意:
 将bond0相关信息配置到eth0, 不做bond
