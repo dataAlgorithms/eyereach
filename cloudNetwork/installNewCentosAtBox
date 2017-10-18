@@ -1,6 +1,158 @@
-
 1. CBN-WH-5-3g7  (湖北机器)
-网卡有问题, 建议不要使用
+特别注意:
+将bond0相关信息配置到eth0, 不做bond
+
+[root@CBN-WH-5-3g7 hls]# cat /etc/sysconfig/network-scripts/ifcfg-bond0 
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=bond0
+ONBOOT=yes
+BOOTPROTO=static
+NETMASK=255.255.255.192
+IPADDR=119.36.161.179
+GATEWAY=119.36.161.129
+[root@CBN-WH-5-3g7 hls]# cat /etc/sysconfig/network-scripts/ifcfg-eth0
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth0
+HWADDR=48:43:5A:29:80:75
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+[root@CBN-WH-5-3g7 hls]# cat /etc/sysconfig/network-scripts/ifcfg-eth1
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth1
+HWADDR=48:43:5A:29:80:76
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=100.126.1.51
+NETMASK=255.255.255.0
+GATEWAY=100.126.1.1
+[root@CBN-WH-5-3g7 hls]# cat /etc/sysconfig/network-scripts/ifcfg-eth2
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth2
+HWADDR=48:43:5A:29:80:77
+ONBOOT=no
+MASTER=bond0
+SLAVE=yes
+[root@CBN-WH-5-3g7 hls]# cat /etc/sysconfig/network-scripts/ifcfg-eth3
+# Intel Corporation I350 Gigabit Network Connection
+DEVICE=eth3
+HWADDR=48:43:5A:29:80:78
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+[root@CBN-WH-5-3g7 hls]# ifconfig
+bond0     Link encap:Ethernet  HWaddr 48:43:5A:29:80:75  
+          inet addr:119.36.161.179  Bcast:119.36.161.191  Mask:255.255.255.192
+          inet6 addr: fe80::4a43:5aff:fe29:8075/64 Scope:Link
+          UP BROADCAST RUNNING MASTER MULTICAST  MTU:1500  Metric:1
+          RX packets:82308247 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1390990 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:6356006893 (5.9 GiB)  TX bytes:123343340 (117.6 MiB)
+
+eth0      Link encap:Ethernet  HWaddr 48:43:5A:29:80:75  
+          UP BROADCAST RUNNING SLAVE MULTICAST  MTU:1500  Metric:1
+          RX packets:1914681 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:927334 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:455843683 (434.7 MiB)  TX bytes:93440222 (89.1 MiB)
+
+eth1      Link encap:Ethernet  HWaddr 48:43:5A:29:80:76  
+          inet addr:100.126.1.51  Bcast:100.126.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::4a43:5aff:fe29:8076/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4887121 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8828763 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3202575363 (2.9 GiB)  TX bytes:706095209 (673.3 MiB)
+
+eth2      Link encap:Ethernet  HWaddr 48:43:5A:29:80:75  
+          UP BROADCAST RUNNING SLAVE MULTICAST  MTU:1500  Metric:1
+          RX packets:80393566 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:463656 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:5900163210 (5.4 GiB)  TX bytes:29903118 (28.5 MiB)
+
+eth3      Link encap:Ethernet  HWaddr 48:43:5A:29:80:75  
+          UP BROADCAST SLAVE MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:4647617 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:4647617 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:656825372 (626.3 MiB)  TX bytes:656825372 (626.3 MiB)
+
+[root@CBN-WH-5-3g7 hls]# cat /etc/rc.local 
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+touch /var/lock/subsys/local
+ifenslave bond0  eth0 eth2 eth3
+route add -net 223.202.197.192 netmask 255.255.255.192 gw 119.36.161.129
+route add -host 223.202.52.88 gw 119.36.161.129
+route add -net 36.110.51.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 58.68.140.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 61.135.207.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 111.200.33.192 netmask 255.255.255.192 gw 119.36.161.129
+route add -net 101.251.97.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 223.202.75.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 220.181.64.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 124.126.22.0 netmask 255.255.255.0 gw 119.36.161.129
+route add -net 192.168.0.0 netmask 255.255.0.0 gw 119.36.161.129
+route add -net 100.116.0.0 netmask 255.255.0.0 gw 119.36.161.129
+route add -net 172.16.0.0 netmask 255.240.0.0 gw 119.36.161.129
+route add -net 10.0.0.0 netmask 255.0.0.0 gw 119.36.161.129
+ethtool -G bond0 rx 4096 >/dev/null 2>&1
+ethtool -G bond0 tx 4096 >/dev/null 2>&1
+ethtool -G eth1 rx 4096 >/dev/null 2>&1
+ethtool -G eth1 tx 4096 >/dev/null 2>&1
+ethtool -G eth2 rx 4096 >/dev/null 2>&1
+ethtool -G eth2 tx 4096 >/dev/null 2>&1
+ethtool -G eth3 rx 4096 >/dev/null 2>&1
+ethtool -G eth3 tx 4096 >/dev/null 2>&1
+ulimit -Hn 348160
+echo "1024 61000" > /proc/sys/net/ipv4/ip_local_port_range
+echo "FlexiCache Version: `/usr/local/squid/sbin/squid -v |grep Version |awk '{print $4}'`" > /etc/motd
+[root@CBN-WH-5-3g7 hls]#         wget -qO- http://223.203.98.51/client_info.sh|bash
+,CBN-WH-5-3g7,100.126.3.51,100.126.1.51,255.255.255.0,100.126.1.1,100.126.1.51,255.255.255.0,48:43:5A:29:80:76,40002753g7,CentOS release 5.8 (Final),3TObond0 NObond1,0%,cbn-wh-5-3g7-179
+[root@CBN-WH-5-3g7 hls]#       /etc/init.d/ipmi  restart  >/dev/null &&   ipmitool -I open lan print |grep "IP Address     "|awk -F":" '{print $2}'  &&  /etc/init.d/ipmi stop >/dev/null
+ 100.126.3.51
+[root@CBN-WH-5-3g7 hls]# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+223.202.52.88   119.36.161.129  255.255.255.255 UGH   0      0        0 bond0
+223.202.197.238 119.36.161.129  255.255.255.255 UGH   0      0        0 bond0
+119.36.161.128  0.0.0.0         255.255.255.192 U     0      0        0 bond0
+223.202.197.192 119.36.161.129  255.255.255.192 UG    0      0        0 bond0
+111.200.33.192  119.36.161.129  255.255.255.192 UG    0      0        0 bond0
+36.110.51.0     119.36.161.129  255.255.255.192 UG    0      0        0 bond0
+100.126.1.0     0.0.0.0         255.255.255.0   U     0      0        0 eth1
+61.135.207.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+101.251.97.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+223.202.75.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+100.127.3.0     119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+36.110.51.0     119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+220.181.64.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+111.200.33.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+223.202.203.0   119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+58.68.140.0     119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+124.126.22.0    119.36.161.129  255.255.255.0   UG    0      0        0 bond0
+169.254.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth1
+192.168.0.0     119.36.161.129  255.255.0.0     UG    0      0        0 bond0
+172.16.0.0      119.36.161.129  255.240.0.0     UG    0      0        0 bond0
+10.0.0.0        119.36.161.129  255.0.0.0       UG    0      0        0 bond0
+0.0.0.0         100.126.1.1     0.0.0.0         UG    0      0        0 eth1
+
 
 2. CBN-WH-5-3gD  (湖北机器)
 [root@CBN-WH-5-3gD ~]# ifconfig
