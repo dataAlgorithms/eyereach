@@ -1,0 +1,44 @@
+# nginx http config (nginx.conf)
+http {
+default_type application/octet-stream;
+log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+'$status $body_bytes_sent "$http_referer" '
+'"$http_user_agent" "$http_x_forwarded_for"';
+access_log /usr/local/nginx/logs/access.log main;
+client_body_temp_path /var/tmp/nginx;
+proxy_temp_path /var/tmp/nginx;
+fastcgi_temp_path /var/tmp/nginx;
+uwsgi_temp_path /var/tmp/nginx;
+scgi_temp_path /var/tmp/nginx;
+
+sendfile on;
+gzip on;
+server {
+listen 80;
+server_name localhost;
+location /upload {
+root /data/cache2;
+index index.html index.htm;
+autoindex on;
+auth_basic "closed site";
+auth_basic_user_file /root/htpasswd;
+
+dav_methods PUT;
+client_max_body_size 20g;
+create_full_put_path on;
+dav_access group:rw all:r;
+}
+
+location / {
+root /data/cache2/upload;
+}
+
+}
+}
+
+# /root/htpasswd
+# openssl passwd
+video:eGnIfLNKTtBbk
+
+# upload command
+curl -T FC-7.0.285-C.rdb.27570.x86_64.rpm http://163.53.89.101/upload/fc/src/customize/Based-7.0.SVN.16957/rdb/ -u video:video
