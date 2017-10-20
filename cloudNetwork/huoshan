@@ -1,4 +1,57 @@
-1. url
+获取方法
+1. 开启wireshark
+启动抓包
+
+2. 打开天天助手
+使用天天模拟器打开 火山视频 (需要先在模拟器中安装apk)
+
+3. 在模拟器中启动鼠标, 并且点击, 同时关闭(批量)
+
+4. 停止抓包
+将包保存为cap格式
+
+5. 将包放在linux下面
+在centos下面安装wireshark: yum install wireshark
+
+6. 将包的内容过滤到文件
+tshark -r huoshan.cap -x -V >> huoshan_packets
+
+7. 提取需要的url
+[root@CBN-WH-5-3gA packets]#      grep "Full request URI" packets_huoshan |grep -iE "flv|m3u8|ts"
+    [Full request URI [truncated]: http://dm.toutiao.com/ies/network/hotsoon/?iid=16353298159&device_id=40195921054&ac=wifi&channel=pcandroid&aid=1112&app_name=live_stream&version_code=272&version_name=2.7.2&device_platform=android&ssmix=a&devi]
+    [Full request URI [truncated]: http://hotsoon.snssdk.com/service/2/app_alert/?has_market=1&lang=zh&carrier=China%20Mobile&mcc_mnc=46000&access=wifi&iid=16353298159&device_id=40195921054&ac=wifi&channel=pcandroid&aid=1112&app_name=live_strea]
+    [Full request URI: http://api.map.baidu.com/geocoder/v2/?output=json&location=0.0,0.0&ak=XYUPDnaR4Fp1LbU7GT2L7VIK&ts=1508465766&as=a26515cef6f6f9bc89&cp=5c67995f6b96eec9e2]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478533318722882318.flv]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478532082002823950.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478544033722567437.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478537680190868238.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478537680190868238.flv]
+    [Full request URI: http://wx.qlogo.cn/mmopen/vi_32/DIldNq1zeqZKwiadTuHwDBQ1R4vPoic1lBjia4ec4mxUFBLSON6icdPx227EwPTDsyY7ibcmF8czStDoiaTsPeN2Cc6A/0]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478538088833354509.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478808864241388301.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478808864241388301.flv]
+    [Full request URI: http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKYdJ7KEKfcN1LiczgAdtsS165Ly0dOOpw8rtpV61H4O9oMq4iaycqJlqAicWAzDZqhJx5A43z1Iib8XA/0]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478808864241388301.flv]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478806611740756749.flv]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478806611740756749.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478798787581217549.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478798787581217549.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478800621509872397.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478800621509872397.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478787102455794446.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478787102455794446.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478799932479408909.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478780171691395854.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478780171691395854.flv]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478810282474310413.flv]
+    [Full request URI: http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478810282474310413.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478805231101709069.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478805231101709069.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478806696520059661.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478809730516650765.flv]
+    [Full request URI: http://pull-flv-l6-hs.pstatp.com/live/stream-6478809730516650765.flv]
+    
+8. 使用正则表达式(regex bubby)提取url
 http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478533318722882318.flv
 http://pull-flv-l1-hs.pstatp.com/hudong/stream-6478532082002823950.flv
 http://pull-flv-l6-hs.pstatp.com/live/stream-6478544033722567437.flv
@@ -26,3 +79,23 @@ http://pull-flv-l6-hs.pstatp.com/live/stream-6478805231101709069.flv
 http://pull-flv-l6-hs.pstatp.com/live/stream-6478806696520059661.flv
 http://pull-flv-l6-hs.pstatp.com/live/stream-6478809730516650765.flv
 http://pull-flv-l6-hs.pstatp.com/live/stream-6478809730516650765.flv
+
+9. 播测
+windows:
+  ffplay或者vlc
+  
+linux: (域名走公网解析)
+    curl -svo /dev/null "http://pull-flv-l6-hs.pstatp.com/live/stream-6478798787581217549.flv"
+    
+10. 提取可以播放的域名和发布点
+11. 搭建SMS边缘
+将第10步提取的域名和发布点写入nginx配置,
+12. 修改 天天模拟器中 hosts
+使提取的域名指向本地搭建的SMS边缘
+13. 播放
+a. 原url播放
+看播放是否正常
+b. 多个播放
+看回源是否同一个
+c. 播放url加?aaa
+看播放情况
