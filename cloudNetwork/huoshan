@@ -88,14 +88,25 @@ linux: (域名走公网解析)
     curl -svo /dev/null "http://pull-flv-l6-hs.pstatp.com/live/stream-6478798787581217549.flv"
     
 10. 提取可以播放的域名和发布点
+
 11. 搭建SMS边缘
 将第10步提取的域名和发布点写入nginx配置, (参考: CBN-WH-5-3gB )
+
+注意: 关闭防火墙
+
 12. 修改 天天模拟器中 hosts
+系统工具/文件管理器/etc/hosts
+
 使提取的域名指向本地搭建的SMS边缘
-13. 播放
+
+13. 模拟器播放
 a. 原url播放
 看播放是否正常
 b. 多个播放
 看回源是否同一个
 c. 播放url加?aaa
 看播放情况
+
+14. vlc播放
+绑定/etc/hosts
+使提取的域名指向 本地SMS边缘
