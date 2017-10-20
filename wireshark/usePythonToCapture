@@ -1,0 +1,48 @@
+'''
+https://stackoverflow.com/questions/23328588/how-to-create-a-script-to-capture-packets-using-scapy-and-netinfo
+'''
+
+# INSTALL:
+#   sudo apt-get install python-scapy
+# RUN:
+#   sudo /usr/bin/python ./pping.py
+
+import sys, Queue, threading
+from scapy import all as S
+
+IFACE_LIST = 'wlan0','lo'
+
+
+# pylint:disable=E1101
+def run_ping(iface, out_q):
+    host = '8.8.8.8'
+    pkt = S.Ether()/S.IP(dst=host, ttl=(1,3))/S.ICMP() 
+    ans,_unans = S.srp(pkt, iface=iface, timeout=2) 
+    out_q.put( (iface,ans) )
+
+
+result_q = Queue.Queue()
+for iface in IFACE_LIST:
+    threading.Thread(
+        target=run_ping, args=(iface, result_q)
+    ).start()
+
+for t in threading.enumerate():
+    if t != threading.current_thread():
+        t.join()
+
+print 'result:', dict( [
+    result_q.get()
+    for _ in range(result_q.qsize())
+    ] )
+Output:
+
+Begin emission:
+Begin emission:
+..Finished to send 3 packets.
+*Finished to send 3 packets.
+...**
+Received 5 packets, got 3 answers, remaining 0 packets
+....................
+Received 23 packets, got 0 answers, remaining 3 packets
+result: {'lo': <Results: TCP:0 UDP:0 ICMP:0 Other:0>, 'wlan0': <Results: TCP:0 UDP:0 ICMP:3 Other:0>}
