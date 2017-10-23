@@ -20,7 +20,7 @@ https://www.huoshan.com/
 tshark -r huoshan.cap -x -V >> huoshan_packets
 
 7. 提取需要的url
-[root@CBN-WH-5-3gA packets]#      grep "Full request URI" packets_huoshan |grep -iE "flv|m3u8|ts"
+[root@CBN-WH-5-3gA packets]#      grep "Full request URI" packets_huoshan 
     [Full request URI [truncated]: http://dm.toutiao.com/ies/network/hotsoon/?iid=16353298159&device_id=40195921054&ac=wifi&channel=pcandroid&aid=1112&app_name=live_stream&version_code=272&version_name=2.7.2&device_platform=android&ssmix=a&devi]
     [Full request URI [truncated]: http://hotsoon.snssdk.com/service/2/app_alert/?has_market=1&lang=zh&carrier=China%20Mobile&mcc_mnc=46000&access=wifi&iid=16353298159&device_id=40195921054&ac=wifi&channel=pcandroid&aid=1112&app_name=live_strea]
     [Full request URI: http://api.map.baidu.com/geocoder/v2/?output=json&location=0.0,0.0&ak=XYUPDnaR4Fp1LbU7GT2L7VIK&ts=1508465766&as=a26515cef6f6f9bc89&cp=5c67995f6b96eec9e2]
