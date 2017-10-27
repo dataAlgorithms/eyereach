@@ -1,0 +1,20 @@
+1. jupyter
+a. change local directory
+The followings steps work perfectly for me on Windows:
+
+First find which directory Jupyter is looking in for your config file:
+
+jupyter --config-dir
+If there is no jupyter_notebook_config.py file in that directory, generate one by typing:
+
+jupyter notebook --generate-config
+Then edit the jupyter_notebook_config.py file and add something like:
+
+## The directory to use for notebooks and kernels.
+c.NotebookApp.notebook_dir = 'c:\\users\\rsignell\\documents\\github'
+Then start your jupyter notebook from any directory:
+
+jupyter notebook
+and it will start in the directory you specified.
+
+For more info see: http://jupyter-notebook.readthedocs.io/en/latest/config.html
