@@ -1,2 +1,0 @@
-# eyereach
-add gitusage 
