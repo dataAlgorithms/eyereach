@@ -535,7 +535,7 @@ c1. 绑定上面的域名到使能SMS的服务器上
 c2. 打开触手主页: https://chushou.tv/
 c3. 点击各个播放 看播放是否正常
 
-2. FC服务器部署
+3. FC服务器部署
 a. 配置
 //squid.conf
 #<common_begin
