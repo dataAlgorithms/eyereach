@@ -1,0 +1,16 @@
+[root@CBN-WH-5-3gB conf]# dstat -n -N eth0
+--net/eth0-
+ recv  send
+   0     0 
+ 228k   12M
+ 268k   12M^C
+[root@CBN-WH-5-3gB conf]# dstat -n -N eth1
+--net/eth1-
+ recv  send
+   0     0 
+8170k  237k
+7849k  229k^C
+
+eth0: 看send 数据（假设为A)
+eth1: 看recv数据 (假设为B)
+回源率: 8/12=2/3=67%
