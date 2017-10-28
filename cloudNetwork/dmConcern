@@ -16,5 +16,8 @@ amr showlog dm
 
 4. 删除上传
 vim /Application/dm/etc/dir.d/DM-SMS.yaml.default
+或者注释
+sed -i 's/Action: MultiUpload/#&/ /Application/dm/etc/dir.d/FC.yaml.default
+
 
 把所有的Action: MultiUpload的配置都删了, 就不会上传了
