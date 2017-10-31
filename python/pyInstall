@@ -1,3 +1,7 @@
 # Centos
-sudo yum install epel-release
-sudo yum install python34
+卸载老python:
+rpm -qa|grep python|xargs rpm -e --allmatches --nodeps
+
+安装新的python:
+yum install epel-release
+yum install python34
