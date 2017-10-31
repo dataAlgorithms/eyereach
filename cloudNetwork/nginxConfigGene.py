@@ -193,11 +193,6 @@ rtmp = '''
     }
 '''
 
-ng = open('nginxConfig.conf', 'w')
-
-# wrte http header into config
-ng.write(httpHead)
-
 def httpConfig(sUrls):
 
     if sUrls is None:
@@ -216,7 +211,6 @@ def rtmpConfig(sUrls):
         return
 
     lUrls = re.split("\s+", sUrls)
-    print(lUrls)
 
     configs = ""
 
