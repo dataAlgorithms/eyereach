@@ -1,7 +1,17 @@
-# Centos
-卸载老python:
+1. 包安装
+a. 卸载老python:
 rpm -qa|grep python|xargs rpm -e --allmatches --nodeps
 
-安装新的python:
+b. 安装
+https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tgz
+tar -zxvf Python-3.5.4.tgz
+./configure
+make
+make install
+
+2. yum安装
 yum install epel-release
 yum install python34
+rpm -qa|grep python|xargs rpm -e --allmatches --nodeps
+ln -fs /usr/local/python3.4/bin/python3.4 /usr/bin/python
+
