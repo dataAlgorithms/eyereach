@@ -43,3 +43,10 @@ Opening an input file: rtmp://116.251.231.12/tz22/8-221.
 [rtmp @ 0x115a3d60] Type answer 3
 [rtmp @ 0x115a3d60] Server version 3.5.2.1
 [rtmp @ 0x115a3d60] Proto = rtmp, path = /tz22/8-221, app = tz22, fname = 8-221
+
+5. Pure video or audio get
+ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac (pure audio)
+ffmpeg -i input-video.avi -an -vcodec copy output-video.avi (pure video)
+
+
+
