@@ -46,7 +46,7 @@ Opening an input file: rtmp://116.251.231.12/tz22/8-221.
 
 5. Pure video or audio get
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac (pure audio)
-ffmpeg -i input-video.avi -an -vcodec copy output-video.avi (pure video)
+ffmpeg -i input-video.avi -an -vcodec copy output-video.flv (pure video)
 
 
 
