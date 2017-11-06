@@ -2,16 +2,27 @@
 a. 卸载老python:
 rpm -qa|grep python|xargs rpm -e --allmatches --nodeps
 
-b. 安装
+b. 包安装python3
 https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tgz
 tar -zxvf Python-3.5.4.tgz
 ./configure
 make
 make install
 
-2. yum安装
+2. yum安装python3
 yum install epel-release
 yum install python34
 rpm -qa|grep python|xargs rpm -e --allmatches --nodeps
 ln -fs /usr/local/python3.4/bin/python3.4 /usr/bin/python
+
+3. 包安装Python2.7
+rm -f /usr/bin/python
+wget https://www.python.org/ftp/python/2.7.12/Python-2.7.12.tar.xz
+tar -xJvf Python-2.7.12.tar.xz
+cd Python-2.7.12
+./configure --prefix=/usr/local/python2.7
+make
+make install
+ln -s /usr/local/python2.7/bin/python2.7 /usr/bin/python
+
 
