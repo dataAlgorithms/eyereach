@@ -1,0 +1,14 @@
+1. rtmp
+a. 过滤规则:  rtmpt contains play  or rtmpt contains connect
+b. 在connect中提取tcurl: 
+Property 'tcUrl' String 'rtmp://live1.hefantv.com:1935/live1'
+c. 在play中提取stream:
+String '1716406hefan20171108155653_0'
+
+最后形成的完整url: rtmp://live1.hefantv.com:1935/live1/1716406hefan20171108155653_0
+
+2. flv
+a. 过滤规则: 待续
+
+3. m3u8
+a. 过滤规则: 待续
