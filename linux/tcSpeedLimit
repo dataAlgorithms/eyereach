@@ -1,0 +1,5 @@
+tc qdisc add dev p4p1 root tbf rate 1000mbit latency 50ms burst 1050k
+      其中p4p1为网卡号， 1000mbit是我限定的速度，bust 是指突发最高速度，这里的1050k=1050m
+
+删除限速：
+        tc qdisc del dev p4p1 root tbf
