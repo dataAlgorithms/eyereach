@@ -12,7 +12,57 @@ PID目录：/var/run/nginx.pid
 访问日志：/var/log/nginx/access.log 
 默认站点目录：/usr/share/nginx/html
 
-3. nginx配置
+3. http下载配置
+a.  配置
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    server {
+        listen       80;
+        server_name  nginxHttp 127.0.0.1;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        location /cs {
+            root /tmp;
+        }
+    }
+}
+
+b. 目录依赖
+mkdir /tmp/cs
+
+c. 重新加载
+pkill nginx
+service nginx restart
+
+d. vi /etc/hosts
+[root@localhost ~]# vi /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.182.131 nginxHttp
+
+e. 下载
+[root@localhost ~]# wget "http://nginxHttp/cs/1.txt"
+--2017-11-09 02:34:48--  http://nginxhttp/cs/1.txt
+Resolving nginxhttp... 192.168.182.131
+Connecting to nginxhttp|192.168.182.131|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 0 [text/plain]
+Saving to: 鈥.txt鈥
+
+    [ <=>                                                                                                                                                                                               ] 0           --.-K/s   in 0s      
+
+2017-11-09 02:34:48 (0.00 B/s) - 鈥.txt鈥saved [0/0]
+
+4. http上载nginx配置
 # nginx http config (nginx.conf)
 http {
 default_type application/octet-stream;
