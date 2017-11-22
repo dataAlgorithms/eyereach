@@ -1,0 +1,5 @@
+[root@CHN-LN-a-3WB ~]# cat /sys/class/net/bond0/speed
+20000
+[root@CHN-LN-a-3WB ~]# ethtool bond0|grep -i speed
+	Speed: 20000Mb/s
+[root@CHN-LN-a-3WB ~]# 
