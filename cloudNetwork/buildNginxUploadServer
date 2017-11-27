@@ -86,7 +86,7 @@ root /data/cache2;
 index index.html index.htm;
 autoindex on;
 auth_basic "closed site";
-auth_basic_user_file /root/htpasswd;
+auth_basic_user_file /tmp/htpasswd;
 
 dav_methods PUT;
 client_max_body_size 20g;
@@ -101,9 +101,15 @@ root /data/cache2/upload;
 }
 }
 
-# /root/htpasswd
+# /tmp/htpasswd
 # openssl passwd
 video:eGnIfLNKTtBbk
+
+注意:
+需要改权限
+chmod 777 data
+chmod 777 cache2
+chmod 777 upload
 
 # upload command
 curl -T FC-7.0.285-C.rdb.27570.x86_64.rpm http://163.53.89.101/upload/fc/src/customize/Based-7.0.SVN.16957/rdb/ -u video:video
