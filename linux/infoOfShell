@@ -123,10 +123,13 @@ ps -T -p 5065 (5065为进程pid)
 注意：一次压缩多个文件直接在源文件后用空格格开即可
 
 11. 获取nginx运行时长
-ps -p `ps ax|grep nginx|grep master|cut -c -5` -o etime=
+ps -p `ps ax|grep nginx|grep master|grep -v grep|cut -c -5` -o etime=
 或者
 [root@newissupper logs]# ps -p `cat /usr/local/sms/logs/nginx.pid` -o etime=
       12:40
+      
+ [root@gasdb2 Transsoft]# ps -eo pid,lstart,etime | grep 5359
+ 5359 Tue Sep 16 14:47:22 2014       00:43
 
 12. chkconfig
 chkconfig
