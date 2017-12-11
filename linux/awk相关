@@ -1,0 +1,9 @@
+1. 查询各个进程链接状态统计
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'    
+
+eg.
+root@ubuntu:/home/dell/zhouping/monitor# netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'    
+LAST_ACK 1
+CLOSE_WAIT 30
+ESTABLISHED 144
+FIN_WAIT2 9
