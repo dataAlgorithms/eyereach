@@ -44,3 +44,6 @@ a. 更新源的問題
 % sudo yum clean all
 % cd /etc/yum.repos.d
 % rm -rf 更新源
+
+6. 服务器TIME_WAIT和CLOSE_WAIT详解和解决办法
+https://www.cnblogs.com/sunxucool/p/3449068.html
