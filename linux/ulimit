@@ -1,0 +1,35 @@
+1) Check sysctl file-max limit:
+
+$ cat /proc/sys/fs/file-max
+If the limit is lower than your desired value, open the sysctl.conf and add this line at the end of file:
+
+fs.file-max = 65536
+Finally, apply sysctl limits:
+
+$ sysctl -p 
+2) Edit /etc/security/limits.conf and add below the mentioned
+
+* soft     nproc          65535    
+* hard     nproc          65535   
+* soft     nofile         65535   
+* hard     nofile         65535
+These limits won't apply for root user, if you want to change root limits you have to do that explicitly:
+
+root soft     nofile         65535   
+root hard     nofile         65535
+...
+3) Reboot system or add following line to the end of /etc/pam.d/common-session:
+
+session required pam_limits.so
+Logout and login again.
+
+4) Check soft limits:
+
+$ ulimit -a
+and hard limits:
+
+$ ulimit -Ha
+....
+
+open files                      (-n) 65535
+Reference : http://ithubinfo.blogspot.in/2013/07/how-to-increase-ulimit-open-file-and.html
