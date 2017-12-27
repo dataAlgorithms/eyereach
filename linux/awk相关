@@ -7,3 +7,8 @@ LAST_ACK 1
 CLOSE_WAIT 30
 ESTABLISHED 144
 FIN_WAIT2 9
+
+2. 输出文件第几列
+awk  -F  ' '  '{print OFS=" "  $1,$2}'  int_result.txt 
+或者
+awk  -F ':'  '{print $1"\t"$4}'  file   
