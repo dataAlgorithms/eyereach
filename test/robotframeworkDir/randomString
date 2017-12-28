@@ -1,1 +1,41 @@
 http://www.bubuko.com/infodetail-2061032.html
+
+
+//实例
+*** Settings ***
+Library           RequestsLibrary
+Library           Collections
+Library           XML
+Library           ../utils/helper.py
+
+*** Test Cases ***
+repo_add
+    # 定义公共的变量
+    ${header}    Create Dictionary    Content-Type=application/json
+    ${repoid}    Set Variable    ${Empty}
+    ${str}    Evaluate    string.hexdigits    string
+    : FOR    ${index}    IN RANGE    5
+    \    ${i}    Evaluate    random.randint(0, 9)    random
+    \    ${tmp}    Set Variable    ${str[int(${i})-1]}
+    \    ${repoid}    Set Variable    ${repoid}${tmp}
+    Log    ${repoid}
+    # 创建session
+    Create Session    repo_api    http://192.168.2.19:6501/rank    ${header}
+    # Http Post请求
+    ${addr}    Post Request    repo_api    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":1,"FeatureLen":128,"Capacity":500000,"FeatureDataType":0,"Params":[{"key":"GPUThreads","value":"[0,0,0,1]"}]}}
+    # 创建repo1, level:1 featureLen:128 featureDataType:0 Capacity:500000
+    Should Be Equal As Strings    ${addr.status_code}    200
+    Log    ${addr.content}
+    ${responsedata}    To Json    ${addr.content}
+    ${keys}    Get Dictionary Keys    ${responsedata}
+    ${items}    Get Dictionary Items    ${responsedata}
+    ${values}    Get Dictionary Values    ${responsedata}
+    Log    ${responsedata}
+    Log    ${responsedata["Repos"]}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureLen"]}    128
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureDataType"]}    0
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["Capacity"]}    0
+    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["key"]}    GPUThreads    # cpu模式,这个选项不起作用
+    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["value"]}    [0,0,0,1]    # cpu模式,这个选项不起作用
+    Delete All Sessions
