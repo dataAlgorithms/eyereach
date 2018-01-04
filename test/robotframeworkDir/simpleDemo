@@ -1,0 +1,53 @@
+*** Settings ***
+Library           RequestsLibrary
+Library           Collections
+Library           XML
+Library           utils/helper.py
+
+*** Test Cases ***
+repo_add_cpu
+    # 定义公共的变量
+    ${repoUrl}    Set Variable    http://192.168.2.19:6501/rank
+    ${header}    Create Dictionary    Content-Type=application/json
+    ${repoid}    getRandomString    5    1
+    ${featureLenList}    Create List    128    256    384
+    ${featureLen}    getChoiceNum    ${featureLenList}
+    ${featureDataTypeList}    Create List    0    1    2
+    ${featureDataType}    getChoiceNum    ${featureDataTypeList}
+    ${capacity}    getRandomString    5
+    ${gpuThread}    Create List    0    0    0    1
+    Log    ${repoid},${featureLen},${featureDataType},${capacity}
+    # 创建session
+    Create Session    repoApi    ${repoUrl}    ${header}
+    # Http Post请求 (delete repo)
+    ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
+    # Http Post请求 (add repo)
+    ${addRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":1,"FeatureLen":${featureLen},"Capacity":${capacity},"FeatureDataType":${featureDataType},"Params":[{"key":"GPUThreads","value":"${gpuThread}"}]}}    headers=${header}
+    Should Be Equal As Strings    ${addRepo.status_code}    200
+    Log    ${addRepo.content}
+    ${responsedata}    To Json    ${addRepo.content}
+    ${keys}    Get Dictionary Keys    ${responsedata}
+    ${items}    Get Dictionary Items    ${responsedata}
+    ${values}    Get Dictionary Values    ${responsedata}
+    Log    ${responsedata}
+    Log    ${responsedata["Repos"]}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureLen"]}    ${featureLen}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureDataType"]}    ${featureDataType}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["Capacity"]}    0
+    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["key"]}    GPUThreads    # cpu模式,这个选项不起作用
+    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["value"]}    ${gpuThread}    # cpu模式,这个选项不起作用
+    # Http Post请求 (query repo)
+    ${queryRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoId}","Operation":4}}
+    Should Be Equal As Strings    ${queryRepo.status_code}    200
+    ${repoQueryResult}    To Json    ${queryRepo.content}
+    Log    ${repoQueryResult}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureLen"]}    ${featureLen}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureDataType"]}    ${featureDataType}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["Capacity"]}    0    # 仅仅对GPU模式管用
+    # Http Post请求 (delete repo)
+    ${deleteRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}
+    Delete All Sessions
+
+repo_add_gpu
