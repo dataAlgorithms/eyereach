@@ -1,0 +1,8 @@
+//谁
+lsof|grep LOCK|grep _meta
+
+//个数
+lsof|grep LOCK|grep _meta|awk '{print $3}'|uniq | wc -l
+
+//进程数
+pstree
