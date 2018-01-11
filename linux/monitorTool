@@ -11,3 +11,6 @@ TOTAL：总流量
 Cumm：运行iftop到目前时间的总流量
 peak：流量峰值
 rates：分别表示过去 2s 10s 40s 的平均流量
+
+2. 磁盘io
+https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858810.html
