@@ -1,0 +1,85 @@
+http://blog.csdn.net/wm_1991/article/details/50493487
+
+Nginx安装之前需要三个支持：
+
+模块依赖性
+
+①gzip 模块需要 zlib 库 
+
+②rewrite 模块需要 pcre 库 
+
+③ssl 功能需要 openssl 库 
+
+预先编译好的包:
+
+sudo apt-get install libpcre3 libpcre3-dev libpcrecpp0 libssl-dev zlib1g-dev
+
+ububtu平台编译环境可以使用以下指令：
+
+apt-get install build-essential
+
+apt-get install libtool
+
+一般我们都需要先装pcre, zlib，前者为了重写rewrite，后者为了gzip压缩。
+
+
+
+下面是安装步骤：
+
+1.选定源码目录：可以是任何目录; cd /usr/local/src
+
+
+
+2.安装PCRE库:安装zlib库:安装ssl（某些vps默认没装ssl):
+
+sudo apt-get install libpcre3 libpcre3-dev libpcrecpp0 libssl-dev zlib1g-dev
+
+--------
+
+3.安装nginx:
+
+Nginx 一般有两个版本，分别是稳定版和开发版，您可以根据您的目的来选择这两个版本的其中一个，下面是把 Nginx 安装到 /usr/local/nginx 目录下的详细步骤：(注意：需要在sudo下)
+
+cd /usr/local/src
+
+wget http://nginx.org/download/nginx-1.4.2.tar.gz
+
+tar -zxvf nginx-1.4.2.tar.gz
+
+cd nginx-1.4.2
+
+
+
+./configure 
+
+--sbin-path=/usr/local/nginx/nginx \
+
+--conf-path=/usr/local/nginx/nginx.conf \
+
+--pid-path=/usr/local/nginx/nginx.pid \
+
+--with-http_ssl_module \
+
+--with-pcre=/usr/local/src/pcre-8.34 \
+
+--with-zlib=/usr/local/src/zlib-1.2.8 \
+
+--with-openssl=/usr/local/src/openssl-1.0.1c
+
+
+
+make
+
+make install
+
+
+
+6.查看端口状态：netstat -ano|grep 80
+
+
+
+7.启动Nginx：sudo /usr/local/nginx/sbin/nginx
+
+
+
+8.打开浏览器访问机器的IP，如果看到如下图，恭喜你安装成功了！
