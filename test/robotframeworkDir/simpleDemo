@@ -2,27 +2,29 @@
 Library           RequestsLibrary
 Library           Collections
 Library           XML
-Library           utils/helper.py
+Library           ../util/helper.py
+Variables         ../variable/repoVariable.py
 
 *** Test Cases ***
-repo_add_cpu
-    # 定义公共的变量
-    ${repoUrl}    Set Variable    http://192.168.2.19:6501/rank
-    ${header}    Create Dictionary    Content-Type=application/json
+repo_add
     ${repoid}    getRandomString    5    1
+    ${repoLevelList}    Create List    1    3
+    ${repoLevel}    getChoiceNum    ${repoLevelList}
+    ${repoLevelDict}    Create Dictionary    1=REPO_LEVEL_ON_STORAGE    3=REPO_LEVEL_ON_GPU
     ${featureLenList}    Create List    128    256    384
     ${featureLen}    getChoiceNum    ${featureLenList}
     ${featureDataTypeList}    Create List    0    1    2
+    ${featureDateTypeDict}    Create Dictionary    0=FEATURE_DATA_TYPE_FLOAT    1=FEATURE_DATA_TYPE_SHORT    2=FEATURE_DATA_TYPE_INT8
     ${featureDataType}    getChoiceNum    ${featureDataTypeList}
     ${capacity}    getRandomString    5
     ${gpuThread}    Create List    0    0    0    1
+    ${priGpuThread}    getPrimaryData    ${gpuThread}
     Log    ${repoid},${featureLen},${featureDataType},${capacity}
-    # 创建session
     Create Session    repoApi    ${repoUrl}    ${header}
-    # Http Post请求 (delete repo)
+    # Delete former repo to avoid repo name conflict
     ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
-    # Http Post请求 (add repo)
-    ${addRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":1,"FeatureLen":${featureLen},"Capacity":${capacity},"FeatureDataType":${featureDataType},"Params":[{"key":"GPUThreads","value":"${gpuThread}"}]}}    headers=${header}
+    # Add the repo
+    ${addRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":${repoLevel},"FeatureLen":${featureLen},"Capacity":${capacity},"FeatureDataType":${featureDataType},"Params":{"GPUThreads":"${priGpuThread}"}}}    headers=${header}
     Should Be Equal As Strings    ${addRepo.status_code}    200
     Log    ${addRepo.content}
     ${responsedata}    To Json    ${addRepo.content}
@@ -31,23 +33,121 @@ repo_add_cpu
     ${values}    Get Dictionary Values    ${responsedata}
     Log    ${responsedata}
     Log    ${responsedata["Repos"]}
+    # Check the repoid, repoLevel, featureLen when adding the repo
     Should Be Equal As Strings    ${responsedata["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["Level"]}    ${repoLevelDict["%s" % ${repoLevel}]}
     Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureLen"]}    ${featureLen}
-    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureDataType"]}    ${featureDataType}
-    Should Be Equal As Strings    ${responsedata["Repos"][0]["Capacity"]}    0
-    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["key"]}    GPUThreads    # cpu模式,这个选项不起作用
-    # Should Be Equal As Strings    ${responsedata["Repos"][0]["Params"][0]["value"]}    ${gpuThread}    # cpu模式,这个选项不起作用
-    # Http Post请求 (query repo)
+    # Check the featureDataType, capacity, gpuThread when level is 3(gpu mode) when adding the repo
+    Run Keyword If    ${featureDataType} != 0    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureDataType"]}    ${featureDateTypeDict["%s" % ${featureDataType}]}
+    Run Keyword If    ${repoLevel} != 1    Should Be Equal As Strings    ${responsedata["Repos"][0]["Capacity"]}    ${capacity}
+    Run Keyword If    ${repoLevel} != 1    shouldEqual    ${responsedata["Repos"][0]["Params"]["GPUThreads"]}    ${priGpuThread}
+    # Do the repo query
     ${queryRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoId}","Operation":4}}
     Should Be Equal As Strings    ${queryRepo.status_code}    200
     ${repoQueryResult}    To Json    ${queryRepo.content}
     Log    ${repoQueryResult}
+    # Check the repoid, repoLevel, featureLen of repo query result
     Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["Level"]}    ${repoLevelDict["%s" % ${repoLevel}]}
     Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureLen"]}    ${featureLen}
-    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureDataType"]}    ${featureDataType}
-    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["Capacity"]}    0    # 仅仅对GPU模式管用
-    # Http Post请求 (delete repo)
+    # Check the featureDataType, capacity, gpuThread when level is 3(gpu mode) of repo query result
+    Run Keyword If    ${featureDataType} != 0    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureDataType"]}    ${featureDateTypeDict["%s" % ${featureDataType}]}
+    Run Keyword If    ${repoLevel} != 1    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["Capacity"]}    ${capacity}
+    Run Keyword If    ${repoLevel} != 1    shouldEqual    ${repoQueryResult["Repos"][0]["Params"]["GPUThreads"]}    ${priGpuThread}
+    # Delete the repo
     ${deleteRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}
+    # Delete all sessions
     Delete All Sessions
 
-repo_add_gpu
+repo_delete
+    ${repoid}    getRandomString    5    1
+    ${repoLevelList}    Create List    1    3
+    ${repoLevel}    getChoiceNum    ${repoLevelList}
+    ${repoLevelDict}    Create Dictionary    1=REPO_LEVEL_ON_STORAGE    3=REPO_LEVEL_ON_GPU
+    ${featureLenList}    Create List    128    256    384
+    ${featureLen}    getChoiceNum    ${featureLenList}
+    ${featureDataTypeList}    Create List    0    1    2
+    ${featureDateTypeDict}    Create Dictionary    0=FEATURE_DATA_TYPE_FLOAT    1=FEATURE_DATA_TYPE_SHORT    2=FEATURE_DATA_TYPE_INT8
+    ${featureDataType}    getChoiceNum    ${featureDataTypeList}
+    ${capacity}    getRandomString    5
+    ${gpuThread}    Create List    0    0    0    1
+    ${priGpuThread}    getPrimaryData    ${gpuThread}
+    Log    ${repoid},${featureLen},${featureDataType},${capacity}
+    Create Session    repoApi    ${repoUrl}    ${header}
+    Log    :::Step1, Delete non-exist repo
+    ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
+    ${responsedata}    To Json    ${deleteRepo.content}
+    Should Be Equal As Strings    ${responsedata["Context"]["Status"]}    400
+    Log    ::Step 2, Add a repo and do the delete
+    ${addRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":${repoLevel},"FeatureLen":${featureLen},"Capacity":${capacity},"FeatureDataType":${featureDataType},"Params":{"GPUThreads":"${priGpuThread}"}}}    headers=${header}
+    Should Be Equal As Strings    ${addRepo.status_code}    200
+    ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
+    Should Be Equal As Strings    ${deleteRepo.status_code}    200
+    Log    ::Step 3, Do the repo query to check whether the repo is deleted
+    ${queryRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoId}","Operation":4}}
+    ${responsedata}    To Json    ${queryRepo.content}
+    Should Be Equal As Strings    ${responsedata["Context"]["Status"]}    421
+    Log    ::Step 4, Do the repo delete for 100 times, then check rankers status is normal or not
+    : FOR    ${i}    IN RANGE    1
+    \    ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
+    ${queryAllRepo}    Post Request    repoApi    repo    {"Context":{},"Operation":4}}
+    Should Be Equal As Strings    ${queryAllRepo.status_code}    200
+    # Delete all sessions
+    Delete All Sessions
+
+repo_update
+    ${repoid}    getRandomString    5    1
+    ${repoLevelList}    Create List    1    3
+    ${repoLevel}    getChoiceNum    ${repoLevelList}
+    ${repoLevelDict}    Create Dictionary    1=REPO_LEVEL_ON_STORAGE    3=REPO_LEVEL_ON_GPU
+    ${featureLenList}    Create List    128    256    384
+    ${featureLen}    getChoiceNum    ${featureLenList}
+    ${featureDataTypeList}    Create List    0    1    2
+    ${featureDateTypeDict}    Create Dictionary    0=FEATURE_DATA_TYPE_FLOAT    1=FEATURE_DATA_TYPE_SHORT    2=FEATURE_DATA_TYPE_INT8
+    ${featureDataType}    getChoiceNum    ${featureDataTypeList}
+    ${capacity}    getRandomString    5
+    ${gpuThread}    Create List    0    0    0    1
+    ${priGpuThread}    getPrimaryData    ${gpuThread}
+    Log    ${repoid},${featureLen},${featureDataType},${capacity}
+    Create Session    repoApi    ${repoUrl}    ${header}
+    Log    :::Step1, delete former repo to avoid repo name conflict
+    ${deleteRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}    headers=${header}
+    Log    :::Step2, add a new repo
+    ${addRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":1,"RepoId":"${repoid}","Level":${repoLevel},"FeatureLen":${featureLen},"Capacity":${capacity},"FeatureDataType":${featureDataType},"Params":{"GPUThreads":"${priGpuThread}"}}}    headers=${header}
+    Should Be Equal As Strings    ${addRepo.status_code}    200
+    Log    ${addRepo.content}
+    ${responsedata}    To Json    ${addRepo.content}
+    ${keys}    Get Dictionary Keys    ${responsedata}
+    ${items}    Get Dictionary Items    ${responsedata}
+    ${values}    Get Dictionary Values    ${responsedata}
+    Log    ${responsedata}
+    Log    ${responsedata["Repos"]}
+    Log    :::Step3, check the repoid, repoLevel, featureLen when adding the repo
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["Level"]}    ${repoLevelDict["%s" % ${repoLevel}]}
+    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureLen"]}    ${featureLen}
+    Log    :::Step4, check the featureDataType, capacity, gpuThread when level is 3(gpu mode) when adding the repo
+    Run Keyword If    ${featureDataType} != 0    Should Be Equal As Strings    ${responsedata["Repos"][0]["FeatureDataType"]}    ${featureDateTypeDict["%s" % ${featureDataType}]}
+    Run Keyword If    ${repoLevel} != 1    Should Be Equal As Strings    ${responsedata["Repos"][0]["Capacity"]}    ${capacity}
+    Run Keyword If    ${repoLevel} != 1    shouldEqual    ${responsedata["Repos"][0]["Params"]["GPUThreads"]}    "%s" % ${priGpuThread}
+    Log    :::Step5, update level,capacity,gpuThread of repo
+    ${newRepoLevel}    getChoiceNum    ${repoLevelList}
+    ${newGpuThread}    Create List    1    1    1    1
+    ${newPriGpuThread}    getPrimaryData    ${newGpuThread}
+    ${newCapacity}    getRandomString    5
+    ${updateRepo}    Post Request    repoApi    repo    data={"Context":{},"Repo":{"Operation":3,"RepoId":"${repoid}","Level":${newRepoLevel},"FeatureLen":${featureLen},"Capacity":${newCapacity},"FeatureDataType":${featureDataType},"Params":{"GPUThreads":"${newPriGpuThread}"}}}    headers=${header}
+    ${queryRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoId}","Operation":4}}
+    Should Be Equal As Strings    ${queryRepo.status_code}    200
+    ${repoQueryResult}    To Json    ${queryRepo.content}
+    Log    ${repoQueryResult}
+    Log    :::Step 6, check the update repoLevel, capacity,gpuThread of repo query result
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["RepoId"]}    ${repoid}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["Level"]}    ${repoLevelDict["%s" % ${newRepoLevel}]}
+    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureLen"]}    ${featureLen}
+    Run Keyword If    ${featureDataType} != 0    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["FeatureDataType"]}    ${featureDateTypeDict["%s" % ${featureDataType}]}
+    Run Keyword If    ${newRepoLevel} != 1    Should Be Equal As Strings    ${repoQueryResult["Repos"][0]["Capacity"]}    ${newCapacity}
+    Run Keyword If    ${newRepoLevel} != 1    shouldEqual    ${repoQueryResult["Repos"][0]["Params"]["GPUThreads"]}    ${newPriGpuThread}
+    Log    :::Step 7, delete the repo
+    ${deleteRepo}    Post Request    repoApi    repo    {"Context":{},"Repo":{"RepoId":"${repoid}","Operation":2}}
+    Log    :::Step 8, delete all sessions
+    Delete All Sessions
