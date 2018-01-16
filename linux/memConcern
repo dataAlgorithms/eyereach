@@ -3,10 +3,13 @@ https://www.cyberciti.biz/faq/linux-check-memory-usage/
 
 # linux 下 取进程占用 cpu 最高的前10个进程
 ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head
-
+或者
+ps -aux | sort -k3nr | head -10
 
 # linux 下 取进程占用内存(MEM)最高的前10个进程
 ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head
+或者
+ps -aux | sort -k4nr | head -10
 
 # 查看系统有多少g内存
 root@deepface-19:/data/zhouping/ranker2/repo# free -g
