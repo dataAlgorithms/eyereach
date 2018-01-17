@@ -15,3 +15,6 @@ awk  -F ':'  '{print $1"\t"$4}'  file
 
 3. 按列相加
 cat /proc/36821/maps|awk 'BEGIN{COUNT=0}COUNT+=$5;END{print COUNT}'|tail -1 
+
+4. 批量杀进程
+ps -fu zhjs|grep pp_znw|grep -v grep|awk '{print $2}'|xargs kill -9
