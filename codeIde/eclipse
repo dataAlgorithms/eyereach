@@ -1,4 +1,8 @@
 1. elipse编译C++
 https://jingyan.baidu.com/article/456c463b67b4310a59314468.html
+
 在eclipse上建立Google test
 http://blog.csdn.net/u012515915/article/details/46942745
+
+Windows平台安装最新OpenCV-2.4.9,利用Eclipse、MinGW构建C++调用OpenCV开发环境
+http://blog.csdn.net/yanzi1225627/article/details/26408579
