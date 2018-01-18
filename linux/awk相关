@@ -18,3 +18,33 @@ cat /proc/36821/maps|awk 'BEGIN{COUNT=0}COUNT+=$5;END{print COUNT}'|tail -1
 
 4. 批量杀进程
 ps -fu zhjs|grep pp_znw|grep -v grep|awk '{print $2}'|xargs kill -9
+
+5. 相同间隔输出
+root@ubuntu:/home/dell/run# echo "a b c d e" | awk '{ OFS="-" } { NF=NF; print $0}'
+a-b-c-d-e
+root@ubuntu:/home/dell/run# 
+
+root@ubuntu:/home/dell/run# awk -vOFS="\t" '{$1=$1}1' killImage.sh 
+#!/bin/bash
+
+docker  ps      -a|grep mspout_vod_file|grep    -v      grep|awk        '{print $1}'|xargs      docker  rm      -f
+
+6. 删除或者打印奇数/偶数行
+sed 和awk都能够轻松做到 
+sed版： sed '1~2' file #删除奇数行，和sed '1~2P' file效果相同
+sed '1~2!d' file #删除偶数行 
+
+awk版： awk 'NR%2==0' filename 
+#删除奇数行 awk 'NR%2==1' filename #删除偶数行sed和awk都能够轻松做到
+
+sed版：
+sed '1~2' file #删除奇数行，和sed '1~2P' file效果相同
+sed '1~2!d' file #删除偶数行
+
+awk版：
+awk 'NR%2==0' filename #删除奇数行
+awk 'NR%2==1' filename #删除偶数行
+
+打印:
+awk 'NR%2 == 0{print}' 
+sed -n 'n;p'
