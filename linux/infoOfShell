@@ -245,3 +245,6 @@ e1000: eth0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: None
 eth0: no IPv6 routers present
 8021q: adding VLAN 0 to HW filter on device eth0
 eth0: no IPv6 routers present
+
+23. 拷贝特定数量(比如100个)到另一个文件夹
+find . -name "*.txt" |head -100 | xargs -i cp {}  /tmp   
