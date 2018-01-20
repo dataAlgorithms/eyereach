@@ -39,3 +39,7 @@ error: src refspec master does not match any.
 error: failed to push some refs to 'https://git.sinacloud.com/guaguastd'
 
 git push --all -u
+
+6. *****************git删除本地的资源，如何恢复？
+a、$ git reset --hard HEAD  将提交重置
+b、使用 $ git checkout TestTimer.java(文件名) 恢复过来了
