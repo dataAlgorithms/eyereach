@@ -1,0 +1,5 @@
+1. pyhton 去掉字符串前边的u''
+>>> allMethods["FaceAlignment"][0]
+u'CDNN_CAFFE'
+>>> allMethods["FaceAlignment"][0].encode('ascii')
+'CDNN_CAFFE'
