@@ -48,3 +48,6 @@ awk 'NR%2==1' filename #删除偶数行
 打印:
 awk 'NR%2 == 0{print}' 
 sed -n 'n;p'
+
+7. 查看进程占用文件数
+lsof -n |awk '{print $1}'|sort|uniq -c |sort -nr|more 
