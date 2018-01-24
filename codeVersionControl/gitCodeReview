@@ -111,4 +111,5 @@ Your branch is up-to-date with 'origin/facesdk-test'.
 nothing to commit, working directory clean
 root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# 
 
-
+然后通过浏览器打开https://github.com/deepglint/TestAll/pulls
+New Pull Request/Compare Change: Base:Master Compare facesdk-test/Create New Pull Request
