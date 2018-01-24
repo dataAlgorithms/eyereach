@@ -1,0 +1,57 @@
+为什么要codereview
+. 整个团队的编码风格是统一的。
+
+. 有高手能对自己的代码指点一二，从而提高编码水平。
+
+. 减少低级错误的出现
+
+. 约束自己写高质量的代码，因为是要给人看的。
+
+我们对codereview的需求
+. 很轻松可以发布自己写的代码。
+
+. 很轻松的可以与老代码diff review。
+
+. review的人和被review的人很轻松的交互，而且还能保存交互的历史。
+
+Code Review流程
+1、根据开发任务，建立git分支, 分支名称模式为feature/任务名，比如关于API相关的一项任务，建立分支feature/api。
+git checkout -b feature/api
+
+2、运行git branch 确认切换到了feature/api分支
+
+3、编辑代码完成开发任务， commit相关代码
+git add -A
+git commit -m "implement api architecture"
+
+4、将分支代码push到服务器
+git push origin -u feature/api
+
+5、登录到bitbucket的源代码库，如https://bitbucket.org/xxxx/ljq_web ，点击Pull request按钮去创建一个pull request
+
+6、再pull request详细页面， 填写相关标题／说明／reviewer， 目前请将reviewer设成lijing_dkhs和zhuangqunxiong
+
+7、请提醒reviewer去审核pull request，系统也会发邮件提醒reviewer
+
+8、Reviewer打开pull request页面，查看代码修改情况，也可以在相应的代码处添加注视，提示代码作者哪里应该修正。
+
+9、代码作者根据reviewer的要求，调整代码后commit／push到服务器。 然后reviewer继续设置， 如此循环，知道没有问题。
+
+10、当代码没有问题以后， 需要将任务代码merge到主代码库， 有两种方法：
+a、Reviewer可以在pull request页面点击Merge按钮， 把代码merge到主代码库
+b、代码作者自己merge到主代码库， 并push到服务器。
+git pull origin
+git log ..master
+
+如果看到master里有修改没在当前分支， 那么运行git rebase master来把master的修改加入到当前分支
+运行一下合并命令
+git checkout master
+git merge --no-ff feature/api
+git push
+
+11、代码作者删除feature子分支。
+git checkout master
+git branch -D feature/api
+git push origin :feature/api
+
+git pull origin master #从主分支pull到子分支
