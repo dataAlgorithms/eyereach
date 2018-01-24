@@ -1,3 +1,4 @@
+###############理论篇
 为什么要codereview
 . 整个团队的编码风格是统一的。
 
@@ -55,3 +56,59 @@ git branch -D feature/api
 git push origin :feature/api
 
 git pull origin master #从主分支pull到子分支
+
+#############实战篇
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll# mkdir FaceSDKTest
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll# cd FaceSDKTest/
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# touch .gitignore
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# vi .gitignore 
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git status
+On branch facesdk-test
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        ./
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git add .
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git status
+On branch facesdk-test
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   .gitignore
+
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git commit -m 'add new project facesdk test.'
+[facesdk-test 61434f0] add new project facesdk test.
+ 1 file changed, 2 insertions(+)
+ create mode 100644 FaceSDKTest/.gitignore
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git push -u origin facesdk-test
+Username for 'https://github.com': dataAlgorthms
+Password for 'https://dataAlgorthms@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/deepglint/TestAll.git/'
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git push -u origin facesdk-test
+Username for 'https://github.com': dataAlgorithms
+Password for 'https://dataAlgorithms@github.com': 
+Counting objects: 274, done.
+Delta compression using up to 40 threads.
+Compressing objects: 100% (140/140), done.
+Writing objects: 100% (252/252), 4.57 MiB | 1.06 MiB/s, done.
+Total 252 (delta 97), reused 216 (delta 86)
+remote: Resolving deltas: 100% (97/97), completed with 9 local objects.
+To https://github.com/deepglint/TestAll.git
+ * [new branch]      facesdk-test -> facesdk-test
+Branch facesdk-test set up to track remote branch facesdk-test from origin.
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git stuatus
+git: 'stuatus' is not a git command. See 'git --help'.
+
+Did you mean this?
+        status
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# git status
+On branch facesdk-test
+Your branch is up-to-date with 'origin/facesdk-test'.
+
+nothing to commit, working directory clean
+root@ubuntu:/home/zhouping/workspace/localGit/TestAll/FaceSDKTest# 
+
+
