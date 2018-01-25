@@ -1,0 +1,147 @@
+1. 编译单目录工程
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# tree
+.
+├── build
+├── CMakeLists.txt
+└── src
+    ├── CMakeLists.txt
+    └── main.c
+
+2 directories, 3 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# ls
+build  CMakeLists.txt  src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# cat src/main.c 
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+    printf("hello world\n");
+    return 0;
+}
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# cat src/CMakeLists.txt 
+aux_source_directory(. SRC_LIST)
+
+add_executable(hello ${SRC_LIST})
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# cat CMakeLists.txt 
+cmake_minimum_required(VERSION 2.6)
+
+#指定项目名
+project(hello)
+
+#指定子目录
+add_subdirectory(src)
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello# cd build/
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build# cmake ..
+-- The C compiler identification is GNU 4.8.5
+-- The CXX compiler identification is GNU 4.8.5
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zhouping/workspace/cMakeDemo/singleHello/hello/build
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build# tree
+.
+├── CMakeCache.txt
+├── CMakeFiles
+│   ├── 2.8.12.2
+│   │   ├── CMakeCCompiler.cmake
+│   │   ├── CMakeCXXCompiler.cmake
+│   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   ├── CMakeSystem.cmake
+│   │   ├── CompilerIdC
+│   │   │   ├── a.out
+│   │   │   └── CMakeCCompilerId.c
+│   │   └── CompilerIdCXX
+│   │       ├── a.out
+│   │       └── CMakeCXXCompilerId.cpp
+│   ├── cmake.check_cache
+│   ├── CMakeDirectoryInformation.cmake
+│   ├── CMakeOutput.log
+│   ├── CMakeTmp
+│   ├── Makefile2
+│   ├── Makefile.cmake
+│   ├── progress.marks
+│   └── TargetDirectories.txt
+├── cmake_install.cmake
+├── Makefile
+└── src
+    ├── CMakeFiles
+    │   ├── CMakeDirectoryInformation.cmake
+    │   ├── hello.dir
+    │   │   ├── build.make
+    │   │   ├── cmake_clean.cmake
+    │   │   ├── DependInfo.cmake
+    │   │   ├── depend.make
+    │   │   ├── flags.make
+    │   │   ├── link.txt
+    │   │   └── progress.make
+    │   └── progress.marks
+    ├── cmake_install.cmake
+    └── Makefile
+
+8 directories, 30 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build# make
+Scanning dependencies of target hello
+[100%] Building C object src/CMakeFiles/hello.dir/main.c.o
+Linking C executable hello
+[100%] Built target hello
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build# tree
+.
+├── CMakeCache.txt
+├── CMakeFiles
+│   ├── 2.8.12.2
+│   │   ├── CMakeCCompiler.cmake
+│   │   ├── CMakeCXXCompiler.cmake
+│   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   ├── CMakeSystem.cmake
+│   │   ├── CompilerIdC
+│   │   │   ├── a.out
+│   │   │   └── CMakeCCompilerId.c
+│   │   └── CompilerIdCXX
+│   │       ├── a.out
+│   │       └── CMakeCXXCompilerId.cpp
+│   ├── cmake.check_cache
+│   ├── CMakeDirectoryInformation.cmake
+│   ├── CMakeOutput.log
+│   ├── CMakeTmp
+│   ├── Makefile2
+│   ├── Makefile.cmake
+│   ├── progress.marks
+│   └── TargetDirectories.txt
+├── cmake_install.cmake
+├── Makefile
+└── src
+    ├── CMakeFiles
+    │   ├── CMakeDirectoryInformation.cmake
+    │   ├── hello.dir
+    │   │   ├── build.make
+    │   │   ├── C.includecache
+    │   │   ├── cmake_clean.cmake
+    │   │   ├── DependInfo.cmake
+    │   │   ├── depend.internal
+    │   │   ├── depend.make
+    │   │   ├── flags.make
+    │   │   ├── link.txt
+    │   │   ├── main.c.o
+    │   │   └── progress.make
+    │   └── progress.marks
+    ├── cmake_install.cmake
+    ├── hello
+    └── Makefile
+
+8 directories, 34 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build# cd src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build/src# ls
+CMakeFiles  cmake_install.cmake  hello  Makefile
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build/src# ./hello 
+hello world
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build/src# 
