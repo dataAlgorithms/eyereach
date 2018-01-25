@@ -145,3 +145,206 @@ CMakeFiles  cmake_install.cmake  hello  Makefile
 root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build/src# ./hello 
 hello world
 root@ubuntu:/home/zhouping/workspace/cMakeDemo/singleHello/hello/build/src# 
+
+2. 编译多目录工程
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# tree
+.
+├── build
+├── CMakeLists.txt
+└── src
+    ├── CMakeLists.txt
+    ├── hello
+    │   ├── CMakeLists.txt
+    │   ├── hello.c
+    │   └── hello.h
+    ├── main.c
+    └── world
+        ├── CMakeLists.txt
+        ├── world.c
+        └── world.h
+
+4 directories, 9 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat CMakeLists.txt 
+cmake_minimum_required(VERSION 2.6)
+
+project(hello_prj)
+
+add_subdirectory(src)
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/CMakeLists.txt 
+aux_source_directory(. DIR_SRC)
+
+# 添加子目录
+add_subdirectory(hello)
+add_subdirectory(world)
+
+# 执行文件
+add_executable(hello_prj ${DIR_SRC})
+target_link_libraries(hello_prj hello_lib world_lib)
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/hello/CMakeLists.txt 
+aux_source_directory(. DIR_HELLO_SRC)
+
+add_library(hello_lib ${DIR_HELLO_SRC})
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/hello/hello.c        
+#include "hello.h"
+
+#include <stdio.h>
+
+void Hello_Print(void)
+{
+    printf("hello ");
+}
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/hello/hello.h
+#ifndef  HELLO_H
+#define  HELLO_H
+
+void Hello_Print(void);
+
+#endif
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/main.c 
+#include "hello/hello.h"
+#include "world/world.h"
+
+int main(int argc, char **argv)
+{
+    Hello_Print();
+    World_Print();
+
+    return 0;
+}
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/world/CMakeLists.txt 
+aux_source_directory(. DIR_WORLD_SRC)
+
+add_library(world_lib ${DIR_WORLD_SRC})
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/world/world.c
+#include "world.h"
+
+#include <stdio.h>
+
+void World_Print(void)
+{
+    printf("world");
+}
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cat src/world/world.h
+#ifndef  WORLD_H
+#define  WORLD_H
+
+void World_Print(void);
+
+#endif
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello# cd build/
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# ls
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# cmake ..
+-- The C compiler identification is GNU 4.8.5
+-- The CXX compiler identification is GNU 4.8.5
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zhouping/workspace/cMakeDemo/mulhello/build
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# cd src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# ls
+CMakeFiles  cmake_install.cmake  hello  Makefile  world
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# cd hello/
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src/hello# ls
+CMakeFiles  cmake_install.cmake  Makefile
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src/hello# cd ..
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# ls
+CMakeFiles  cmake_install.cmake  hello  Makefile  world
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# cd ..
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# ls
+CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# make
+Scanning dependencies of target world_lib
+[ 33%] Building C object src/world/CMakeFiles/world_lib.dir/world.c.o
+Linking C static library libworld_lib.a
+[ 33%] Built target world_lib
+Scanning dependencies of target hello_lib
+[ 66%] Building C object src/hello/CMakeFiles/hello_lib.dir/hello.c.o
+Linking C static library libhello_lib.a
+[ 66%] Built target hello_lib
+Scanning dependencies of target hello_prj
+[100%] Building C object src/CMakeFiles/hello_prj.dir/main.c.o
+Linking C executable hello_prj
+[100%] Built target hello_prj
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# ls
+CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build# cd src
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# ls
+CMakeFiles  cmake_install.cmake  hello  hello_prj  Makefile  world
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# ./hello_prj 
+hello worldroot@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# cd hello
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src/hello# ls
+CMakeFiles  cmake_install.cmake  libhello_lib.a  Makefile
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src/hello# cd ..
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# tree
+.
+├── CMakeFiles
+│   ├── CMakeDirectoryInformation.cmake
+│   ├── hello_prj.dir
+│   │   ├── build.make
+│   │   ├── C.includecache
+│   │   ├── cmake_clean.cmake
+│   │   ├── DependInfo.cmake
+│   │   ├── depend.internal
+│   │   ├── depend.make
+│   │   ├── flags.make
+│   │   ├── link.txt
+│   │   ├── main.c.o
+│   │   └── progress.make
+│   └── progress.marks
+├── cmake_install.cmake
+├── hello
+│   ├── CMakeFiles
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── hello_lib.dir
+│   │   │   ├── build.make
+│   │   │   ├── C.includecache
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── cmake_clean_target.cmake
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.internal
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── hello.c.o
+│   │   │   ├── link.txt
+│   │   │   └── progress.make
+│   │   └── progress.marks
+│   ├── cmake_install.cmake
+│   ├── libhello_lib.a
+│   └── Makefile
+├── hello_prj
+├── Makefile
+└── world
+    ├── CMakeFiles
+    │   ├── CMakeDirectoryInformation.cmake
+    │   ├── progress.marks
+    │   └── world_lib.dir
+    │       ├── build.make
+    │       ├── C.includecache
+    │       ├── cmake_clean.cmake
+    │       ├── cmake_clean_target.cmake
+    │       ├── DependInfo.cmake
+    │       ├── depend.internal
+    │       ├── depend.make
+    │       ├── flags.make
+    │       ├── link.txt
+    │       ├── progress.make
+    │       └── world.c.o
+    ├── cmake_install.cmake
+    ├── libworld_lib.a
+    └── Makefile
+
+8 directories, 47 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# 
