@@ -348,3 +348,342 @@ root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# tree
 
 8 directories, 47 files
 root@ubuntu:/home/zhouping/workspace/cMakeDemo/mulhello/build/src# 
+
+3. 动态库和静态库的构建
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# tree
+.
+├── build
+├── CMakeLists.txt
+├── include
+│   ├── hello
+│   │   └── hello.h
+│   └── world
+│       └── world.h
+├── src
+│   ├── CMakeLists.txt
+│   ├── hello
+│   │   └── hello.c
+│   └── world
+│       └── world.c
+└── test
+    ├── CMakeLists.txt
+    └── mytest.c
+
+8 directories, 8 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat CMakeLists.txt 
+cmake_minimum_required(VERSION 2.6)
+ 
+project(helloworld)
+ 
+#设置库文件存放路径
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/lib)
+ 
+#设置执行文件存放路径
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+ 
+#获取当前目录及子目录(递归获取),添加到头文件搜索路径
+function(include_sub_directories_recursively root_dir)
+    if (IS_DIRECTORY ${root_dir})               # 当前路径是一个目录吗，是的话就加入到包含目录
+        message("include dir: " ${root_dir})
+        include_directories(${root_dir})
+    endif()
+ 
+    file(GLOB ALL_SUB RELATIVE ${root_dir} ${root_dir}/*) # 获得当前目录下的所有文件，让如ALL_SUB列表中
+    foreach(sub ${ALL_SUB})
+        if (IS_DIRECTORY ${root_dir}/${sub})
+            include_sub_directories_recursively(${root_dir}/${sub}) # 对子目录递归调用，包含
+        endif()
+    endforeach()
+endfunction()
+ 
+#项目的所有目录都为头文件搜索路径
+include_sub_directories_recursively(${PROJECT_SOURCE_DIR})
+ 
+#添加库文件搜索路径
+link_directories(
+    ${PROJECT_SOURCE_DIR}/build/lib
+)
+
+#添加子目录
+add_subdirectory(src)
+add_subdirectory(test)
+
+#设置安装目录
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# ls
+build  CMakeLists.txt  include  src  test
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat include/
+hello/ world/ 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat include/hello/hello.h 
+#ifndef  HELLO_H
+#define  HELLO_H
+
+void Hello_Print(void);
+
+#endif
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat include/world/world.h 
+#ifndef  WORLD_H
+#define  WORLD_H
+
+void World_Print(void);
+
+#endif
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# ls
+build  CMakeLists.txt  include  src  test
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat src/
+CMakeLists.txt  hello/          world/          
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat src/CMakeLists.txt 
+#递归获取当前目录及子目录下的所有c文件
+file(GLOB_RECURSE c_files "*.c")
+ 
+#生成动态库和静态库
+add_library(helloworld_lib_shared  SHARED ${c_files})
+add_library(helloworld_lib_static STATIC ${c_files})
+ 
+#将动态库和静态库的名字设置为一致
+set_target_properties(helloworld_lib_shared PROPERTIES OUTPUT_NAME "helloworld")
+set_target_properties(helloworld_lib_static PROPERTIES OUTPUT_NAME "helloworld")
+ 
+#设置动态库版本
+set_target_properties(helloworld_lib_shared PROPERTIES VERSION 1.2 SOVERSION 1)
+ 
+#安装动态库和静态库
+INSTALL(TARGETS helloworld_lib_shared helloworld_lib_static
+     LIBRARY DESTINATION lib
+     ARCHIVE DESTINATION lib)
+ 
+#安装头文件
+INSTALL(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat 
+build/          CMakeLists.txt  include/        src/            test/           
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat include/
+hello/ world/ 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat src/
+CMakeLists.txt  hello/          world/          
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat src/hello/hello.c 
+#include "hello/hello.h"
+
+#include <stdio.h>
+
+void Hello_Print(void)
+{
+    printf("hello ");
+}
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat src/world/world.c 
+#include "world/world.h"
+
+#include <stdio.h>
+
+void World_Print(void)
+{
+    printf("world");
+}
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# ls
+build  CMakeLists.txt  include  src  test
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat test/
+CMakeLists.txt  mytest.c        
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat test/CMakeLists.txt 
+#递归获取所有当前目录及子目录下的C文件
+file(GLOB_RECURSE c_files ./*.c)
+  
+#生成执行文件
+add_executable(mytest ${c_files})
+     
+#链接外部库
+target_link_libraries(mytest libhelloworld.so)
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cat test/mytest.c 
+#include "hello/hello.h"
+#include "world/world.h"
+
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+    Hello_Print();
+    World_Print();
+
+    printf("\n");
+    return 0;
+}
+
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# ls
+build  CMakeLists.txt  include  src  test
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld# cd build/
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# ls
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# 
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# cmake ..
+-- The C compiler identification is GNU 4.8.5
+-- The CXX compiler identification is GNU 4.8.5
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/include
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/include/hello
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/include/world
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build/CMakeFiles
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build/CMakeFiles/CMakeTmp
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build/CMakeFiles/2.8.12.2
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build/CMakeFiles/2.8.12.2/CompilerIdCXX
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/build/CMakeFiles/2.8.12.2/CompilerIdC
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/src
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/src/hello
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/src/world
+include dir: /home/zhouping/workspace/cMakeDemo/helloWorld/test
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zhouping/workspace/cMakeDemo/helloWorld/build
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# make
+Scanning dependencies of target helloworld_lib_shared
+[ 20%] Building C object src/CMakeFiles/helloworld_lib_shared.dir/hello/hello.c.o
+[ 40%] Building C object src/CMakeFiles/helloworld_lib_shared.dir/world/world.c.o
+Linking C shared library ../lib/libhelloworld.so
+[ 40%] Built target helloworld_lib_shared
+Scanning dependencies of target helloworld_lib_static
+[ 60%] Building C object src/CMakeFiles/helloworld_lib_static.dir/hello/hello.c.o
+[ 80%] Building C object src/CMakeFiles/helloworld_lib_static.dir/world/world.c.o
+Linking C static library ../lib/libhelloworld.a
+[ 80%] Built target helloworld_lib_static
+Scanning dependencies of target mytest
+[100%] Building C object test/CMakeFiles/mytest.dir/mytest.c.o
+Linking C executable ../bin/mytest
+[100%] Built target mytest
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# ls
+bin  CMakeCache.txt  CMakeFiles  cmake_install.cmake  lib  Makefile  src  test
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# make install
+[ 40%] Built target helloworld_lib_shared
+[ 80%] Built target helloworld_lib_static
+[100%] Built target mytest
+Install the project...
+-- Install configuration: ""
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/lib/libhelloworld.so.1.2
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/lib/libhelloworld.so.1
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/lib/libhelloworld.so
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/lib/libhelloworld.a
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/include
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/include/hello
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/include/hello/hello.h
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/include/world
+-- Installing: /home/zhouping/workspace/cMakeDemo/helloWorld/install/include/world/world.h
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# tree
+.
+├── bin
+│   └── mytest
+├── CMakeCache.txt
+├── CMakeFiles
+│   ├── 2.8.12.2
+│   │   ├── CMakeCCompiler.cmake
+│   │   ├── CMakeCXXCompiler.cmake
+│   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   ├── CMakeSystem.cmake
+│   │   ├── CompilerIdC
+│   │   │   ├── a.out
+│   │   │   └── CMakeCCompilerId.c
+│   │   └── CompilerIdCXX
+│   │       ├── a.out
+│   │       └── CMakeCXXCompilerId.cpp
+│   ├── cmake.check_cache
+│   ├── CMakeDirectoryInformation.cmake
+│   ├── CMakeOutput.log
+│   ├── CMakeTmp
+│   ├── Makefile2
+│   ├── Makefile.cmake
+│   ├── progress.marks
+│   └── TargetDirectories.txt
+├── cmake_install.cmake
+├── install_manifest.txt
+├── lib
+│   ├── libhelloworld.a
+│   ├── libhelloworld.so -> libhelloworld.so.1
+│   ├── libhelloworld.so.1 -> libhelloworld.so.1.2
+│   └── libhelloworld.so.1.2
+├── Makefile
+├── src
+│   ├── CMakeFiles
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── helloworld_lib_shared.dir
+│   │   │   ├── build.make
+│   │   │   ├── C.includecache
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.internal
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── hello
+│   │   │   │   └── hello.c.o
+│   │   │   ├── link.txt
+│   │   │   ├── progress.make
+│   │   │   └── world
+│   │   │       └── world.c.o
+│   │   ├── helloworld_lib_static.dir
+│   │   │   ├── build.make
+│   │   │   ├── C.includecache
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── cmake_clean_target.cmake
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.internal
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── hello
+│   │   │   │   └── hello.c.o
+│   │   │   ├── link.txt
+│   │   │   ├── progress.make
+│   │   │   └── world
+│   │   │       └── world.c.o
+│   │   └── progress.marks
+│   ├── cmake_install.cmake
+│   └── Makefile
+└── test
+    ├── CMakeFiles
+    │   ├── CMakeDirectoryInformation.cmake
+    │   ├── mytest.dir
+    │   │   ├── build.make
+    │   │   ├── C.includecache
+    │   │   ├── cmake_clean.cmake
+    │   │   ├── DependInfo.cmake
+    │   │   ├── depend.internal
+    │   │   ├── depend.make
+    │   │   ├── flags.make
+    │   │   ├── link.txt
+    │   │   ├── mytest.c.o
+    │   │   └── progress.make
+    │   └── progress.marks
+    ├── cmake_install.cmake
+    └── Makefile
+
+18 directories, 66 files
+root@ubuntu:/home/zhouping/workspace/cMakeDemo/helloWorld/build# 
+
+4. 指定编译器和编译选项
+a.CMAKE_C_COMPILER: 指定C编译器
+b.CMAKE_CXX_COMPILTER:指定C++编译器
+c.CMAKE_C_FLAGS: 指定C编译选项
+d.CMAKE_CXX_FLAGS:指定C++编译选项
+e.EXECUTABLE_OUTPUT_PATH: 指定执行文件存放目录
+f.LIBRARY_OUTPUT_PATH: 指定库文件存放目录
+g.CMAKE_BUILD_TYPE:指定build类型[Debug|Release]
+h.BUILD_SHARED_LIBS: 指定默认库编译方式[OFF|ON]
+
+上述内部变量使用说明:
+//CMakeLists.txt文件上使用set命令
+//cmake 命令中指定，如: cmake -DCMAKE_C_COMPILER=gcc
+
+add_definitions:添加编译参数, 如: add_definitions("-Wall -lpthread -g")  
+
+5. CMake 常用变量和语句
+a.include_directories:指定头文件搜索路径
+b.link_directories:指定库文件搜索路径
+c.add_subdirectory:添加子目录
+d.target_link_libraries:指定文件链接库文件
+
