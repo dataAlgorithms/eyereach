@@ -1,3 +1,4 @@
+//实例
 Python多线程运行带多个参数的函数
 在python中经常会到用多线程处理某个函数来缩短运行时间。
 
@@ -46,3 +47,7 @@ http://stackoverflow.com/questions/8804830/python-multiprocessing-pickling-error
 http://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
 
 标签: python, 多线程
+
+
+//实战
+http://blog.csdn.net/seetheworld518/article/details/49639651
