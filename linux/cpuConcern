@@ -24,3 +24,7 @@
 ③ 查看CPU是几核
 #cat /proc/cpuinfo |grep "cores"|uniq  
 6   
+
+附加: (python获取cpu数量)
+from multiprocessing import cpu_count
+print(cpu_count())
