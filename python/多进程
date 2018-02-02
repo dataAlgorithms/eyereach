@@ -1,0 +1,48 @@
+Python多线程运行带多个参数的函数
+在python中经常会到用多线程处理某个函数来缩短运行时间。
+
+from multiprocessing import Pool
+
+def work(x):
+    return x+1
+pool = Pool(processes=4) # 4个线程
+x = [1,2,3,4,5,6]
+results = pool.map(work, x)
+print results
+运行上面的程序就会多线程处理并打印出输入x的计算结果。
+
+但是这个函数仅允许函数的输入变量为1，如果函数需要多个参数输入，那个就无法用上面的程序。比如：
+
+def work(x, y):
+    return x + y
+遇到这种情况我们有一下几种处理方法：
+
+1）. 用partial函数提取主要的一个参数固定其他参数
+比如，我们想用x去加一个固定值，那么我们就认为x是主要参数，固定y：
+
+from functools import partial
+
+partial_work = partial(work, y=1) # 提取x作为partial函数的输入变量
+results = pool.map(partial_work, x)
+2）. 将多个输入变量打包到一个参数
+
+x = [1,2,3,4,5,6]
+y = [1,1,1,1,1,1]
+x_y = zip(x, y)
+results = pool.map(work, x_y)
+3）. 使用pathos包下的multiprocessing
+这个包是使用dill的multiprocessing的一个fork，允许多参数输入：
+
+from pathos.multiprocessing import ProcessingPoll as Pool
+
+pool = Pool(4)
+results = pool.map(work, x, y)
+总结：
+当函数的参数在不同时候的输入均不同，那么前一种就不太合适。而在后面两种中，用pathos会更简单些，不太容易报pickling error。
+
+参考：
+https://github.com/uqfoundation/pathos
+http://stackoverflow.com/questions/8804830/python-multiprocessing-pickling-error
+http://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
+
+标签: python, 多线程
