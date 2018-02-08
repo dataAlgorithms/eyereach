@@ -1,0 +1,17 @@
+1. 启动和关闭apk
+启动APK，在终端直接输入：
+#adb shell am start -n 包名 /. 类名
+比如要打开camera，就输入 adb shell am start -n com.android.camera/.Camera 即可。
+关闭APK，在终端直接输入：
+adb shell am force-stop 包名
+比如要关闭camera，就输入 adb shell am force-stop com.android.camera 即可。
+
+2. 查看apk包名
+如果只是想查看手机上应用的packageName，则输入命令：
+adb shell pm list packages
+
+如果想知道应用对应的apk文件在手机上的安装位置则可以在上面的命令后加-f参数
+adb shell pm list packages -f
+
+3. 查看类列表
+adb shell dumpsys activity | find "mFoc"
