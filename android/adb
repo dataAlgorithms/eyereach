@@ -6,6 +6,13 @@
 adb shell am force-stop 包名
 比如要关闭camera，就输入 adb shell am force-stop com.android.camera 即可。
 
+eg.
+for((i=1;i<=1000000;i++));
+do
+    adb shell am start -n deepglint.fasterrcnn/deepglint.dgface.MainActivity
+    adb shell am force-stop deepglint.fasterrcnn
+done
+
 2. 查看apk包名
 如果只是想查看手机上应用的packageName，则输入命令：
 adb shell pm list packages
@@ -15,3 +22,19 @@ adb shell pm list packages -f
 
 3. 查看类列表
 adb shell dumpsys activity | find "mFoc"
+
+4. 查看内存
+adb shell dumpsys meminfo deepglint.fasterrcnn|find "Heap"
+
+eg.
+#!/bin/bash
+
+> meminfo
+for((i=1;i<=1000;i++));
+do
+    #adb shell dumpsys meminfo deepglint.fasterrcnn >> meminfo;
+        #adb shell dumpsys meminfo | find "Used RAM" >> meminfo;
+        adb shell dumpsys meminfo deepglint.fasterrcnn|find "Heap"
+        sleep 30
+done
+
