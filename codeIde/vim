@@ -1,0 +1,18 @@
+1. 格式化代码
+//调整缩减为4
+sudo vim /etc/vim/vimrc  
+
+添加：
+set smartindent  
+set tabstop=4  
+set shiftwidth=4  
+set expandtab  
+set softtabstop=4  
+
+//快捷键
+vim a.cpp
+然后：
+gg 跳转到第一行
+shift+v 转到可视模式
+shift+g 全选
+按下神奇的 =
