@@ -46,3 +46,6 @@ b、使用 $ git checkout TestTimer.java(文件名) 恢复过来了
 
 7. git clone指定分支
 git clone -b bMLv2.2.5.1  https://github.com/deepglint/dgLP.git   
+
+git clone https://github.com/deepglint/dgLP.git
+git checkout MLv2.2.5.1
