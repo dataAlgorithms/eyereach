@@ -248,3 +248,13 @@ eth0: no IPv6 routers present
 
 23. 拷贝特定数量(比如100个)到另一个文件夹
 find . -name "*.txt" |head -100 | xargs -i cp {}  /tmp   
+
+24. 生成图片列表
+/srv/ftp/matrix_cases/nemon/nemo_debug/02127_00.jpg
+/srv/ftp/matrix_cases/nemon/nemo_debug/05066_01.jpg
+/srv/ftp/matrix_cases/nemon/nemo_debug/03922_01.jpg
+/srv/ftp/matrix_cases/nemon/nemo_debug/01547_00.jpg
+/srv/ftp/matrix_cases/nemon/nemo_debug/04852_00.jpg
+root@ubuntu:/srv/ftp/matrix_cases/nemon/nemo_debug# 
+root@ubuntu:/srv/ftp/matrix_cases/nemon/nemo_debug# 
+root@ubuntu:/srv/ftp/matrix_cases/nemon/nemo_debug# find ./ -name "*jpg" -exec readlink -f {} \;
