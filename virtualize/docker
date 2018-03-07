@@ -1,2 +1,6 @@
 1. 下载地址
 https://apt.dockerproject.org/repo/pool/main/d/docker-engine/docker-engine_17.03.0~ce-0~ubuntu-xenial_amd64.deb
+
+2. 问题采集及解决
+a. x509: certificate signed by unknown authority.
+http://www.cnblogs.com/sting2me/p/5596222.html
