@@ -49,3 +49,7 @@ git clone -b bMLv2.2.5.1  https://github.com/deepglint/dgLP.git
 
 git clone https://github.com/deepglint/dgLP.git
 git checkout MLv2.2.5.1
+
+8. git-lfs安装
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+apt-get install git-lfs
