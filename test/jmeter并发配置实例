@@ -133,3 +133,6 @@ BGP-BJ-5-3e1,101
 点击 查看结果树
 
 
+8. 收集
+http://blog.csdn.net/xiaolyuh123/article/details/79197649
+JMeter做压力测试，先调用第一接口，拿到返回值后去调用第二个接口（小白级入门）
