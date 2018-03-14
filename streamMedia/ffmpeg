@@ -48,5 +48,29 @@ Opening an input file: rtmp://116.251.231.12/tz22/8-221.
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac (pure audio)
 ffmpeg -i input-video.avi -an -vcodec copy output-video.flv (pure video)
 
-
-
+6. 视频提取图片
+****************************
+使用ffmpeg从视频中截取图像帧
+1. 问题
+从视频中抽取图像帧，并按照指定命名规则保存。
+2. 环境
+centos 6.3 + ffmpeg 0.6.5
+3. 方法
+1）安装ffmpeg
+ffmpeg 位于rpmforge中，如果你的centos没有配置rpmforge，请先配置rpmforge。
+yum -y install ffmpeg
+并安装对应的依赖包。
+2）使用场景
+        1. ffmpeg -i inputfile.avi -r 1 -f image2 image-%05d.jpeg
+-r 指定抽取的帧率，即从视频中每秒钟抽取图片的数量。1代表每秒抽取一帧。
+-f 指定保存图片使用的格式，可忽略。
+image-%05d.jpeg，指定文件的输出名字。
+2.  ffmpeg -i inputfile.avi -r 1  -s 4cif -f image2 image-%05d.jpeg
+4cif 代表帧的尺寸为705x576.其他可用尺寸如下。
+3. ffmpeg -i inputfile.avi -r 1 -t 4 -f image2 image-%05d.jpeg
+-t 代表持续时间，单位为秒。
+4. ffmpeg -i inputfile.avi -r 1  -ss 01:30:14 -f image2 image-%05d.jpeg
+-ss 指定起始时间
+5.ffmpeg -i inputfile.avi -r 1  -ss 01:30:14 -vframes120 4cif -f image2 image-%05d.jpeg
+-vframes 指定抽取的帧数
+**********************
